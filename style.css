@@ -1,0 +1,452 @@
+/* ============================================================
+   GLOBAL RESETS & BASE CONTROLS
+   ============================================================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+img {
+    image-rendering: -webkit-optimize-contrast; /* Sharper scaling for Chrome/Edge */
+    image-rendering: auto;              /* Sharper scaling for Firefox */
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    color: #202122;
+    background-color: #ffffff;
+    line-height: 1.4;
+}
+
+/* ============================================================
+   SECTION 1: HEADER CONTAINER
+   ============================================================ */
+#header {
+    width: 100%;
+    min-height: 100px;
+    padding-left: 0px;
+    background-color: transparent;
+    position: relative;
+    z-index: 101;
+}
+
+#header::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#header img {
+    float: left;
+    max-width: 10%;
+    height: auto;
+    z-index: 101;
+    padding-top: 19px;
+	padding-left: -3px;
+    shape-outside: url('collections/homepage/ascii-art (3).PNG');
+    shape-margin: 21px;
+    margin-right: 0px;
+}
+
+.header-links {
+    display: inline;
+    max-width: auto;
+    padding-left: 0px;
+    margin: 0;
+    border: none;
+    overflow: visible;
+}
+
+.header-links a {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 7px;
+    color: rgb(0, 0, 238);
+    text-decoration: none;
+    line-height: 2px;
+    white-space: nowrap;
+    margin-right: 0px;
+}
+
+/* Force breaks at specific counts using nth-child */
+.header-links a:nth-child()::after,
+.header-links a:nth-child()::after,
+.header-links a:nth-child()::after,
+.header-links a:nth-child()::after {
+    content: "\A";
+    white-space: pre;
+}
+
+.header-links a:hover {
+    text-decoration: underline;
+	color: #FFFFFF;
+    background: #000;
+}
+
+/* "George Rump's" text - free-floating h4 */
+body > h4 {
+    position: absolute;
+    top: 0px;
+    left: 110px;
+    margin: 0;
+    padding-top: 86px;
+    font-family: monospace, monospace; 
+    font-size: 14px;
+    font-weight: 7;
+    color: #202122;
+    z-index: 101;
+
+}
+body > h4 .big-letter {
+    font-size: 36px;
+}
+/* ============================================================
+   SECTION 2: SIDEBAR CONTAINER
+   Fixed position, all original spacing preserved
+   ============================================================ */
+#sidebar {
+    position: fixed;
+    left: 0;
+    top: 114px;
+    width: 180px;
+    height: calc(100vh - 250px);
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 50;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+    transition: transform 0.3s ease;
+    border: 1px solid #eaecf0;
+}
+
+/* Sidebar inner content spacing */
+#sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding-top: 12px;
+}
+
+#sidebar li {
+    margin: 0;
+    padding-top: 10px;
+    list-style: none;
+}
+
+/* CONTROL: SIDEBAR HEADINGS - "Contents", "Tools" */
+#sidebar h2 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(32, 33, 34);
+    line-height: 1px;
+    margin-top: 40px;
+    margin-bottom: -10px;
+    margin-left: 25px;
+    margin-right: 0;
+    padding: 0;
+}
+
+/* CONTROL: SIDEBAR LINKS */
+#sidebar li a {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    line-height: 7px;
+    font-weight: 400;
+    margin-left: 31px;
+	margin-top: 7px;
+    color: rgb(0, 0, 238);
+    text-decoration: none;
+    display: block;
+    padding: 0;
+}
+/* ============================================================
+   MAGNIFIER LENS
+   ============================================================ */
+#magnifierLens {
+    position: fixed;
+    width: 190px;
+    height: 180px;
+    border: 1px solid #FF0004;
+    pointer-events: auto;
+	cursor: grab;
+    z-index: 9999;
+    overflow: hidden;
+    display: none;
+}
+
+body.magnifier-mode #magnifierLens {
+    display: block;
+}
+
+#magnifierLens canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+body.magnifier-mode {
+    cursor: default;
+}
+
+#magnifierToggle img {
+    pointer-events: none;
+    vertical-align: middle;
+    margin-right: 3px;
+	filter: brightness(1) contrast(1);
+}
+/* ============================================================
+   Dark/light MODE
+   ============================================================ */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #000;
+}
+
+body.dark-mode #mainContent {
+    background-color: #000;
+	border: 1px solid #000;
+}
+
+body.dark-mode .image-box {
+    border: 1px solid #000;
+}
+
+body.dark-mode .content-row {
+    border-color: #99ccff;
+}
+ 
+body.dark-mode body > h4 {
+    color: #e0e0e0;  /* Slightly off-white for the regular text */
+}
+body.dark-mode body > h4 .big-letter {
+    color: #ffffff;  /* Pure white for the big W */
+}
+
+body.dark-mode #header img {
+     filter: brightness(1) contrast(7);
+}	 
+	 
+body.dark-mode #sidebar {
+    background-color: #000;
+	border: 1px solid #000;
+}
+
+body.dark-mode #magnifierToggle img {
+    filter: invert(1) contrast(1) brightness(4);
+}
+
+body.dark-mode #sidebar li a {
+    color: #99ccff;
+}
+
+body.dark-mode #sidebar h2 {
+    color: #99ccff;
+}
+
+body.dark-mode .caption {
+    color: #99ccff;
+}
+
+/* CONTROL: SIDEBAR LINK HOVER (optional subtle feedback) */
+#sidebar li a:hover {
+    text-decoration: underline;
+    color: rgb(0, 0, 238);
+}
+
+/* CONTROL: SIDEBAR LINK VISITED */
+#sidebar li a:visited {
+    color: rgb(0, 0, 238);
+}
+
+/* CONTROL: HIDE BUTTON inside sidebar */
+#sidebar .sidebar-toggle-btn,
+#sidebar #hideBtn,
+#sidebar button {
+    display: block;
+    margin: 20px 0 10px 27px;
+    padding: 4px 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 400;
+    color: #202122;
+    background-color: #f8f9fa;
+    border: 1px solid #a2a9b1;
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#sidebar .sidebar-toggle-btn:hover,
+#sidebar #hideBtn:hover,
+#sidebar button:hover {
+    background-color: #eaecf0;
+}
+
+/* ============================================================
+   SECTION 3: SIDEBAR TOGGLE TAB
+   The "▶" tab that appears when sidebar is hidden
+   ============================================================ */
+.sidebar-tab,
+#showTab {
+    position: fixed;
+    left: 0;
+    top: 300px;
+    width: 22px;
+    height: 50px;
+    background-color: #f8f9fa;
+    border: 1px solid #a2a9b1;
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 99;
+    font-size: 12px;
+    color: #202122;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+}
+
+.sidebar-tab:hover,
+#showTab:hover {
+    background-color: #eaecf0;
+}
+
+#showTab.hidden,
+.sidebar-tab.hidden {
+    display: none !important;
+}
+/* ============================================================
+   SECTION 4: MAIN CONTENT CONTAINER
+   ============================================================ */
+#mainContent {
+    position: relative;
+    margin-top: 42px;
+    margin-left: 250px;
+    margin-right: 0;
+    margin-bottom: 0;
+    padding-top: 0px;
+    padding-left: 82px;
+    padding-right: 20px;
+    padding-bottom: 40px;
+    min-height: 100vh;
+    background-color: #ffffff;
+    transition: margin-left 0.3s ease;
+}
+
+/* Shifted state - when sidebar is visible (default) */
+#mainContent.shifted {
+    margin-left: 0;
+}
+
+/* Unshifted state - when sidebar is hidden */
+#mainContent:not(.shifted) {
+    margin-left: 0;
+}
+/* ============================================================
+   FOLDER IMAGE COLUMN
+   ============================================================ */
+   
+   /* CONTROL: Collection column images */
+.image-block img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 600px;
+    object-fit: contain;
+}
+#collectionColumn .image-block {
+    width: 700px;
+    max-width: 100%;
+    margin: 0 auto;
+	padding: 45px;
+	gap: 80px;
+}
+#collectionColumn .portrait-block .caption {
+    text-align: left;
+	margin-left: 103px;
+}
+#collectionColumn .image-block .caption {
+    text-align: left;
+    padding: 8px 4px;
+    font-weight: 10;
+    font-size: 8px;
+    color: #202122;
+}
+
+/* ============================================================
+   SECTION 6: CONTENT ROWS & TILES
+   ============================================================ */
+.content-row {
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;    /* Forces containers to match the height of the tallest item */
+    gap: 60px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.image-box {
+    width: 86%;              /* Each box takes half the row */
+    flex-shrink: 0;
+    padding: 6px;
+    border: 1px solid #eaecf0;
+    margin-bottom: 20px;
+    display: flex;           /* Allows internal content to fill height */
+    flex-direction: column;
+}
+
+/* CONTROL: Text box wrapping images */
+.text-box {
+    width: 100%;
+    height: 100%;            /* Fills the image-box */
+    display: flex;
+    flex-direction: column;
+}
+
+.text-box img {
+    width:100%;
+    height: auto; 
+    display: block;
+}
+
+/* CONTROL: Image captions */
+.caption {
+    text-align: left;
+    padding: 10px 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    color: #202122;
+    line-height: 1.4;
+    margin-top: auto;        /* Pushes caption to the bottom of the box */
+}
+/* ============================================================
+   SECTION 7: UTILITY CLASSES
+   ============================================================ */
+.hidden {
+    display: none !important;
+}
+
+/* ============================================================
+   SECTION 8: SCROLLBAR CONTROL (Sidebar)
+   ============================================================ */
+#sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: #c8ccd1;
+    border-radius: 3px;
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+    background: #a2a9b1;
+}

@@ -1,0 +1,5 @@
+Commands
+"Server Start"
+cd C:\Users\user\Desktop\WEB.300
+python -m http.server
+http://localhost:8000
