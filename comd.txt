@@ -1,5 +1,11 @@
 Commands
 "Server Start"
 cd C:\Users\user\Desktop\WEB.300
-python -m http.server
+python -m http.server          -----         --      npx wrangler pages deploy .
+
 http://localhost:8000
+
+
+npx wrangler deploy
+
+

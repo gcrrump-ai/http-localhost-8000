@@ -14,7 +14,7 @@
     ============================================================ -->
     <h4><span class="big-letter">W</span>elcome!</h4>
     <div id="header">
-        <img id="Header" src="collections/homepage/ascii-art (3).PNG" alt="Header" width="300">
+        <img id="header" src="collections/homepage/ascii-art (3).png" alt="Header image - ASCII art" width="300">
         <div class="header-links">
             <a href="collections/Belgrade/Belgrade_1.jpg">Belgrade_1.jpg</a>
             <a href="collections/Belgrade/Belgrade_2.jpg">Belgrade_2.jpg</a>
@@ -157,33 +157,36 @@
     <!-- ============================================================
     SECTION 2: SIDEBAR
     ============================================================ -->
-    <div id="sidebar"> 
+    <div id="sidebar" role="navigation" aria-label="Sidebar navigation">
         <h2>Contents</h2>
         <ul id="collectionList">
-            <li><a data-folder="Chroma">Chroma</a></li>
-            <li><a data-folder="South Island">South Island</a></li>
-            <li><a data-folder="Belgrade">Belgrade</a></li>
-            <li><a data-folder="Portraits">Portraits</a></li>
-            <li><a data-folder="Music">Music</a></li>
-            <li><a data-folder="Hangzhou">Hangzhou</a></li>
+            <li><a data-folder="Chroma" role="button">Chroma</a></li>
+            <li><a data-folder="South Island" role="button">South Island</a></li>
+            <li><a data-folder="Belgrade" role="button">Belgrade</a></li>
+            <li><a data-folder="Portraits" role="button">Portraits</a></li>
+            <li><a data-folder="Music" role="button">Music</a></li>
+            <li><a data-folder="Hangzhou" role="button">Hangzhou</a></li>
         </ul>
         <h2>Tools</h2>
         <ul>
-            <li><a href="#" id="magnifierToggle"><img src="collections/homepage/magnifier.png" alt="Magnifier" style="width:14px;height:14px;vertical-align:middle;"> Magnifier</a></li>
-            <li><a href="#" id="darkModeToggle">Dark Mode</a></li>
+            <li><a href="#" id="magnifierToggle" role="button">
+                <img src="collections/homepage/magnifier-icon.png" alt="Magnifier icon" style="width:14px;height:14px;vertical-align:middle;">
+                Magnifier
+            </a></li>
+            <li><a href="#" id="darkModeToggle" role="button">Dark Mode</a></li>
         </ul>
-        <button id="hideBtn">HIDE</button>
+        <button id="hideBtn" aria-label="Hide sidebar">HIDE</button>
     </div>
 
     <!-- ============================================================
     SECTION 3: SIDEBAR TOGGLE TAB
     ============================================================ -->
-     <div class="sidebar-tab hidden" id="showTab" title="Show sidebar">▶</div>
+    <div class="sidebar-tab hidden" id="showTab" title="Show sidebar" role="button" aria-label="Show sidebar">▶</div>
 
-     <!-- Magnifier Lens -->
-     <div id="magnifierLens" aria-hidden="true">
-         <canvas></canvas>
-     </div>
+    <!-- Magnifier Lens -->
+    <div id="magnifierLens" aria-hidden="true">
+        <canvas></canvas>
+    </div>
 
     <!-- ============================================================
     SECTION 4: MAIN CONTENT
@@ -192,20 +195,20 @@
         <div class="content-row">
             <div class="image-box tile-1">
                 <div class="text-box">
-                    <img src="collections/Belgrade/belgrade_1.jpg" alt="Danube River, Belgrade">
+                    <img src="collections/Belgrade/Belgrade_1.jpg" alt="Danube River, Belgrade">
                     <div class="caption">Danube River, Belgrade, Serbia.</div>
                 </div>
             </div>
             <div class="image-box tile-2">
                 <div class="text-box">
-                    <img src="collections/Chroma/chroma_0.jpg" alt="We Louvre you Mona Lisa">
+                    <img src="collections/Chroma/Chroma_0.jpg" alt="We Louvre you Mona Lisa">
                     <div class="caption">Mona Lisa</div>
                 </div>
             </div>
             <div class="image-box tile-3">
                 <div class="text-box">
-                    <img src="collections/homepage/Fan_tail_L.jpg" alt="Fan Tail">
-                    <div class="caption">Fan Tail, New Zealand.</div>
+                    <img src="collections/homepage/Fan_tail_L.jpg" alt="Fantail bird">
+                    <div class="caption">Fantail, New Zealand.</div>
                 </div>
             </div>
         </div>
@@ -289,117 +292,117 @@
         });
     })();
 
-// TOOLS: MAGNIFIER & DARK MODE
-(function() {
-    const magnifierToggle = document.getElementById('magnifierToggle');
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const lens = document.getElementById('magnifierLens');
-    const body = document.body;
-    let snapshot = null;
-    const zoom = 3;
-    let lensX = 300, lensY = 300;
-    let dragging = false, startX, startY, startLensX, startLensY;
+    // TOOLS: MAGNIFIER & DARK MODE
+    (function() {
+        const magnifierToggle = document.getElementById('magnifierToggle');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const lens = document.getElementById('magnifierLens');
+        const body = document.body;
+        let snapshot = null;
+        const zoom = 3;
+        let lensX = 300, lensY = 300;
+        let dragging = false, startX, startY, startLensX, startLensY;
 
-    function updateSnapshot() {
-        if (!snapshot) return;
-        const lensW = lens.offsetWidth;
-        const lensH = lens.offsetHeight;
-        const srcX = (lensX + lensW/2) * zoom - lensW/2;
-        const srcY = (lensY + lensH/2) * zoom - lensH/2;
-        snapshot.style.transform = 'translate(' + (-srcX) + 'px, ' + (-srcY) + 'px) scale(' + zoom + ')';
-        snapshot.style.transformOrigin = '0 0';
-    }
-
-    async function captureScreen() {
-        try {
-            lens.classList.add('hidden');
-            await new Promise(resolve => setTimeout(resolve, 0));
-            const canvas = await html2canvas(document.body, {
-                useCORS: true,
-                allowTaint: false,
-                logging: false,
-                scale: zoom,
-                width: window.innerWidth,
-                height: window.innerHeight,
-                windowWidth: window.innerWidth,
-                windowHeight: window.innerHeight,
-                scrollX: window.scrollX,
-                scrollY: window.scrollY,
-                x: window.scrollX,
-                y: window.scrollY
-            });
-            snapshot = canvas;
-            snapshot.style.position = 'absolute';
-            snapshot.style.top = '0';
-            snapshot.style.left = '0';
-            lens.innerHTML = '';
-            lens.appendChild(canvas);
-            lens.classList.remove('hidden');
-            updateSnapshot();
-        } catch (err) {
-            lens.classList.remove('hidden');
-            console.warn('Magnifier failed', err);
+        function updateSnapshot() {
+            if (!snapshot) return;
+            const lensW = lens.offsetWidth;
+            const lensH = lens.offsetHeight;
+            const srcX = (lensX + lensW/2) * zoom - lensW/2;
+            const srcY = (lensY + lensH/2) * zoom - lensH/2;
+            snapshot.style.transform = 'translate(' + (-srcX) + 'px, ' + (-srcY) + 'px) scale(' + zoom + ')';
+            snapshot.style.transformOrigin = '0 0';
         }
-    }
 
-    if (magnifierToggle && lens) {
-        magnifierToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            this.classList.toggle('active');
-            body.classList.toggle('magnifier-mode');
-            if (body.classList.contains('magnifier-mode')) {
+        async function captureScreen() {
+            try {
+                lens.classList.add('hidden');
+                await new Promise(resolve => setTimeout(resolve, 0));
+                const canvas = await html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: false,
+                    scale: zoom,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    windowWidth: window.innerWidth,
+                    windowHeight: window.innerHeight,
+                    scrollX: window.scrollX,
+                    scrollY: window.scrollY,
+                    x: window.scrollX,
+                    y: window.scrollY
+                });
+                snapshot = canvas;
+                snapshot.style.position = 'absolute';
+                snapshot.style.top = '0';
+                snapshot.style.left = '0';
+                lens.innerHTML = '';
+                lens.appendChild(canvas);
                 lens.classList.remove('hidden');
-                lensX = 300; lensY = 300;
+                updateSnapshot();
+            } catch (err) {
+                lens.classList.remove('hidden');
+                console.warn('Magnifier failed', err);
+            }
+        }
+
+        if (magnifierToggle && lens) {
+            magnifierToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.classList.toggle('active');
+                body.classList.toggle('magnifier-mode');
+                if (body.classList.contains('magnifier-mode')) {
+                    lens.classList.remove('hidden');
+                    lensX = 300; lensY = 300;
+                    lens.style.left = lensX + 'px';
+                    lens.style.top = lensY + 'px';
+                    captureScreen();
+                } else {
+                    lens.classList.add('hidden');
+                }
+            });
+
+            lens.addEventListener('pointerdown', function(e) {
+                dragging = true;
+                startX = e.clientX; startY = e.clientY;
+                startLensX = lensX; startLensY = lensY;
+                lens.setPointerCapture(e.pointerId);
+            });
+
+            lens.addEventListener('pointermove', function(e) {
+                if (!dragging) return;
+                lensX = startLensX + (e.clientX - startX);
+                lensY = startLensY + (e.clientY - startY);
                 lens.style.left = lensX + 'px';
                 lens.style.top = lensY + 'px';
-                captureScreen();
-            } else {
-                lens.classList.add('hidden');
-            }
-        });
+                updateSnapshot();
+            });
 
-        lens.addEventListener('pointerdown', function(e) {
-            dragging = true;
-            startX = e.clientX; startY = e.clientY;
-            startLensX = lensX; startLensY = lensY;
-            lens.setPointerCapture(e.pointerId);
-        });
+            lens.addEventListener('pointerup', function() { dragging = false; });
 
-        lens.addEventListener('pointermove', function(e) {
-            if (!dragging) return;
-            lensX = startLensX + (e.clientX - startX);
-            lensY = startLensY + (e.clientY - startY);
-            lens.style.left = lensX + 'px';
-            lens.style.top = lensY + 'px';
-            updateSnapshot();
-        });
-
-        lens.addEventListener('pointerup', function() { dragging = false; });
-
-        let scrollTimer;
-        window.addEventListener('scroll', function() {
-            if (body.classList.contains('magnifier-mode')) {
-                clearTimeout(scrollTimer);
-                scrollTimer = setTimeout(function() {
-                    captureScreen();
-                }, 80);
-            }
-        });
-    }
-
-    if (darkModeToggle) {
-        if (localStorage.getItem('darkMode') === 'true') {
-            body.classList.add('dark-mode');
-            darkModeToggle.classList.add('active');
+            let scrollTimer;
+            window.addEventListener('scroll', function() {
+                if (body.classList.contains('magnifier-mode')) {
+                    clearTimeout(scrollTimer);
+                    scrollTimer = setTimeout(function() {
+                        captureScreen();
+                    }, 80);
+                }
+            });
         }
-        darkModeToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            this.classList.toggle('active');
-            body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
-        });
-    }
-})();
+
+        if (darkModeToggle) {
+            if (localStorage.getItem('darkMode') === 'true') {
+                body.classList.add('dark-mode');
+                darkModeToggle.classList.add('active');
+            }
+            darkModeToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.classList.toggle('active');
+                body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+            });
+        }
+    })();
     </script>
 </body>
 </html>

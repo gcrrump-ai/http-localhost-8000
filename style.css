@@ -6,10 +6,12 @@
     margin: 0;
     padding: 0;
 }
+
 img {
     image-rendering: -webkit-optimize-contrast; /* Sharper scaling for Chrome/Edge */
     image-rendering: auto;              /* Sharper scaling for Firefox */
 }
+
 body {
     margin: 0;
     padding: 0;
@@ -21,7 +23,7 @@ body {
 }
 
 /* ============================================================
-   SECTION 1: HEADER CONTAINER
+   SECTION 1: HEADER CONTAINER - COMPLETE FIX
    ============================================================ */
 #header {
     width: 100%;
@@ -30,6 +32,10 @@ body {
     background-color: transparent;
     position: relative;
     z-index: 101;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    gap: 5px;
 }
 
 #header::after {
@@ -38,87 +44,103 @@ body {
     clear: both;
 }
 
+/* COMPLETE FIX: Image stays perfect on all devices */
 #header img {
-    float: left;
-    max-width: 10%;
-    height: auto;
+    float: none;
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: 150px;          /* ← SET YOUR DESIRED WIDTH HERE */
+    height: auto;          /* ← AUTO maintains aspect ratio */
+    max-width: 340px;      /* ← LOCKED to prevent growing */
+    min-width: 100px;      /* ← LOCKED to prevent shrinking */
     z-index: 101;
-    padding-top: 19px;
-	padding-left: -3px;
-    shape-outside: url('collections/homepage/ascii-art (3).PNG');
-    shape-margin: 21px;
+    padding-top: 16px;
+    margin-left: 2px;
+    /* REMOVED: shape-outside - this was causing issues */
+    /* REMOVED: shape-margin - this was causing issues */
     margin-right: 0px;
+    display: block;
+    object-fit: contain;   /* ← Ensures image fits without distortion */
+    image-rendering: auto;
 }
 
+/* FIXED: Links stay on one line and don't overflow */
 .header-links {
-    display: inline;
-    max-width: auto;
+    display: flex;
+    flex-wrap: wrap;             /* ← Allow wrapping for multiple rows */
+    align-items: center;
+    gap: 1px;                    /* ← Space between bricks */
     padding-left: 0px;
     margin: 0;
-    border: none;
     overflow: visible;
+    flex-shrink: 1;
+    padding-top: 10px;
+    min-width: 100%;
+    max-width: 100%;
+	min-height: 12%;
 }
 
 .header-links a {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 7px;
-    color: rgb(0, 0, 238);
+    font-size: 3px;
+    color: rgb(0, 0, 238);              /* Text is dark gray (hidden) */
     text-decoration: none;
-    line-height: 2px;
+    line-height: 5px;
     white-space: nowrap;
-    margin-right: 0px;
-}
-
-/* Force breaks at specific counts using nth-child */
-.header-links a:nth-child()::after,
-.header-links a:nth-child()::after,
-.header-links a:nth-child()::after,
-.header-links a:nth-child()::after {
-    content: "\A";
-    white-space: pre;
+    flex-shrink: 2;
+    padding: 1px 1px;           /* Brick padding */
+    background-color: rgb(214, 218, 240, 39);   /* Brick background */
+    display: inline-block;
+    font-weight: 300;            /* Slightly bolder text */
 }
 
 .header-links a:hover {
-    text-decoration: underline;
-	color: #FFFFFF;
-    background: #000;
+    text-decoration: underline
+    color: #34FF33;         /* Reveals blue on hover */
+    background-color: transparent; /* Background disappears */
+    border-color: transparent;    /* Border disappears */
 }
 
-/* "George Rump's" text - free-floating h4 */
+.header-links a:visited {
+    color: #34FF33;              /* Stays hidden even if visited */
+}
+
+/* "George Rump's" text - CENTERED */
 body > h4 {
     position: absolute;
-    top: 0px;
-    left: 110px;
+    top: 10%;                    /* ← CHANGED from 0px */
+    left: 50%;                   /* ← CHANGED from 0px */
+    transform: translate(-50%, -50%);  /* ← NEW: Perfect centering */
     margin: 0;
-    padding-top: 86px;
+    padding-top: 0;              /* ← CHANGED from 100px */
     font-family: monospace, monospace; 
     font-size: 14px;
-    font-weight: 7;
+    font-weight: 700;
     color: #202122;
     z-index: 101;
-
+    white-space: nowrap;
 }
+
 body > h4 .big-letter {
     font-size: 36px;
+    color: #35B82A;
 }
+
+
 /* ============================================================
-   SECTION 2: SIDEBAR CONTAINER
-   Fixed position, all original spacing preserved
+   SECTION 2: SIDEBAR CONTAINER - TRANSPARENT BACKGROUND
    ============================================================ */
 #sidebar {
     position: fixed;
     left: 0;
-    top: 114px;
-    width: 180px;
+    top: 100px;
+    width: 140px;
     height: calc(100vh - 250px);
-    background-color: rgba(255, 255, 255, 0.5);
-    z-index: 50;
-    overflow-y: auto;
-    overflow-x: hidden;
+    background-color: transparent;  /* ← MATCHES body background */
+    z-index: 100;
     padding: 0;
     margin: 0;
-    transition: transform 0.3s ease;
-    border: 1px solid #eaecf0;
+    border: 1px #000; 
 }
 
 /* Sidebar inner content spacing */
@@ -130,19 +152,19 @@ body > h4 .big-letter {
 
 #sidebar li {
     margin: 0;
-    padding-top: 10px;
+    padding-top: 12px;
     list-style: none;
 }
 
 /* CONTROL: SIDEBAR HEADINGS - "Contents", "Tools" */
 #sidebar h2 {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: monospace, monospace; 
     font-size: 12px;
     font-weight: 700;
     color: rgb(32, 33, 34);
-    line-height: 1px;
+    line-height: 0px;
     margin-top: 40px;
-    margin-bottom: -10px;
+    margin-bottom: 0px;
     margin-left: 25px;
     margin-right: 0;
     padding: 0;
@@ -151,102 +173,15 @@ body > h4 .big-letter {
 /* CONTROL: SIDEBAR LINKS */
 #sidebar li a {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 9px;
-    line-height: 7px;
-    font-weight: 400;
-    margin-left: 31px;
-	margin-top: 7px;
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 100;
+    margin-left: 25px;
+    margin-top: 3px;
     color: rgb(0, 0, 238);
     text-decoration: none;
     display: block;
     padding: 0;
-}
-/* ============================================================
-   MAGNIFIER LENS
-   ============================================================ */
-#magnifierLens {
-    position: fixed;
-    width: 190px;
-    height: 180px;
-    border: 1px solid #FF0004;
-    pointer-events: auto;
-	cursor: grab;
-    z-index: 9999;
-    overflow: hidden;
-    display: none;
-}
-
-body.magnifier-mode #magnifierLens {
-    display: block;
-}
-
-#magnifierLens canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-body.magnifier-mode {
-    cursor: default;
-}
-
-#magnifierToggle img {
-    pointer-events: none;
-    vertical-align: middle;
-    margin-right: 3px;
-	filter: brightness(1) contrast(1);
-}
-/* ============================================================
-   Dark/light MODE
-   ============================================================ */
-body.dark-mode {
-    background-color: #1a1a1a;
-    color: #000;
-}
-
-body.dark-mode #mainContent {
-    background-color: #000;
-	border: 1px solid #000;
-}
-
-body.dark-mode .image-box {
-    border: 1px solid #000;
-}
-
-body.dark-mode .content-row {
-    border-color: #99ccff;
-}
- 
-body.dark-mode body > h4 {
-    color: #e0e0e0;  /* Slightly off-white for the regular text */
-}
-body.dark-mode body > h4 .big-letter {
-    color: #ffffff;  /* Pure white for the big W */
-}
-
-body.dark-mode #header img {
-     filter: brightness(1) contrast(7);
-}	 
-	 
-body.dark-mode #sidebar {
-    background-color: #000;
-	border: 1px solid #000;
-}
-
-body.dark-mode #magnifierToggle img {
-    filter: invert(1) contrast(1) brightness(4);
-}
-
-body.dark-mode #sidebar li a {
-    color: #99ccff;
-}
-
-body.dark-mode #sidebar h2 {
-    color: #99ccff;
-}
-
-body.dark-mode .caption {
-    color: #99ccff;
 }
 
 /* CONTROL: SIDEBAR LINK HOVER (optional subtle feedback) */
@@ -261,7 +196,6 @@ body.dark-mode .caption {
 }
 
 /* CONTROL: HIDE BUTTON inside sidebar */
-#sidebar .sidebar-toggle-btn,
 #sidebar #hideBtn,
 #sidebar button {
     display: block;
@@ -278,7 +212,6 @@ body.dark-mode .caption {
     text-align: center;
 }
 
-#sidebar .sidebar-toggle-btn:hover,
 #sidebar #hideBtn:hover,
 #sidebar button:hover {
     background-color: #eaecf0;
@@ -320,22 +253,21 @@ body.dark-mode .caption {
 .sidebar-tab.hidden {
     display: none !important;
 }
+
 /* ============================================================
    SECTION 4: MAIN CONTENT CONTAINER
    ============================================================ */
 #mainContent {
     position: relative;
-    margin-top: 42px;
-    margin-left: 250px;
+    margin-top: 0px;
+    margin-left: 0px;
     margin-right: 0;
     margin-bottom: 0;
-    padding-top: 0px;
-    padding-left: 82px;
-    padding-right: 20px;
+	padding-left: 100px;
+    padding-top: 100px;
     padding-bottom: 40px;
     min-height: 100vh;
     background-color: #ffffff;
-    transition: margin-left 0.3s ease;
 }
 
 /* Shifted state - when sidebar is visible (default) */
@@ -347,11 +279,11 @@ body.dark-mode .caption {
 #mainContent:not(.shifted) {
     margin-left: 0;
 }
+
 /* ============================================================
    FOLDER IMAGE COLUMN
    ============================================================ */
-   
-   /* CONTROL: Collection column images */
+/* CONTROL: Collection column images */
 .image-block img {
     width: 100%;
     height: auto;
@@ -359,58 +291,57 @@ body.dark-mode .caption {
     max-height: 600px;
     object-fit: contain;
 }
+
 #collectionColumn .image-block {
     width: 700px;
     max-width: 100%;
     margin: 0 auto;
-	padding: 45px;
-	gap: 80px;
+    padding: 45px;
+    gap: 80px;
 }
-#collectionColumn .portrait-block .caption {
-    text-align: left;
-	margin-left: 103px;
-}
+
 #collectionColumn .image-block .caption {
     text-align: left;
     padding: 8px 4px;
-    font-weight: 10;
+    font-weight: 400;  /* Fixed: was font-weight: 10 */
     font-size: 8px;
     color: #202122;
+    margin-left: 103px;  /* Moved from parent selector */
 }
 
 /* ============================================================
    SECTION 6: CONTENT ROWS & TILES
    ============================================================ */
 .content-row {
-	display: flex;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;    /* Forces containers to match the height of the tallest item */
+    align-items: flex-start;
     gap: 60px;
-    max-width: 700px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .image-box {
-    width: 86%;              /* Each box takes half the row */
+    width: 86%;
     flex-shrink: 0;
     padding: 6px;
     border: 1px solid #eaecf0;
     margin-bottom: 20px;
-    display: flex;           /* Allows internal content to fill height */
+    display: flex;
     flex-direction: column;
 }
 
 /* CONTROL: Text box wrapping images */
 .text-box {
     width: 100%;
-    height: 100%;            /* Fills the image-box */
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .text-box img {
-    width:100%;
-    height: auto; 
+    width: 100%;
+    height: auto;
     display: block;
 }
 
@@ -422,8 +353,99 @@ body.dark-mode .caption {
     font-size: 11px;
     color: #202122;
     line-height: 1.4;
-    margin-top: auto;        /* Pushes caption to the bottom of the box */
+    margin-top: auto;
 }
+
+/* ============================================================
+   MAGNIFIER LENS
+   ============================================================ */
+#magnifierLens {
+    position: fixed;
+    width: 190px;
+    height: 180px;
+    border: 1px solid #FF0004;
+    pointer-events: auto;
+    cursor: grab;  /* Added: was missing */
+    z-index: 9999;
+    overflow: hidden;
+    display: none;
+}
+
+body.magnifier-mode #magnifierLens {
+    display: block;
+}
+
+#magnifierLens canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+body.magnifier-mode {
+    cursor: default;
+}
+
+#magnifierToggle img {
+    pointer-events: none;
+    vertical-align: middle;
+    margin-right: 3px;
+    filter: brightness(1) contrast(1);
+}
+
+/* ============================================================
+   DARK/LIGHT MODE
+   ============================================================ */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #000;
+}
+
+body.dark-mode #mainContent {
+    background-color: #000;
+    border: 1px solid #000;
+}
+
+body.dark-mode .image-box {
+    border: 1px solid #000;
+}
+
+body.dark-mode .content-row {
+    border-color: #99ccff;
+}
+
+body.dark-mode body > h4 {
+    color: #e0e0e0;
+}
+
+body.dark-mode body > h4 .big-letter {
+    color: #ffffff;
+}
+
+body.dark-mode #header img {
+    filter: brightness(1) contrast(7);
+}
+
+body.dark-mode #sidebar {
+    background-color: transparent;  /* ← CHANGED to transparent */
+    border: 1px solid #000;  /* Keep or remove */
+}
+
+body.dark-mode #magnifierToggle img {
+    filter: invert(1) contrast(1) brightness(4);
+}
+
+body.dark-mode #sidebar li a {
+    color: #99ccff;
+}
+
+body.dark-mode #sidebar h2 {
+    color: #99ccff;
+}
+
+body.dark-mode .caption {
+    color: #99ccff;
+}
+
 /* ============================================================
    SECTION 7: UTILITY CLASSES
    ============================================================ */
@@ -449,4 +471,124 @@ body.dark-mode .caption {
 
 #sidebar::-webkit-scrollbar-thumb:hover {
     background: #a2a9b1;
+}
+
+/* ============================================================
+   SECTION 9: MOBILE RESPONSIVE FIXES
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Fix header on mobile */
+    #header {
+        flex-wrap: nowrap;
+        gap: 2px;
+        min-height: 70px;
+    }
+    
+    #header img {
+        width: 60px !important;
+        min-width: 60px !important;
+        max-width: 60px !important;
+        height: auto !important;
+        margin-left: 10px !important;
+        padding-top: 10px !important;
+    }
+    
+    body > h4 {
+        font-size: 10px !important;
+        left: 70px !important;
+        padding-top: 45px !important;
+    }
+    
+    body > h4 .big-letter {
+        font-size: 24px !important;
+    }
+    
+    .header-links {
+        padding-left: 10px !important;
+        padding-top: 0px !important;
+        gap: 3px !important;
+        max-width: 40% !important;
+    }
+    
+    .header-links a {
+        font-size: 5px !important;
+        padding: 1px 2px !important;
+    }
+    
+    /* Hide extra links on mobile - keep first 4 */
+    .header-links a:nth-child(n+5) {
+        display: none !important;
+    }
+    
+    /* Sidebar fixes for mobile */
+    #sidebar {
+        top: 80px !important;
+        width: 160px !important;
+        height: calc(100vh - 150px) !important;
+        transform: translateX(-100%);
+        border-right: 1px solid #eaecf0 !important;
+        background-color: #ffffff !important;
+        transition: transform 0.3s ease !important;
+    }
+    
+    #sidebar.open {
+        transform: translateX(0) !important;
+    }
+    
+    /* Show toggle tab on mobile */
+    .sidebar-tab,
+    #showTab {
+        display: flex !important;
+    }
+    
+    /* Main content on mobile */
+    #mainContent {
+        margin-left: 0 !important;
+        padding-left: 20px !important;
+        padding-right: 10px !important;
+        margin-top: 20px !important;
+    }
+    
+    /* Dark mode sidebar mobile */
+    body.dark-mode #sidebar {
+        background-color: #1a1a1a !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Very small phones */
+    #header img {
+        width: 40px !important;
+        min-width: 40px !important;
+        max-width: 40px !important;
+        margin-left: 5px !important;
+        padding-top: 15px !important;
+    }
+    
+    body > h4 {
+        font-size: 8px !important;
+        left: 50px !important;
+        padding-top: 48px !important;
+    }
+    
+    body > h4 .big-letter {
+        font-size: 18px !important;
+    }
+    
+    .header-links a {
+        font-size: 4px !important;
+        padding: 0px 1px !important;
+    }
+    
+    .header-links {
+        gap: 2px !important;
+        padding-left: 5px !important;
+        max-width: 35% !important;
+    }
+    
+    /* Show only first 3 links on very small phones */
+    .header-links a:nth-child(n+4) {
+        display: none !important;
+    }
 }
