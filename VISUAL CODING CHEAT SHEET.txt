@@ -1,0 +1,110 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║                    VISUAL CODING CHEAT SHEET                            ║
+║              Common Mistakes → Corrected Code                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────┬───────────────────────────────────────────┐
+│  ❌ WRONG (common mistake)   │  ✅ RIGHT (corrected)                    │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  HTML – Tags                │                                           │
+│  <div>Text</div>            │  <div>Text</div>  ✓                       │
+│  <img src="photo.jpg">      │  <img src="photo.jpg" alt="photo"> ✓     │
+│  <br>                       │  <br>  ✓ (or <br /> in XHTML)            │
+│  <input type="text">        │  <input type="text">  ✓                  │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  HTML – Missing Closing     │                                           │
+│  <div>Text                  │  <div>Text</div>  ✓                       │
+│  <p>Paragraph               │  <p>Paragraph</p>  ✓                     │
+│  <li>Item                   │  <li>Item</li>  ✓                        │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  HTML – ID vs Class         │                                           │
+│  <div id="box">             │  <div id="uniqueID">  ✓ (use once)       │
+│  <div class="box">          │  <div class="reusable">  ✓ (use many)    │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  CSS – Missing Semicolon    │                                           │
+│  color: red                 │  color: red;  ✓                          │
+│  font-size: 16px            │  font-size: 16px;  ✓                     │
+│  margin: 0                  │  margin: 0;  ✓                           │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  CSS – Colour Spelling      │                                           │
+│  colour: red;               │  color: red;  ✓                          │
+│  background-colour: blue;   │  background-color: blue;  ✓              │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  CSS – Missing Units        │                                           │
+│  padding: 10;               │  padding: 10px;  ✓                       │
+│  font-size: 16;             │  font-size: 16px;  ✓                     │
+│  margin: 5;                 │  margin: 5px;  ✓                         │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  CSS – Typo in Selector     │                                           │
+│  .buton { }                 │  .button { }  ✓                          │
+│  #headr { }                 │  #header { }  ✓                          │
+│  .nav-bar { }               │  .navbar { }  ✓                          │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  CSS – Missing Curly Brace  │                                           │
+│  .class { color: red        │  .class { color: red; }  ✓               │
+│  #id { margin: 0            │  #id { margin: 0; }  ✓                   │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  CSS – !important Overuse   │                                           │
+│  color: red !important;     │  color: red;  ✓ (use sparingly)          │
+│  .class { color: red !imp   │  .class { color: red; }  ✓               │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  CSS – Missing Space Between│                                           │
+│  .class1.class2 { }         │  .class1.class2 { }  ✓ (both on same)    │
+│  .class1 .class2 { }        │  .class1 .class2 { }  ✓ (nested)         │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Missing Semic │                                           │
+│  let x = 5                  │  let x = 5;  ✓                           │
+│  const y = "hello"          │  const y = "hello";  ✓                   │
+│  console.log("hi")          │  console.log("hi");  ✓                   │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Missing Curly │                                           │
+│  if (x > 5) { alert("hi")   │  if (x > 5) { alert("hi"); }  ✓         │
+│  function test() { return   │  function test() { return true; }  ✓     │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Variable Name │                                           │
+│  let 1stName = "John";      │  let firstName = "John";  ✓              │
+│  let my-name = "John";      │  let myName = "John";  ✓                 │
+│  let class = "math";        │  let className = "math";  ✓              │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Case Sensitiv │                                           │
+│  Console.log("hi");         │  console.log("hi");  ✓                   │
+│  Document.getElementById()   │  document.getElementById()  ✓            │
+│  Let x = 5;                 │  let x = 5;  ✓                          │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Function Call │                                           │
+│  myFunction;                │  myFunction();  ✓                        │
+│  addNumbers(2,3             │  addNumbers(2,3);  ✓                     │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – DOM Element   │                                           │
+│  .getElementById('id')      │  document.getElementById('id')  ✓        │
+│  .querySelector('.class')   │  document.querySelector('.class')  ✓     │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Template Liter│                                           │
+│  "Hello " + name            │  `Hello ${name}`  ✓                       │
+│  'Hello ' + name + '!'      │  `Hello ${name}!`  ✓                     │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Missing Parent│                                           │
+│  if x > 5 { }               │  if (x > 5) { }  ✓                       │
+│  while i < 10 { }           │  while (i < 10) { }  ✓                   │
+│  for i = 0; i < 5; i++ { }  │  for (i = 0; i < 5; i++) { }  ✓         │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Array Methods │                                           │
+│  arr.forEach(item => {      │  arr.forEach(item => { ... });  ✓        │
+│  arr.map(item => {          │  arr.map(item => { ... });  ✓            │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Event Listene │                                           │
+│  .addEventListener(click)   │  .addEventListener('click', function) ✓  │
+│  .onclick = myFunction      │  .onclick = function() { ... }  ✓        │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – String Concate│                                           │
+│  "Hello" + 5                │  "Hello" + String(5)  ✓                  │
+│  "Number: " + 42            │  `Number: ${42}`  ✓                      │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – Null Check    │                                           │
+│  if (element) { }           │  if (element !== null) { }  ✓            │
+│  if (arr.length) { }        │  if (arr && arr.length > 0) { }  ✓       │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│  JavaScript – JSON          │                                           │
+│  { name: "John" }           │  { "name": "John" }  ✓                   │
+│  JSON.parse('{name:"John"}')│  JSON.parse('{"name":"John"}')  ✓        │
+└─────────────────────────────┴───────────────────────────────────────────┘

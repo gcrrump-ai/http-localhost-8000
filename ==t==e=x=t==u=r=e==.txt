@@ -1,0 +1,264 @@
+/* ============================================================
+   MASTER LIST – UI SHADING, TEXTURE, COLOUR & FILTER EFFECTS
+   ============================================================ */
+
+/* ============================================================
+   1. BASIC – DEPTH & SHADOW
+   ============================================================ */
+
+/* Soft drop shadow */
+box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+/* 2px right, 2px down, 8px blur, 15% black opacity */
+
+/* Hard drop shadow */
+box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+/* 3px right, 3px down, no blur, sharp edge */
+
+/* Inner shadow (pressed) */
+box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+/* inset = inside, 0 right, 2px down, 8px blur */
+
+/* Spread shadow (border-like) */
+box-shadow: 0 0 0 4px rgba(0,0,0,0.1);
+/* 0 offset, 0 blur, 4px spread – creates a coloured ring */
+
+/* Spread shadow with colour */
+box-shadow: 0 0 0 2px #00A307;
+/* 2px solid green ring outside element */
+
+/* Floating effect – lifted up */
+box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+/* 0 right, 8px down, 24px blur – floating appearance */
+
+/* Deep shadow – heavy depth */
+box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+/* large offset + blur = heavy shadow */
+
+/* ============================================================
+   2. GLOWS & LIGHT
+   ============================================================ */
+
+/* Subtle light glow */
+box-shadow: 0 0 12px rgba(255,255,255,0.3);
+/* white glow with 30% opacity */
+
+/* Green neon glow */
+box-shadow: 0 0 20px rgba(0,163,7,0.4);
+/* green glow, 20px blur, 40% opacity */
+
+/* Intense neon glow */
+box-shadow: 0 0 30px rgba(0,255,100,0.6);
+/* strong green-blue glow, 30px blur */
+
+/* Dual-colour glow */
+box-shadow: 0 0 20px rgba(255,0,0,0.3), 0 0 40px rgba(0,0,255,0.2);
+/* red + blue glow combined */
+
+/* Inward light glow */
+box-shadow: inset 0 0 20px rgba(255,255,255,0.15);
+/* inner white glow – light from inside */
+
+/* Soft ambient glow – all sides */
+box-shadow: 0 0 60px rgba(0,163,7,0.15);
+/* large blur, low opacity – gentle ambient light */
+
+/* ============================================================
+   3. TEXTURE & MATERIAL
+   ============================================================ */
+
+/* Emboss (raised) */
+box-shadow: -2px -2px 8px rgba(255,255,255,0.3), 2px 2px 8px rgba(0,0,0,0.2);
+/* light top-left + shadow bottom-right = raised */
+
+/* Deboss (engraved) */
+box-shadow: inset -2px -2px 8px rgba(255,255,255,0.2), inset 2px 2px 8px rgba(0,0,0,0.15);
+/* inner light top-left + inner shadow bottom-right = pressed */
+
+/* Glass morphism */
+background: rgba(255,255,255,0.15);
+backdrop-filter: blur(12px);
+box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+/* frosted glass effect + soft shadow */
+
+/* Frosted glass with border */
+background: rgba(255,255,255,0.08);
+backdrop-filter: blur(16px);
+border: 1px solid rgba(255,255,255,0.15);
+box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+/* glass with subtle border + shadow */
+
+/* Paper texture – subtle grain */
+background-color: #f8f5f0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+/* subtle grain texture overlay */
+
+/* Mesh gradient – soft blend */
+background: radial-gradient(circle at 30% 40%, rgba(0,163,7,0.15), transparent 60%),
+            radial-gradient(circle at 70% 60%, rgba(0,100,200,0.10), transparent 50%);
+/* soft coloured blobs blending together */
+
+/* ============================================================
+   4. COLOUR FILTERS
+   ============================================================ */
+
+/* Invert colours */
+filter: invert(1);
+/* flips all colours to their opposite */
+
+/* Grayscale (black & white) */
+filter: grayscale(1);
+/* removes all colour – 100% grey */
+
+/* Partial grayscale */
+filter: grayscale(0.5);
+/* 50% grey, 50% colour */
+
+/* Sepia (vintage warm) */
+filter: sepia(0.8);
+/* 80% sepia – warm vintage brown tone */
+
+/* Brightness boost */
+filter: brightness(1.3);
+/* 130% brighter */
+
+/* Contrast boost */
+filter: contrast(1.5);
+/* 150% contrast – deeper darks, brighter lights */
+
+/* Saturation boost */
+filter: saturate(2);
+/* 200% saturation – super vibrant */
+
+/* Hue rotation */
+filter: hue-rotate(90deg);
+/* shifts all colours 90 degrees around the colour wheel */
+
+/* Negative / Invert + Grayscale */
+filter: invert(1) grayscale(1);
+/* completely inverted + black & white – dark mode negative */
+
+/* Neon colour shift */
+filter: hue-rotate(180deg) saturate(2) brightness(1.2);
+/* colour shift + intense saturation + brightness boost */
+
+/* ============================================================
+   5. MULTI-LAYER SHADOWS
+   ============================================================ */
+
+/* Soft + sharp combined */
+box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+/* soft blurry shadow + sharp subtle shadow */
+
+/* Depth + glow combined */
+box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 0 40px rgba(0,163,7,0.08);
+/* standard depth shadow + faint green glow */
+
+/* Raised + coloured spread */
+box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 0 0 1px #00A307;
+/* floating shadow + thin green border */
+
+/* ============================================================
+   6. EXPERIMENTAL / WEIRD
+   ============================================================ */
+
+/* Infinite shadow (radial) */
+box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+/* giant shadow covering entire viewport – spotlight effect */
+
+/* Chromatic aberration (colour split) */
+text-shadow: 2px 0 rgba(255,0,0,0.5), -2px 0 rgba(0,0,255,0.5);
+/* red and blue split – glitch effect */
+
+/* Glitch flicker */
+animation: glitch 0.2s infinite alternate;
+@keyframes glitch {
+    0% { transform: translate(-2px, 0); filter: hue-rotate(0deg); }
+    100% { transform: translate(2px, 0); filter: hue-rotate(90deg); }
+}
+/* rapid movement + colour shift – glitch effect */
+
+/* Holographic / iridescent shimmer */
+background: linear-gradient(135deg, #ff00cc, #3333ff, #00ffcc, #ff00cc);
+background-size: 400% 400%;
+animation: shimmer 3s ease infinite;
+@keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+/* moving rainbow gradient – holographic look */
+
+/* Pixelated edge – retro game */
+image-rendering: pixelated;
+border: 2px solid #000;
+box-shadow: 4px 4px 0 #000;
+/* hard edges + offset shadow – pixel art style */
+
+/* Neon flicker – animated glow */
+animation: neon-flicker 1.5s infinite alternate;
+@keyframes neon-flicker {
+    0% { box-shadow: 0 0 10px rgba(0,255,100,0.3), 0 0 20px rgba(0,255,100,0.2); }
+    50% { box-shadow: 0 0 30px rgba(0,255,100,0.8), 0 0 60px rgba(0,255,100,0.4); }
+    100% { box-shadow: 0 0 15px rgba(0,255,100,0.5), 0 0 30px rgba(0,255,100,0.3); }
+}
+/* pulsing neon glow – flickering light effect */
+
+/* Vignette – darkened edges (using box-shadow) */
+box-shadow: inset 0 0 150px rgba(0,0,0,0.6);
+/* dark fade around edges – spotlight centre */
+
+/* Drop shadow + blur + colour overlay */
+box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+backdrop-filter: blur(4px);
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.08);
+/* glass + blur + shadow combined */
+
+/* Liquid metal / chrome */
+background: linear-gradient(135deg, #333, #999, #333, #666, #333);
+background-size: 300% 300%;
+animation: metal-shift 4s ease infinite;
+box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+@keyframes metal-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+/* moving metallic gradient – liquid chrome */
+
+/* Scanline effect (CRT monitor) */
+background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 4px);
+/* subtle horizontal scanlines – retro CRT look */
+
+/* Depth of field – blur outside centre */
+box-shadow: 0 0 80px rgba(0,0,0,0.3);
+backdrop-filter: blur(8px);
+/* blurred background – focus on centre */
+
+/* ============================================================
+   7. TRANSITIONS (for smooth changes)
+   ============================================================ */
+
+/* Smooth shadow transition */
+transition: box-shadow 0.3s ease, transform 0.2s ease;
+/* smooth animation when shadow or position changes */
+
+/* Hover lift – floating on hover */
+transition: transform 0.2s ease, box-shadow 0.3s ease;
+:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+/* element lifts up on hover + shadow deepens */
+
+/* Hover glow on hover */
+transition: box-shadow 0.3s ease, filter 0.3s ease;
+:hover {
+    box-shadow: 0 0 30px rgba(0,163,7,0.4);
+    filter: brightness(1.1);
+}
+/* glow + brighten on hover */
+
+/* ============================================================
+   8. END OF MASTER LIST
+   ============================================================ */

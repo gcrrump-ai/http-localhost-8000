@@ -1,11 +1,29 @@
 Commands
+
+Generate Registry (collections Update)
+
+PS C:\Users\user\Desktop\WEB.300> node generate-registry.js
+
+Open registry.js
+
+Find the image path in CUSTOM_DESCRIPTIONS
+
+Change the description:
+
+javascript
+"collections/Belgrade/Belgrade_1.jpg": "Sunset over Kalemegdan Fortress",
+Save and refresh your website
+
+
 "Server Start"
+
 cd C:\Users\user\Desktop\WEB.300
-python -m http.server          -----         --      npx wrangler pages deploy .
+python -m http.server       
+
+
+npx wrangler pages deploy .
 
 http://localhost:8000
 
-
-npx wrangler deploy
 
 

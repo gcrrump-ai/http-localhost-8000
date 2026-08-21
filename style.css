@@ -1,15 +1,10 @@
 /* ============================================================
-   GLOBAL RESETS & BASE CONTROLS
+   1. RESET & BASE STYLES
    ============================================================ */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-img {
-    image-rendering: -webkit-optimize-contrast; /* Sharper scaling for Chrome/Edge */
-    image-rendering: auto;              /* Sharper scaling for Firefox */
 }
 
 body {
@@ -19,214 +14,136 @@ body {
     font-size: 9px;
     color: #202122;
     background-color: #ffffff;
-    line-height: 1.4;
+    line-height: 1;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: auto;
 }
 
 /* ============================================================
-   SECTION 1: HEADER CONTAINER - COMPLETE FIX
+   2. TYPOGRAPHY
+   ============================================================ */
+body > h1 {
+    position: absolute;
+    top: 15px;
+    left: 1%;
+    margin: 0;
+    padding-top: 15px;
+    padding-left: 14px;
+    font-family: monospace, monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: #202122;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+body > h1 .big-letter {
+    font-size: 80px;
+    background: #F8F9FA;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ============================================================
+   3. LAYOUT & CONTAINERS
    ============================================================ */
 #header {
-    width: 100%;
-    min-height: 100px;
-    padding-left: 0px;
+    max-width: 100%;
+    min-height: 50px;
+    padding: 40px 0px;
     background-color: transparent;
     position: relative;
     z-index: 101;
     display: flex;
-    align-items: flex-start;
-    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 5px;
 }
 
-#header::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-/* COMPLETE FIX: Image stays perfect on all devices */
-#header img {
-    float: none;
+#header-logo {
     flex-shrink: 0;
     flex-grow: 0;
-    width: 150px;          /* ← SET YOUR DESIRED WIDTH HERE */
-    height: auto;          /* ← AUTO maintains aspect ratio */
-    max-width: 340px;      /* ← LOCKED to prevent growing */
-    min-width: 100px;      /* ← LOCKED to prevent shrinking */
+    width: 170px;
+    height: auto;
+    max-width: 350px;
+    min-width: 100px;
     z-index: 101;
-    padding-top: 16px;
-    margin-left: 2px;
-    /* REMOVED: shape-outside - this was causing issues */
-    /* REMOVED: shape-margin - this was causing issues */
-    margin-right: 0px;
+    padding-top: 0px;
+    margin-left: 46px;
+    margin-right: 15px;
     display: block;
-    object-fit: contain;   /* ← Ensures image fits without distortion */
-    image-rendering: auto;
+    object-fit: contain;
 }
 
-/* FIXED: Links stay on one line and don't overflow */
-.header-links {
+#sidebar,
+#tree-wrapper {
+    position: fixed !important;
+    left: 20px !important;
+    top: 200px !important;
+    display: inline-flex;
+    flex-direction: column !important;
+    z-index: 9999 !important;
+    padding: 0 !important;
+    min-width: 220px !important;
+}
+
+#tree-wrapper {
+    background: transparent;
+    display: inline-flex;
+    flex-direction: column;
+    height: 400px;
+    width: 180px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+#mainContent {
+    margin-left: auto;
+    padding: 0;
+    min-height: 50vh;
     display: flex;
-    flex-wrap: wrap;             /* ← Allow wrapping for multiple rows */
     align-items: center;
-    gap: 1px;                    /* ← Space between bricks */
-    padding-left: 0px;
-    margin: 0;
-    overflow: visible;
-    flex-shrink: 1;
-    padding-top: 10px;
-    min-width: 100%;
+    justify-content: center;
+    background: transparent;
+}
+
+#bookshelfImageArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 78vh;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+#bookshelfImageArea img {
     max-width: 100%;
-	min-height: 12%;
-}
-
-.header-links a {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 3px;
-    color: rgb(0, 0, 238);              /* Text is dark gray (hidden) */
-    text-decoration: none;
-    line-height: 5px;
-    white-space: nowrap;
-    flex-shrink: 2;
-    padding: 1px 1px;           /* Brick padding */
-    background-color: rgb(214, 218, 240, 39);   /* Brick background */
-    display: inline-block;
-    font-weight: 300;            /* Slightly bolder text */
-}
-
-.header-links a:hover {
-    text-decoration: underline
-    color: #34FF33;         /* Reveals blue on hover */
-    background-color: transparent; /* Background disappears */
-    border-color: transparent;    /* Border disappears */
-}
-
-.header-links a:visited {
-    color: #34FF33;              /* Stays hidden even if visited */
-}
-
-/* "George Rump's" text - CENTERED */
-body > h4 {
-    position: absolute;
-    top: 10%;                    /* ← CHANGED from 0px */
-    left: 50%;                   /* ← CHANGED from 0px */
-    transform: translate(-50%, -50%);  /* ← NEW: Perfect centering */
-    margin: 0;
-    padding-top: 0;              /* ← CHANGED from 100px */
-    font-family: monospace, monospace; 
-    font-size: 14px;
-    font-weight: 700;
-    color: #202122;
-    z-index: 101;
-    white-space: nowrap;
-}
-
-body > h4 .big-letter {
-    font-size: 36px;
-    color: #35B82A;
-}
-
-
-/* ============================================================
-   SECTION 2: SIDEBAR CONTAINER - TRANSPARENT BACKGROUND
-   ============================================================ */
-#sidebar {
-    position: fixed;
-    left: 0;
-    top: 100px;
-    width: 140px;
-    height: calc(100vh - 250px);
-    background-color: transparent;  /* ← MATCHES body background */
-    z-index: 100;
-    padding: 0;
-    margin: 0;
-    border: 1px #000; 
-}
-
-/* Sidebar inner content spacing */
-#sidebar ul {
-    list-style: none;
-    margin: 0;
-    padding-top: 12px;
-}
-
-#sidebar li {
-    margin: 0;
-    padding-top: 12px;
-    list-style: none;
-}
-
-/* CONTROL: SIDEBAR HEADINGS - "Contents", "Tools" */
-#sidebar h2 {
-    font-family: monospace, monospace; 
-    font-size: 12px;
-    font-weight: 700;
-    color: rgb(32, 33, 34);
-    line-height: 0px;
-    margin-top: 40px;
-    margin-bottom: 0px;
-    margin-left: 25px;
-    margin-right: 0;
-    padding: 0;
-}
-
-/* CONTROL: SIDEBAR LINKS */
-#sidebar li a {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 10px;
-    line-height: 14px;
-    font-weight: 100;
-    margin-left: 25px;
-    margin-top: 3px;
-    color: rgb(0, 0, 238);
-    text-decoration: none;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     display: block;
-    padding: 0;
-}
-
-/* CONTROL: SIDEBAR LINK HOVER (optional subtle feedback) */
-#sidebar li a:hover {
-    text-decoration: underline;
-    color: rgb(0, 0, 238);
-}
-
-/* CONTROL: SIDEBAR LINK VISITED */
-#sidebar li a:visited {
-    color: rgb(0, 0, 238);
-}
-
-/* CONTROL: HIDE BUTTON inside sidebar */
-#sidebar #hideBtn,
-#sidebar button {
-    display: block;
-    margin: 20px 0 10px 27px;
-    padding: 4px 12px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 9px;
-    font-weight: 400;
-    color: #202122;
-    background-color: #f8f9fa;
-    border: 1px solid #a2a9b1;
-    border-radius: 2px;
-    cursor: pointer;
-    text-align: center;
-}
-
-#sidebar #hideBtn:hover,
-#sidebar button:hover {
-    background-color: #eaecf0;
 }
 
 /* ============================================================
-   SECTION 3: SIDEBAR TOGGLE TAB
-   The "▶" tab that appears when sidebar is hidden
+   4. SIDEBAR COMPONENTS
    ============================================================ */
 .sidebar-tab,
 #showTab {
     position: fixed;
     left: 0;
-    top: 300px;
-    width: 22px;
+    top: 260px;
+    width: 16px;
     height: 50px;
     background-color: #f8f9fa;
     border: 1px solid #a2a9b1;
@@ -236,12 +153,17 @@ body > h4 .big-letter {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 99;
-    font-size: 12px;
+    font-size: 10px;
     color: #202122;
     padding: 0;
     margin: 0;
     line-height: 1;
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+}
+
+#sidebar.hidden-sidebar {
+    display: none !important;
 }
 
 .sidebar-tab:hover,
@@ -249,123 +171,226 @@ body > h4 .big-letter {
     background-color: #eaecf0;
 }
 
-#showTab.hidden,
-.sidebar-tab.hidden {
-    display: none !important;
-}
-
-/* ============================================================
-   SECTION 4: MAIN CONTENT CONTAINER
-   ============================================================ */
-#mainContent {
-    position: relative;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0;
-    margin-bottom: 0;
-	padding-left: 100px;
-    padding-top: 100px;
-    padding-bottom: 40px;
-    min-height: 100vh;
-    background-color: #ffffff;
-}
-
-/* Shifted state - when sidebar is visible (default) */
-#mainContent.shifted {
-    margin-left: 0;
-}
-
-/* Unshifted state - when sidebar is hidden */
-#mainContent:not(.shifted) {
-    margin-left: 0;
-}
-
-/* ============================================================
-   FOLDER IMAGE COLUMN
-   ============================================================ */
-/* CONTROL: Collection column images */
-.image-block img {
+#tree-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 4px 7px;
+    background: rgba(164, 230, 255, 0.1);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    color: #000000;
     width: 100%;
-    height: auto;
-    display: block;
-    max-height: 600px;
-    object-fit: contain;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
-#collectionColumn .image-block {
-    width: 700px;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 45px;
-    gap: 80px;
+#tree-toolbar a {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
-#collectionColumn .image-block .caption {
-    text-align: left;
-    padding: 8px 4px;
-    font-weight: 400;  /* Fixed: was font-weight: 10 */
-    font-size: 8px;
-    color: #202122;
-    margin-left: 103px;  /* Moved from parent selector */
+#tree-toolbar a:hover {
+    text-decoration: underline;
+    color: #000000;
+}
+
+#tree-toolbar img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+#treeContent {
+    overflow-y: auto;
+    background: inherit;
+    flex: 1 1 auto;
+    min-height: 0;
 }
 
 /* ============================================================
-   SECTION 6: CONTENT ROWS & TILES
+   5. DIRECTORY TABLE
    ============================================================ */
-.content-row {
+.dir-table {
+    width: 66%;
+    border-collapse: collapse;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #202122;
+}
+
+.dir-table td {
+    padding: 0px 8px;
+    border-bottom: none;
+    vertical-align: top;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: #202122;
+}
+
+.dir-table tr {
+    line-height: 2.3;
+}
+
+.dir-table tr:hover td {
+    background: rgba(0, 163, 7, 0.0);
+}
+
+/* ============================================================
+   6. FOLDER ROW
+   ============================================================ */
+.folder-row {
+    cursor: pointer;
+    font-weight: 400;
+    color: #007D09;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+}
+
+.folder-row .arrow {
+    display: inline-block;
+    transition: transform 0.15s;
+    font-size: 10px;
+    margin-right: 4px;
+    color: #007D09;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.folder-row .arrow.open {
+    transform: rotate(90deg);
+    color: #AB4EAD;
+}
+
+.folder-row td {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* ============================================================
+   FLOATING WINDOW
+   ============================================================ */
+#floating-window {
+    position: fixed;
+    left: 26px;
+    top: 420px;
+    width: 260px;
+    height: 120px;
+    padding: 0px;
+    z-index: 999999;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#floating-window::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #F8F9FA;
+    background-size: 60% auto;
+    background-position: top left;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#floating-window .file-link {
+    position: relative;
+    z-index: 1;
+    color: #007D09;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 100;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 60px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.image-box {
-    width: 86%;
-    flex-shrink: 0;
-    padding: 6px;
-    border: 1px solid #eaecf0;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* CONTROL: Text box wrapping images */
-.text-box {
+    padding: 6px 0px 10px 0px;
+    margin: 0px;
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    box-sizing: border-box;
+    line-height: 2;
+    gap: 5px;
+    transition: all 0.2s ease;
 }
 
-.text-box img {
+#floating-window .file-link:hover {
+    color: #007D09;
+}
+
+#floating-window .file-name {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     width: 100%;
-    height: auto;
-    display: block;
 }
 
-/* CONTROL: Image captions */
-.caption {
+#floating-window .file-description {
+    font-size: 10px;
+    color: #666;
+    font-weight: 300;
+    opacity: 0;
+    transition: opacity 0.3s ease;
     text-align: left;
-    padding: 10px 0;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 11px;
-    color: #202122;
-    line-height: 1.4;
-    margin-top: auto;
+    width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.5;
 }
 
+#floating-window .file-link.active .file-description {
+    opacity: 1;
+}
+
+#floating-window .file-link.active {
+    font-weight: bold !important;
+    border-left: 2px solid #C7C7C7 !important;
+    padding-left: 16px !important;
+}
+
+/* Permanent icon – always visible, sits above content */
+#floating-window .info-icon-permanent {
+    font-size: 20px;
+    color: #000000;
+    font-weight: 100;
+    margin-bottom: 3px;      /* gap between icon and filename */
+    position: relative;
+    z-index: 1;
+    padding-left: 5px;      /* match the .file-link padding */
+    padding-top: 10px;
+    display: block;
+    opacity: 0.7;            /* subtle default, optional */
+}
+
+/* Content container – holds the dynamic file link */
+#floating-window .file-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+/* Dark mode – permanent icon colour */
+body.dark-mode #floating-window .info-icon-permanent {
+    color: #ffffff;
+}
 /* ============================================================
-   MAGNIFIER LENS
+   7. MAGNIFIER LENS
    ============================================================ */
 #magnifierLens {
     position: fixed;
-    width: 190px;
-    height: 180px;
-    border: 1px solid #FF0004;
+    width: 200px;
+    height: 200px;
     pointer-events: auto;
-    cursor: grab;  /* Added: was missing */
+    cursor: grab;
     z-index: 9999;
     overflow: hidden;
     display: none;
@@ -385,210 +410,258 @@ body.magnifier-mode {
     cursor: default;
 }
 
-#magnifierToggle img {
+#magnifierCorner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
     pointer-events: none;
-    vertical-align: middle;
-    margin-right: 3px;
-    filter: brightness(1) contrast(1);
+    z-index: 10;
 }
 
 /* ============================================================
-   DARK/LIGHT MODE
+   8. DARK MODE TOGGLE ICONS
    ============================================================ */
-body.dark-mode {
-    background-color: #1a1a1a;
-    color: #000;
+#darkModeIconLight {
+    width: 14px;
+    height: 14px;
 }
 
-body.dark-mode #mainContent {
-    background-color: #000;
-    border: 1px solid #000;
-}
-
-body.dark-mode .image-box {
-    border: 1px solid #000;
-}
-
-body.dark-mode .content-row {
-    border-color: #99ccff;
-}
-
-body.dark-mode body > h4 {
-    color: #e0e0e0;
-}
-
-body.dark-mode body > h4 .big-letter {
-    color: #ffffff;
-}
-
-body.dark-mode #header img {
-    filter: brightness(1) contrast(7);
-}
-
-body.dark-mode #sidebar {
-    background-color: transparent;  /* ← CHANGED to transparent */
-    border: 1px solid #000;  /* Keep or remove */
-}
-
-body.dark-mode #magnifierToggle img {
-    filter: invert(1) contrast(1) brightness(4);
-}
-
-body.dark-mode #sidebar li a {
-    color: #99ccff;
-}
-
-body.dark-mode #sidebar h2 {
-    color: #99ccff;
-}
-
-body.dark-mode .caption {
-    color: #99ccff;
+#darkModeIconDark {
+    width: 14px;
+    height: 14px;
 }
 
 /* ============================================================
-   SECTION 7: UTILITY CLASSES
+   9. SCROLLBARS
+   ============================================================ */
+#floating-window::-webkit-scrollbar {
+    width: 6px;
+}
+
+#floating-window::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+#floating-window::-webkit-scrollbar-thumb {
+    background: #c8ccd1;
+    border-radius: 3px;
+}
+
+#floating-window::-webkit-scrollbar-thumb:hover {
+    background: #a2a9b1;
+}
+
+/* ============================================================
+   10. UTILITY CLASSES
    ============================================================ */
 .hidden {
     display: none !important;
 }
 
 /* ============================================================
-   SECTION 8: SCROLLBAR CONTROL (Sidebar)
+   11. DARK MODE – ORGANISED
    ============================================================ */
-#sidebar::-webkit-scrollbar {
-    width: 6px;
+body.dark-mode {
+    background-color: #000000 !important;
+    color: #ffffff !important;
 }
 
-#sidebar::-webkit-scrollbar-track {
-    background: transparent;
+/* ---------- TEXT COLOURS ---------- */
+body.dark-mode h1 {
+    color: #ffffff;
+}
+body.dark-mode h1 .big-letter {
+    background: linear-gradient(180deg, #66FF66, #00A307);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
-#sidebar::-webkit-scrollbar-thumb {
-    background: #c8ccd1;
-    border-radius: 3px;
+body.dark-mode .sidebar-tab,
+body.dark-mode #showTab {
+    color: #e0e0e0;
 }
 
-#sidebar::-webkit-scrollbar-thumb:hover {
-    background: #a2a9b1;
+body.dark-mode #tree-toolbar a {
+    color: #ffffff !important;
+}
+body.dark-mode #tree-toolbar a:hover {
+    color: #88ccff !important;
+}
+
+body.dark-mode .dir-table {
+    color: #000000;           /* kept for compatibility */
+}
+body.dark-mode .dir-table td {
+    color: #ffffff;
+}
+body.dark-mode .dir-table tr:hover td {
+    color: #e0e0e0;
+}
+
+body.dark-mode .folder-row {
+    color: #ffffff;
+}
+body.dark-mode .folder-row .arrow {
+    color: #ffffff;
+}
+body.dark-mode .folder-row .arrow.open {
+    color: #AB4EAD;
+}
+
+body.dark-mode #floating-window .file-link {
+    color: #31B332;
+}
+body.dark-mode #floating-window .file-link:hover {
+    color: #268C27;
+}
+body.dark-mode #floating-window .file-description {
+    color: #cccccc;
+}
+body.dark-mode #floating-window .info-icon {
+    color: #ffffff;
+}
+body.dark-mode #floating-window .file-link.active {
+    border-left-color: #ffffff !important;
+}
+
+body.dark-mode #floating-window::before {
+    filter: invert(0.99) brightness(1.4);
+}
+
+body.dark-mode #mainContent,
+body.dark-mode #bookshelfImageArea {
+    color: #ffffff !important;
+}
+body.dark-mode #bookshelfCaption {
+    color: #ffffff !important;
+}
+
+/* ---------- BACKGROUNDS & BORDERS ---------- */
+body.dark-mode #header-logo {
+    filter: invert(1.5) !important;
+}
+
+body.dark-mode #tree-wrapper,
+body.dark-mode #tree-toolbar,
+body.dark-mode #treeContent {
+    background-color: #000000 !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode .sidebar-tab,
+body.dark-mode #showTab {
+    background-color: #000000;
+    border-color: #444;
+}
+body.dark-mode .sidebar-tab:hover,
+body.dark-mode #showTab:hover {
+    background-color: #3a3a3a;
+}
+
+body.dark-mode .dir-table td {
+    border-color: #ffffff;
+}
+body.dark-mode .dir-table tr:hover td {
+    background: rgba(0, 204, 9, 0.08);
+}
+
+body.dark-mode #mainContent,
+body.dark-mode #bookshelfImageArea {
+    background-color: #000000 !important;
+}
+
+body.dark-mode #magnifierLens {
+    background-color: #000000;
+    border: 2px solid #99ccff;
+}
+body.dark-mode #magnifierToggle img {
+    filter: invert(1) brightness(2);
+}
+
+/* ---------- SCROLLBAR ---------- */
+body.dark-mode #floating-window::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+body.dark-mode #floating-window::-webkit-scrollbar-thumb {
+    background: #444;
+}
+body.dark-mode #floating-window::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* ---------- TOGGLE ICONS ---------- */
+body.dark-mode #darkModeIconLight {
+    display: none !important;
+}
+body.dark-mode #darkModeIconDark {
+    display: inline-block !important;
 }
 
 /* ============================================================
-   SECTION 9: MOBILE RESPONSIVE FIXES
+   12. RESPONSIVE DESIGN
    ============================================================ */
-@media (max-width: 768px) {
-    /* Fix header on mobile */
-    #header {
-        flex-wrap: nowrap;
-        gap: 2px;
-        min-height: 70px;
-    }
-    
-    #header img {
-        width: 60px !important;
-        min-width: 60px !important;
-        max-width: 60px !important;
-        height: auto !important;
-        margin-left: 10px !important;
-        padding-top: 10px !important;
-    }
-    
-    body > h4 {
-        font-size: 10px !important;
-        left: 70px !important;
-        padding-top: 45px !important;
-    }
-    
-    body > h4 .big-letter {
-        font-size: 24px !important;
-    }
-    
-    .header-links {
-        padding-left: 10px !important;
-        padding-top: 0px !important;
-        gap: 3px !important;
-        max-width: 40% !important;
-    }
-    
-    .header-links a {
-        font-size: 5px !important;
-        padding: 1px 2px !important;
-    }
-    
-    /* Hide extra links on mobile - keep first 4 */
-    .header-links a:nth-child(n+5) {
-        display: none !important;
-    }
-    
-    /* Sidebar fixes for mobile */
-    #sidebar {
-        top: 80px !important;
-        width: 160px !important;
-        height: calc(100vh - 150px) !important;
-        transform: translateX(-100%);
-        border-right: 1px solid #eaecf0 !important;
-        background-color: #ffffff !important;
-        transition: transform 0.3s ease !important;
-    }
-    
-    #sidebar.open {
-        transform: translateX(0) !important;
-    }
-    
-    /* Show toggle tab on mobile */
-    .sidebar-tab,
-    #showTab {
-        display: flex !important;
-    }
-    
-    /* Main content on mobile */
-    #mainContent {
-        margin-left: 0 !important;
-        padding-left: 20px !important;
-        padding-right: 10px !important;
-        margin-top: 20px !important;
-    }
-    
-    /* Dark mode sidebar mobile */
-    body.dark-mode #sidebar {
-        background-color: #1a1a1a !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-}
-
 @media (max-width: 480px) {
-    /* Very small phones */
-    #header img {
+    #header-logo {
         width: 40px !important;
         min-width: 40px !important;
         max-width: 40px !important;
         margin-left: 5px !important;
         padding-top: 15px !important;
     }
-    
-    body > h4 {
+
+    body > h1 {
         font-size: 8px !important;
         left: 50px !important;
         padding-top: 48px !important;
     }
-    
-    body > h4 .big-letter {
+
+    body > h1 .big-letter {
         font-size: 18px !important;
     }
-    
-    .header-links a {
-        font-size: 4px !important;
-        padding: 0px 1px !important;
+
+    #sidebar,
+    #tree-wrapper {
+        left: 5px !important;
+        top: 80px !important;
+        min-width: 200px !important;
     }
-    
-    .header-links {
-        gap: 2px !important;
-        padding-left: 5px !important;
-        max-width: 35% !important;
+
+    #tree-wrapper {
+        width: 240px !important;
+        height: 300px !important;
     }
-    
-    /* Show only first 3 links on very small phones */
-    .header-links a:nth-child(n+4) {
-        display: none !important;
+
+    #treeContent {
+        font-size: 7px !important;
+        padding: 4px 8px !important;
+        color: #202122 !important;
+    }
+
+    .dir-table {
+        font-size: 7px !important;
+        color: #202122 !important;
+    }
+
+    .dir-table td {
+        padding: 2px 4px !important;
+        color: #202122 !important;
+    }
+
+    .sidebar-tab,
+    #showTab {
+        left: 0 !important;
+        top: 200px !important;
+        width: 18px !important;
+        height: 40px !important;
+        font-size: 10px !important;
+    }
+
+    #mainContent {
+        margin-left: 0 !important;
+        padding: 10px !important;
     }
 }

@@ -1,0 +1,55 @@
+The Full Code (With Comments)
+javascript
+// ============================================================
+// SIDEBAR TOGGLE
+// ============================================================
+(function() {
+    // 1. Find the elements we need to control
+    const sidebar = document.getElementById('sidebar');        // The sidebar itself
+    const showTab = document.getElementById('showTab');        // The toggle button
+    const mainContent = document.getElementById('mainContent'); // The image area
+
+    // 2. Start with the sidebar visible
+    let visible = true;
+
+    // 3. When someone clicks the toggle button...
+    showTab.addEventListener('click', function() {
+
+        // 4. Flip the state (visible → hidden, or hidden → visible)
+        visible = !visible;
+
+        // 5. If visible is true, show the sidebar; if false, hide it
+        if (visible === true) {
+            sidebar.style.display = 'block';   // Show sidebar
+            showTab.textContent = '◀';          // Button points left
+            mainContent.style.marginLeft = 'auto'; // Main content stays to the right
+        } else {
+            sidebar.style.display = 'none';     // Hide sidebar
+            showTab.textContent = '▶';          // Button points right
+            mainContent.style.marginLeft = '0'; // Main content stretches full width
+        }
+    });
+})();
+What Each Part Does (Plain English)
+Part	What it does
+const sidebar = document.getElementById('sidebar')	Finds the sidebar so we can hide/show it
+const showTab = document.getElementById('showTab')	Finds the toggle button so we can click it
+const mainContent = document.getElementById('mainContent')	Finds the image area so we can expand it
+let visible = true	Remembers that the sidebar is currently visible
+showTab.addEventListener('click', function() { ... })	Listens for clicks on the button
+visible = !visible	Flips true to false or false to true
+sidebar.style.display = 'block'	Makes the sidebar appear
+sidebar.style.display = 'none'	Makes the sidebar disappear
+showTab.textContent = '◀'	Changes button text to ◀ (sidebar is visible)
+showTab.textContent = '▶'	Changes button text to ▶ (sidebar is hidden)
+mainContent.style.marginLeft = 'auto'	Pushes main content to the right (beside sidebar)
+mainContent.style.marginLeft = '0'	Pulls main content all the way left (full width)
+Visual Summary
+State	Sidebar	Button Text	Main Content Margin
+Visible	Shown	◀	auto (beside sidebar)
+Hidden	Hidden	▶	0 (full width)
+Why I Wrapped It in (function() { ... })();
+This is called an IIFE (Immediately Invoked Function Expression).
+It just means: "Run this code right away, but keep all the variables inside it so they don't conflict with other code."
+
+It's not strictly necessary, but it's a good habit to prevent accidental bugs.
