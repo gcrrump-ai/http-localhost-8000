@@ -11,40 +11,46 @@
 <body>
 
     <!-- ============================================================
-         HEADER
+         HEADER – title and logo only
          ============================================================ -->
-    <h1><span class="big-letter">W</span>elcome!</h1>
-    <div id="header">
-        <img id="header-logo" src="/collections/homepage.png" alt="Header image">
+    <div id="header-wrapper">
+        <h1><span class="big-letter">W</span>elcome!</h1>
+        <div id="header">
+            <img id="header-logo" src="/collections/homepage.png" alt="Header image">
+        </div>
     </div>
 
     <!-- ============================================================
-         SIDEBAR – LINK TREE + FLOATING WINDOW + TOOLBAR (grouped)
+         SIDEBAR – with Tree dropdown integrated
          ============================================================ -->
     <div id="sidebar">
         <div id="tree-wrapper">
 
-            <!-- Folder links -->
+            <!-- Tree dropdown panel -->
+            <div class="tree-dropdown" id="treeDropdown">
+                <div class="tree-content" id="treeDropdownContent" tabindex="0"></div>
+            </div>
+
+            <!-- Folder links – "Tree>" row will be added by JavaScript -->
             <div id="treeContent"></div>
 
-            <!-- Floating window (now between folder links and toolbar) -->
+            <!-- Floating window -->
             <div id="floating-window">
-                 <div class="info-icon-permanent">🛈</div>
-                 <div class="file-content"></div>
+                <div class="dev-tooltip-exact">
+                    <div class="file-content"></div>
+                </div>
             </div>
 
             <!-- Toolbar -->
             <div id="tree-toolbar">
-                <a href="#" id="magnifierToggle">
-                    <span>Magnifier</span>
-                    <img src="collections/homepage/magnifier-icon.png" alt="magnifier icon">
-                </a>
-                <a href="#" id="darkModeToggle">
-                    <span id="darkModeLabel">Dark Mode</span>
-                    <img id="darkModeIconLight" src="collections/homepage/dark-icon.png" alt="dark mode icon">
-                    <img id="darkModeIconDark" src="collections/homepage/light-icon.png" alt="light mode icon">
-                </a>
-            </div>
+            <a href="#" id="magnifierToggle" aria-label="Toggle magnifier">
+                <img src="collections/homepage/magnifier-icon.png" alt="magnifier icon">
+            </a>
+            <a href="#" id="darkModeToggle" aria-label="Toggle dark mode">
+                <img id="darkModeIconLight" src="collections/homepage/dark-icon.png" alt="dark mode icon">
+                <img id="darkModeIconDark" src="collections/homepage/light-icon.png" alt="light mode icon">
+            </a>
+        </div>
 
         </div>
     </div>
@@ -66,11 +72,13 @@
          MAIN CONTENT – IMAGE DISPLAY
          ============================================================ -->
     <div id="mainContent">
-        <div id="bookshelfImageArea"></div>
+        <div id="bookshelfImageArea">
+            <!-- Images appear here -->
+        </div>
     </div>
 
     <!-- ============================================================
-         JAVASCRIPT – with all fixes applied
+         JAVASCRIPT – with automatic image loading on arrow navigation
          ============================================================ -->
     <script>
         // ============================================================
@@ -79,37 +87,13 @@
 
         let allImages = [];
         let currentIndex = 0;
+        let isNavigationMode = false;
+        let treeOpen = false;
+        let redTextSeen = sessionStorage.getItem('treeRedSeen') === 'true';
 
         // ============================================================
-        // GET DESCRIPTION FUNCTION
+        // GROUP AND SORT FOLDERS
         // ============================================================
-        function getImageDescription(path) {
-            if (typeof CUSTOM_DESCRIPTIONS !== 'undefined' && CUSTOM_DESCRIPTIONS[path]) {
-                return CUSTOM_DESCRIPTIONS[path];
-            }
-            const filename = path.split('/').pop();
-            const name = filename.replace(/\.[^/.]+$/, '');
-            return name.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        }
-
-        // ============================================================
-        // UPDATE ACTIVE FILE (NO SCROLLING - ONLY 1 FILE SHOWN)
-        // ============================================================
-        function updateActiveFile(activePath) {
-            const floatingWin = document.getElementById('floating-window');
-            if (!floatingWin) return;
-
-            floatingWin.querySelectorAll('.file-link').forEach(link => {
-                link.classList.remove('active');
-            });
-
-            floatingWin.querySelectorAll('.file-link').forEach(link => {
-                if (link.dataset.path === activePath) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
         function groupAndSortByFolder() {
             const groups = {};
             MASTER_IMAGE_REGISTRY.forEach(path => {
@@ -130,6 +114,9 @@
             return groups;
         }
 
+        // ============================================================
+        // MAGNIFIER REFRESH
+        // ============================================================
         function refreshMagnifierIfActive() {
             const lens = document.getElementById('magnifierLens');
             if (lens && !lens.classList.contains('hidden')) {
@@ -139,26 +126,37 @@
             }
         }
 
-        function renderSingleImage(url, name) {
+        // ============================================================
+        // RENDER SINGLE IMAGE – with callback for after load
+        // ============================================================
+        function renderSingleImage(url, name, callback) {
             const area = document.getElementById('bookshelfImageArea');
             if (!area) return;
             area.innerHTML = '';
             const img = document.createElement('img');
             img.src = url;
             img.alt = name;
+            img.onload = function() {
+                if (callback) callback();
+            };
+            if (img.complete) {
+                if (callback) setTimeout(callback, 0);
+            }
             area.appendChild(img);
-            updateActiveFile(url);
             refreshMagnifierIfActive();
         }
 
-        function renderToBookshelf(content, single = false, title = '') {
+        // ============================================================
+        // RENDER TO BOOKSHELF
+        // ============================================================
+        function renderToBookshelf(content, single = false, title = '', callback) {
             const area = document.getElementById('bookshelfImageArea');
             if (!area) return;
             area.innerHTML = '';
             if (single && typeof content === 'string') {
                 const f = content.split('/').pop();
                 const n = f.replace(/\.[^/.]+$/, '');
-                renderSingleImage(content, n);
+                renderSingleImage(content, n, callback);
                 refreshMagnifierIfActive();
                 return;
             }
@@ -166,14 +164,61 @@
                 const first = content[0];
                 const f = first.split('/').pop();
                 const n = f.replace(/\.[^/.]+$/, '');
-                renderSingleImage(first, n);
+                renderSingleImage(first, n, callback);
                 refreshMagnifierIfActive();
                 return;
             }
             area.innerHTML = '<p style="padding:40px;color:#666;">' + (title || 'No images') + '</p>';
             refreshMagnifierIfActive();
+            if (callback) callback();
         }
 
+        // ============================================================
+        // HIGHLIGHT ACTIVE LINK IN TREE DROPDOWN
+        // ============================================================
+        function highlightActiveLink(activePath) {
+            document.querySelectorAll('#treeDropdownContent .link-row a').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (activePath) {
+                document.querySelectorAll('#treeDropdownContent .link-row a').forEach(link => {
+                    if (link.getAttribute('href') === activePath) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // ============================================================
+        // GET ALL TREE LINKS AS A FLAT ARRAY
+        // ============================================================
+        function getAllTreeLinks() {
+            return document.querySelectorAll('#treeDropdownContent .link-row a');
+        }
+
+        // ============================================================
+        // GET CURRENT ACTIVE LINK (or first if none)
+        // ============================================================
+        function getActiveLink() {
+            const active = document.querySelector('#treeDropdownContent .link-row a.active');
+            if (active) return active;
+            const all = getAllTreeLinks();
+            return all.length > 0 ? all[0] : null;
+        }
+
+        // ============================================================
+        // SET ACTIVE LINK AND SCROLL INTO VIEW
+        // ============================================================
+        function setActiveLink(link) {
+            if (!link) return;
+            document.querySelectorAll('#treeDropdownContent .link-row a').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            link.scrollIntoView({ block: 'nearest' });
+        }
+
+        // ============================================================
+        // BUILD SIDEBAR TREE – including "Tree>" row at the top
+        // ============================================================
         function buildTree() {
             const container = document.getElementById('treeContent');
             if (!container) return;
@@ -196,6 +241,16 @@
 
             let html = '<table class="dir-table"><tbody>';
 
+            html += `
+                <tr class="folder-row tree-toggle-row" data-folder="tree">
+                    <td>
+                        <span class="arrow">></span>
+                        <span>Tree</span>
+                        <span class="tree-clickme" id="treeClickMe" style="${redTextSeen ? 'display:none;' : 'display:inline;'}"> (CLICK ME)</span>
+                    </td>
+                </tr>
+            `;
+
             filteredFolders.forEach((folder) => {
                 const imagePaths = grouped[folder];
                 const firstImage = imagePaths[0] || '';
@@ -213,8 +268,20 @@
             html += '</tbody></table>';
             container.innerHTML = html;
 
+            const treeToggleRow = container.querySelector('.tree-toggle-row');
+            if (treeToggleRow) {
+                const arrow = treeToggleRow.querySelector('.arrow');
+                treeToggleRow.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleTreeDropdown(arrow);
+                });
+            }
+
             container.querySelectorAll('.folder-row[data-folder]').forEach(row => {
                 const folder = row.dataset.folder;
+                if (folder === 'tree') return;
+
                 const firstImage = row.dataset.first;
                 const arrow = row.querySelector('.arrow');
 
@@ -228,82 +295,271 @@
                         const grouped = groupAndSortByFolder();
                         allImages = grouped[folder] || [];
                         currentIndex = 0;
-                        renderToBookshelf(firstImage, true);
-                        updateFloatingWindow(folder);
+                        loadImageAndUpdateFloating(firstImage, folder);
                     }
                 });
             });
         }
 
         // ============================================================
-        // FLOATING WINDOW - Show ONE file + description ONLY!
+        // LOAD IMAGE AND UPDATE FLOATING WINDOW (shared function)
         // ============================================================
-        function updateFloatingWindow(folder) {
-            const floatingWin = document.getElementById('floating-window');
-            if (!floatingWin) return;
-
+        function loadImageAndUpdateFloating(imagePath, folder) {
             const grouped = groupAndSortByFolder();
             const imagePaths = grouped[folder] || [];
-
-            if (imagePaths.length === 0) {
-                floatingWin.innerHTML = '';
-                floatingWin.style.display = 'none';
+            const idx = imagePaths.indexOf(imagePath);
+            if (idx === -1) {
+                renderToBookshelf(imagePath, true);
                 return;
             }
 
-            floatingWin.dataset.paths = JSON.stringify(imagePaths);
-            floatingWin.dataset.currentIndex = '0';
-
-            showFileAtIndex(floatingWin, 0);
-            floatingWin.style.display = 'block';
+            const floatingWin = document.getElementById('floating-window');
+            if (floatingWin) {
+                floatingWin.dataset.paths = JSON.stringify(imagePaths);
+                floatingWin.dataset.currentIndex = idx;
+                renderToBookshelf(imagePath, true, '', function() {
+                    showFileAtIndex(floatingWin, idx);
+                    floatingWin.style.display = 'block';
+                    highlightActiveLink(imagePath);
+                });
+            } else {
+                renderToBookshelf(imagePath, true);
+            }
         }
 
         // ============================================================
-        // SHOW FILE - YOUR EXACT STYLE! JUST ONE FILE!
+        // TOGGLE TREE DROPDOWN – now opens but does NOT load any image
+        // ============================================================
+        function toggleTreeDropdown(arrow) {
+            const treeContent = document.getElementById('treeDropdownContent');
+            const treeDropdown = document.getElementById('treeDropdown');
+            if (!treeContent || !treeDropdown) return;
+
+            treeOpen = !treeOpen;
+            if (treeOpen) {
+                treeContent.classList.add('open');
+                const row = document.querySelector('.tree-toggle-row');
+                if (row) {
+                    const rect = row.getBoundingClientRect();
+                    treeDropdown.style.position = 'fixed';
+                    treeDropdown.style.left = (rect.right + 5) + 'px';
+                    treeDropdown.style.top = rect.top + 'px';
+                    treeDropdown.style.width = 'auto';
+                }
+                if (arrow) arrow.classList.add('open');
+                if (!redTextSeen) {
+                    redTextSeen = true;
+                    sessionStorage.setItem('treeRedSeen', 'true');
+                    const redSpan = document.getElementById('treeClickMe');
+                    if (redSpan) redSpan.style.display = 'none';
+                }
+                treeContent.focus();
+                // Highlight the first link but DO NOT load any image
+                const firstLink = getAllTreeLinks()[0];
+                if (firstLink) {
+                    setActiveLink(firstLink);
+                    // No auto-load – the user must click or arrow to load
+                }
+            } else {
+                treeContent.classList.remove('open');
+                if (arrow) arrow.classList.remove('open');
+                treeDropdown.style.left = '';
+                treeDropdown.style.top = '';
+                treeContent.blur();
+            }
+        }
+
+        // ============================================================
+        // FLOATING WINDOW – DEFAULT (empty) STATE
+        // ============================================================
+        function renderDefaultTooltip() {
+            const floatingWin = document.getElementById('floating-window');
+            if (!floatingWin) return;
+            const contentContainer = floatingWin.querySelector('.file-content');
+            if (!contentContainer) return;
+
+            contentContainer.innerHTML = `
+                <div class="row-exact">
+                    <span class="icon-and-tag">
+                        <span class="info-icon-permanent">🛈</span>
+                        <span class="tag-exact">img</span>
+                    </span>
+                    <span class="dim-exact">— × —</span>
+                </div>
+                <div class="divider-wrapper">
+                    <div class="line-exact"></div>
+                </div>
+                <div class="row-exact body-row">
+                    <span class="label-exact">title</span>
+                    <span class="value-exact" style="color:#999;">—</span>
+                </div>
+                <div class="row-exact body-row">
+                    <span class="label-exact">description</span>
+                    <span class="value-exact" style="color:#999;">—</span>
+                </div>
+                <div class="arrow-exact"></div>
+            `;
+            floatingWin.dataset.paths = '';
+            delete floatingWin.dataset.currentIndex;
+            delete floatingWin.dataset.currentPath;
+            floatingWin.style.display = 'block';
+        }
+        // ============================================================
+        // SHOW FILE – updates floating window content
         // ============================================================
         function showFileAtIndex(floatingWin, index) {
             const paths = JSON.parse(floatingWin.dataset.paths);
             const path = paths[index];
-            const fileName = path.split('/').pop();
+            const title = getImageTitle(path);
             const description = getImageDescription(path);
         
-            // Target the .file-content container (not the whole floating window)
+            const imgElement = document.querySelector('#bookshelfImageArea img');
+            let dimensions = '';
+            if (imgElement && imgElement.naturalWidth && imgElement.naturalHeight) {
+                dimensions = imgElement.naturalWidth + ' × ' + imgElement.naturalHeight;
+            } else {
+                dimensions = '— × —';
+                setTimeout(() => {
+                    if (imgElement && imgElement.naturalWidth && imgElement.naturalHeight) {
+                        const dims = imgElement.naturalWidth + ' × ' + imgElement.naturalHeight;
+                        const dimSpan = floatingWin.querySelector('.dim-exact');
+                        if (dimSpan) dimSpan.textContent = dims;
+                    }
+                }, 200);
+            }
+        
             const contentContainer = floatingWin.querySelector('.file-content');
             if (!contentContainer) return;
         
             contentContainer.innerHTML = `
-                <a href="#" class="file-link active" data-path="${path}">
-                    <span class="file-name">${fileName}</span>
-                    <span class="file-description">${description}</span>
-                </a>
+                <div class="row-exact">
+                    <span class="icon-and-tag">
+                        <span class="info-icon-permanent">🛈</span>
+                        <span class="tag-exact">img</span>
+                    </span>
+                    <span class="dim-exact">${dimensions}</span>
+                </div>
+        
+                <div class="divider-wrapper">
+                    <div class="line-exact"></div>
+                </div>
+        
+                <div class="row-exact body-row">
+                    <span class="label-exact">title</span>
+                    <span class="value-exact">${title}</span>
+                </div>
+        
+                <div class="row-exact body-row">
+                    <span class="label-exact">description</span>
+                    <span class="value-exact" style="white-space:normal; word-wrap:break-word; line-height:1.5;">${description}</span>
+                </div>
+        
+                <div class="arrow-exact"></div>
             `;
         
             floatingWin.dataset.currentPath = path;
             floatingWin.dataset.currentIndex = index;
-        
-            const f = path.split('/').pop();
-            const n = f.replace(/\.[^/.]+$/, '');
-            renderSingleImage(path, n);
-            updateActiveFile(path);
         }
-        
+      
         // ============================================================
-        // NAVIGATE FLOATING WINDOW
+        // NAVIGATE FLOATING WINDOW IMAGES (called when tree is closed)
         // ============================================================
         function navigateFloatingWindow(floatingWin, dir) {
             const paths = JSON.parse(floatingWin.dataset.paths);
+            if (!paths || paths.length === 0) return;
             let index = parseInt(floatingWin.dataset.currentIndex) + dir;
             if (index < 0) index = paths.length - 1;
             if (index >= paths.length) index = 0;
-            showFileAtIndex(floatingWin, index);
+            const newPath = paths[index];
+            const parts = newPath.split('/');
+            const folder = parts[1];
+            loadImageAndUpdateFloating(newPath, folder);
         }
 
         // ============================================================
-        // ARROW KEY NAVIGATION
+        // TREE DROPDOWN KEYBOARD NAVIGATION – with automatic image loading
+        // ============================================================
+        function setupTreeKeyboard() {
+            const treeContent = document.getElementById('treeDropdownContent');
+            if (!treeContent) return;
+
+            treeContent.addEventListener('keydown', function(e) {
+                if (!treeContent.classList.contains('open')) return;
+
+                const allLinks = getAllTreeLinks();
+                if (allLinks.length === 0) return;
+
+                let active = getActiveLink();
+                if (!active) {
+                    setActiveLink(allLinks[0]);
+                    active = allLinks[0];
+                    // Do NOT auto-load on first highlight; wait for arrow/enter
+                    e.preventDefault();
+                    return;
+                }
+
+                const activeIndex = Array.from(allLinks).indexOf(active);
+                let newIndex = activeIndex;
+                let handled = true;
+
+                switch (e.key) {
+                    case 'ArrowDown':
+                        newIndex = Math.min(activeIndex + 1, allLinks.length - 1);
+                        break;
+                    case 'ArrowUp':
+                        newIndex = Math.max(activeIndex - 1, 0);
+                        break;
+                    case 'ArrowRight':
+                        newIndex = Math.min(activeIndex + 1, allLinks.length - 1);
+                        break;
+                    case 'ArrowLeft':
+                        newIndex = Math.max(activeIndex - 1, 0);
+                        break;
+                    case 'Enter':
+                        if (active) {
+                            // Trigger click to load image
+                            active.click();
+                        }
+                        e.preventDefault();
+                        return;
+                    default:
+                        handled = false;
+                        break;
+                }
+
+                if (handled) {
+                    e.preventDefault();
+                    if (newIndex !== activeIndex && newIndex >= 0 && newIndex < allLinks.length) {
+                        const newLink = allLinks[newIndex];
+                        setActiveLink(newLink);
+                        // Load the image for the new link when arrow key is pressed
+                        const href = newLink.getAttribute('href');
+                        const parts = href.split('/');
+                        const folder = parts[1];
+                        loadImageAndUpdateFloating(href, folder);
+                    }
+                }
+            });
+
+            treeContent.addEventListener('click', function(e) {
+                treeContent.focus();
+            });
+        }
+
+        // ============================================================
+        // GLOBAL ARROW KEY LISTENER – only for image navigation when tree is closed
         // ============================================================
         document.addEventListener('keydown', function(e) {
+            const treeContent = document.getElementById('treeDropdownContent');
+            if (treeContent && treeContent.classList.contains('open')) {
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Enter') {
+                    return;
+                }
+            }
+
             const floatingWin = document.getElementById('floating-window');
             if (!floatingWin || floatingWin.style.display === 'none') return;
+            if (!floatingWin.dataset.paths) return;
 
             if (e.key === 'ArrowLeft') {
                 e.preventDefault();
@@ -344,7 +600,7 @@
         });
 
         // ============================================================
-        // MAGNIFIER
+        // MAGNIFIER (unchanged)
         // ============================================================
         (function() {
             const toggle = document.getElementById('magnifierToggle');
@@ -457,20 +713,16 @@
         })();
 
         // ============================================================
-        // DARK MODE
+        // DARK MODE (unchanged)
         // ============================================================
         (function() {
             const toggle = document.getElementById('darkModeToggle');
             const body = document.body;
-            const label = document.getElementById('darkModeLabel');
 
-            function applyDark(isDark) {
-                body.classList.toggle('dark-mode', isDark);
-                if (label) {
-                    label.textContent = isDark ? 'Light Mode' : 'Dark Mode';
-                }
-                localStorage.setItem('darkMode', isDark);
-            }
+        function applyDark(isDark) {
+            body.classList.toggle('dark-mode', isDark);
+            localStorage.setItem('darkMode', isDark);
+        }
 
             if (localStorage.getItem('darkMode') === 'true') {
                 applyDark(true);
@@ -484,10 +736,118 @@
         })();
 
         // ============================================================
+        // TREE DROPDOWN – BUILDER
+        // ============================================================
+        function buildTreeDropdown() {
+            const treeContent = document.getElementById('treeDropdownContent');
+            if (!treeContent) return;
+
+            function buildTreeData() {
+                return MASTER_IMAGE_REGISTRY.map(path => {
+                    const fileName = path.split('/').pop();
+                    return { href: path, text: fileName };
+                });
+            }
+
+            const linkData = buildTreeData();
+            const rowPattern = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 11, 10, 9, 5, 5, 5, 5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 11, 10, 9, 8, 7, 6, 5];
+            let index = 0;
+            let rowIndex = 0;
+
+            treeContent.innerHTML = '';
+
+            rowPattern.forEach(rowCount => {
+                const row = document.createElement('div');
+                row.className = 'link-row';
+                row.classList.add('row-' + rowIndex);
+                for (let i = 0; i < rowCount && index < linkData.length; i++) {
+                    const data = linkData[index];
+                    const a = document.createElement('a');
+                    a.href = data.href;
+                    a.textContent = data.text;
+
+                    a.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const href = this.getAttribute('href');
+                        const parts = href.split('/');
+                        const folder = parts[1];
+                        loadImageAndUpdateFloating(href, folder);
+                        treeContent.focus();
+                    });
+
+                    row.appendChild(a);
+                    index++;
+                }
+                treeContent.appendChild(row);
+                rowIndex++;
+            });
+
+            setupTreeKeyboard();
+        }
+
+        // ============================================================
         // LOAD DEFAULT
         // ============================================================
         window.addEventListener('load', function() {
             buildTree();
+            buildTreeDropdown();
+
+            const treeRow = document.querySelector('.tree-toggle-row');
+            if (treeRow) {
+                const arrow = treeRow.querySelector('.arrow');
+                toggleTreeDropdown(arrow);
+            }
+
+            if (redTextSeen) {
+                const redSpan = document.getElementById('treeClickMe');
+                if (redSpan) redSpan.style.display = 'none';
+            }
+
+            renderDefaultTooltip();
+
+            function goHome() {
+                const imageArea = document.getElementById('bookshelfImageArea');
+                if (imageArea) {
+                    imageArea.innerHTML = '';
+                }
+
+                const floatingWin = document.getElementById('floating-window');
+                if (floatingWin) {
+                    renderDefaultTooltip();
+                    delete floatingWin.dataset.paths;
+                    delete floatingWin.dataset.currentIndex;
+                    delete floatingWin.dataset.currentPath;
+                }
+
+                isNavigationMode = false;
+                currentImages = [];
+                currentIndex = 0;
+
+                document.querySelectorAll('#treeContent .folder-row').forEach(el => el.classList.remove('active'));
+
+                if (floatingWin) floatingWin.style.display = 'block';
+                console.log('🏠 Returned home');
+            }
+
+            const headerLogo = document.getElementById('header-logo');
+            if (headerLogo) {
+                headerLogo.style.cursor = 'pointer';
+                headerLogo.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    goHome();
+                });
+            }
+
+            const welcomeText = document.querySelector('h1') || document.querySelector('h4');
+            if (welcomeText) {
+                welcomeText.style.cursor = 'pointer';
+                welcomeText.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    goHome();
+                });
+            }
         });
 
     </script>

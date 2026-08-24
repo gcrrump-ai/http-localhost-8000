@@ -27,3 +27,9 @@ http://localhost:8000
 
 
 
+
+git add -A
+
+git commit -m "Complete fresh push: all local files overwriting remote"
+
+git push origin main --force
