@@ -1,6 +1,6 @@
 /* ============================================================
    FILE: style.css
-   PURPOSE: George Rump website
+   PURPOSE: George Rump website – main stylesheet
    ============================================================ */
 
 /* ============================================================
@@ -31,7 +31,7 @@ img {
 }
 
 /* ============================================================
-   2. HEADER (title + logo)
+   2. HEADER
    ============================================================ */
 #header-wrapper {
     display: flex;
@@ -91,69 +91,47 @@ body > h1 .big-letter {
 }
 
 /* ============================================================
-   3. SIDEBAR + ALL ITS COMPONENTS (everything in one place)
+   3. CONTENT WRAPPER – flex container for sidebar + image
    ============================================================ */
+#content-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    min-height: 0;
+}
 
-/* 3a. Sidebar Container – fills the page from 100px to bottom */
+/* ============================================================
+   4. SIDEBAR (desktop – fixed, left)
+   ============================================================ */
 #sidebar {
     position: fixed !important;
     left: 20px !important;
-    top: 100px !important;
-    bottom: 0 !important;
+    top: 200px !important;
     display: flex;
     flex-direction: column;
     z-index: 9999 !important;
     padding: 0 !important;
     min-width: 220px !important;
     width: auto !important;
-    overflow-y: auto;
     background: transparent;
+    max-height: 100vh;
+    overflow-y: auto;
 }
 
 #sidebar.hidden-sidebar {
     display: none !important;
 }
 
-/* 3b. Sidebar Toggle Button (◀ / ▶) */
-.sidebar-tab,
-#showTab {
-    position: fixed;
-    left: 0;
-    top: 200px;
-    width: 16px;
-    height: 50px;
-    background-color: #f8f9fa;
-    border: 1px solid #a2a9b1;
-    border-left: none;
-    border-radius: 0 4px 4px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 10px;
-    color: #202122;
-    padding: 0;
-    margin: 0;
-    line-height: 1;
-    z-index: 99999 !important;
-    pointer-events: auto !important;
-}
-
-.sidebar-tab:hover,
-#showTab:hover {
-    background-color: #eaecf0;
-}
-
-/* 3c. Tree Content – grows to fill space, scrolls if too big */
+/* ============================================================
+   5. TREE CONTENT (inside sidebar)
+   ============================================================ */
 .tree-content {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(4px);
     border-radius: 2px;
     padding: 4px 6px;
     width: 230px !important;
-    flex: 0 1 auto;
-    min-height: 100px;
-    max-height: none;
+    max-height: 600px;
     overflow-y: auto;
     white-space: normal;
     word-wrap: break-word;
@@ -177,7 +155,6 @@ body > h1 .big-letter {
     background: #a2a9b1;
 }
 
-/* 3d. Tree Headers & Links (the actual Tree) */
 .group-header {
     display: inline;
     font-weight: 700;
@@ -236,148 +213,47 @@ body > h1 .big-letter {
     font-weight: 700 !important;
 }
 
-/* 3e. Floating Window – keeps its natural size */
-#floating-window {
-    position: relative;
+/* ============================================================
+   6. SIDEBAR TOGGLE TAB
+   ============================================================ */
+.sidebar-tab,
+#showTab {
+    position: fixed;
     left: 0;
-    top: 0;
-    z-index: 999999;
-    display: block;
-    pointer-events: none;
-    width: 100%;
-    flex-shrink: 0;
-    margin-top: 8px;
-    padding: 4px 7px 10px 7px;
-}
-
-.dev-tooltip-exact {
-    position: relative;
-    width: 210px;
-    min-height: auto;
-    background: #ffffff;
-    padding: 10px 10px 15px 8px;
-    border-radius: 2px;
-    box-sizing: border-box;
-    font-family: "Segoe UI", -apple-system, sans-serif;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-    pointer-events: auto;
-}
-
-#floating-window .file-content {
-    display: block;
-    width: 100%;
-}
-
-.icon-and-tag {
+    top: 200px;
+    width: 16px;
+    height: 50px;
+    background-color: #f8f9fa;
+    border: 1px solid #a2a9b1;
+    border-left: none;
+    border-radius: 0 4px 4px 0;
     display: flex;
     align-items: center;
-    gap: 4px;
-}
-
-#floating-window .info-icon-permanent {
-    font-size: 14px;
-    color: #5f6368;
-    font-weight: 400;
-    opacity: 0.8;
-    line-height: 1;
-    display: inline-block;
-    margin: 0;
-}
-
-.tag-exact {
-    color: #9c1180;
-    font-weight: 700;
-    font-size: 12px;
-    letter-spacing: -0.5px;
-    line-height: 1;
-}
-
-.dim-exact {
-    color: #202124;
-    font-size: 12px;
-    font-weight: 400;
-}
-
-.row-exact {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    width: 100%;
-}
-
-.row-exact.body-row {
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 2px 0;
-    margin-top: 5px;
-}
-
-.row-exact.body-row .value-exact {
-    flex: 1 1 100%;
-    white-space: normal;
-    word-wrap: break-word;
-    line-height: 1.5;
-}
-
-.row-exact:not(.body-row) .value-exact {
-    flex: 1 1 auto;
-    text-align: right;
-}
-
-.value-exact {
-    color: #202124;
-    font-size: 12px;
-    font-weight: 400;
-}
-
-.line-exact {
-    width: 58%;
-    border-top: 1px solid #dadce0;
-    margin: 5px 0 16px auto;
-    display: block;
-}
-
-
-/* --- Toolbar --- */
-#tree-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 4px 7px 15px 7px;
-    font-size: 10px;
-    color: #000000;
-    width: 100%;
-    box-sizing: border-box;
-    flex-shrink: 0;
-    margin-top: auto;
-}
-
-#tree-toolbar a {
-    color: #000000;
-    text-decoration: none;
+    justify-content: center;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    font-size: 10px;
+    color: #202122;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    z-index: 99999 !important;
+    pointer-events: auto !important;
 }
 
-#tree-toolbar a:hover {
-    text-decoration: underline;
-    color: #000000;
+.sidebar-tab:hover,
+#showTab:hover {
+    background-color: #eaecf0;
 }
 
-#tree-toolbar img {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-}
-
-/* 3f. Toolbar – sticks to the bottom */
+/* ============================================================
+   7. TOOLBAR
+   ============================================================ */
 #tree-toolbar {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 4px 7px 15px 7px; 
+    padding: 4px 7px;
+    background: rgba(164, 230, 255, 0.1);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 10px;
     font-weight: 400;
@@ -394,7 +270,7 @@ body > h1 .big-letter {
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
 }
 
 #tree-toolbar a:hover {
@@ -409,7 +285,7 @@ body > h1 .big-letter {
 }
 
 /* ============================================================
-   4. MAIN CONTENT (the bookshelf – shows images)
+   8. MAIN CONTENT & IMAGE DISPLAY
    ============================================================ */
 #mainContent {
     margin-left: auto;
@@ -443,7 +319,111 @@ body > h1 .big-letter {
 }
 
 /* ============================================================
-   5. MAGNIFIER LENS (zoom tool)
+   9. FLOATING WINDOW – desktop (positioned relative to sidebar)
+   ============================================================ */
+#floating-window {
+    position: relative;
+    left: 0;
+    top: 0;
+    z-index: 999999;
+    display: block;
+    pointer-events: none;
+    width: 100%;
+    margin-top: 8px;
+    flex-shrink: 0;
+}
+
+.dev-tooltip-exact {
+    position: relative;
+    width: 210px;
+    min-height: 140px;
+    background: #ffffff;
+    padding: 10px 10px 10px 8px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    pointer-events: auto;
+}
+
+#floating-window .file-content {
+    display: block;
+    width: 100%;
+}
+.icon-and-tag {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+#floating-window .info-icon-permanent {
+    font-size: 14px;
+    color: #5f6368;
+    font-weight: 400;
+    opacity: 0.8;
+    line-height: 1;
+    display: inline-block;
+    margin: 0;
+}
+.tag-exact {
+    color: #9c1180;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: -0.5px;
+    line-height: 1;
+}
+.dim-exact {
+    color: #202124;
+    font-size: 12px;
+    font-weight: 400;
+}
+.row-exact {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
+.row-exact.body-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 2px 0;
+    margin-top: 5px;
+}
+.row-exact.body-row .value-exact {
+    flex: 1 1 100%;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+.row-exact:not(.body-row) .value-exact {
+    flex: 1 1 auto;
+    text-align: right;
+}
+.value-exact {
+    color: #202124;
+    font-size: 12px;
+    font-weight: 400;
+}
+.line-exact {
+    width: 58%;
+    border-top: 1px solid #dadce0;
+    margin: 5px 0 16px auto;
+    display: block;
+}
+.arrow-exact {
+    position: absolute;
+    top: 70%;
+    right: -9px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-left: 9px solid #ffffff;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
+}
+
+/* ============================================================
+   10. MAGNIFIER LENS
    ============================================================ */
 #magnifierLens {
     position: fixed;
@@ -455,253 +435,331 @@ body > h1 .big-letter {
     overflow: hidden;
     display: none;
 }
-
-body.magnifier-mode #magnifierLens {
-    display: block;
-}
-
-#magnifierLens canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-body.magnifier-mode {
-    cursor: default;
-}
-
-#magnifierCorner {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 20px;
-    height: 20px;
-    pointer-events: none;
-    z-index: 10;
-}
+body.magnifier-mode #magnifierLens { display: block; }
+#magnifierLens canvas { position: absolute; top: 0; left: 0; }
+body.magnifier-mode { cursor: default; }
+#magnifierCorner { position: absolute; top: 0; right: 0; width: 20px; height: 20px; pointer-events: none; z-index: 10; }
 
 /* ============================================================
-   6. DARK MODE ICONS
+   11. DARK MODE TOGGLE ICONS
    ============================================================ */
-#darkModeIconLight {
-    width: 14px;
-    height: 14px;
-}
-
-#darkModeIconDark {
-    width: 14px;
-    height: 14px;
-}
+#darkModeIconLight { width: 14px; height: 14px; }
+#darkModeIconDark { width: 14px; height: 14px; }
 
 /* ============================================================
-   7. UTILITY
+   12. UTILITY
    ============================================================ */
-.hidden {
-    display: none !important;
-}
+.hidden { display: none !important; }
 
 /* ============================================================
-   8. DARK MODE (all dark mode overrides grouped by component)
+   13. DARK MODE
    ============================================================ */
+body.dark-mode { background-color: #000000 !important; color: #ffffff !important; }
+body.dark-mode h1 { color: #ffffff; }
+body.dark-mode h1 .big-letter { background: linear-gradient(180deg, #66FF66, #00A307); -webkit-background-clip: text; background-clip: text; color: transparent; }
+body.dark-mode .sidebar-tab, body.dark-mode #showTab { color: #e0e0e0; background-color: #000000; border-color: #444; }
+body.dark-mode .sidebar-tab:hover, body.dark-mode #showTab:hover { background-color: #3a3a3a; }
+body.dark-mode #tree-toolbar a { color: #ffffff !important; }
+body.dark-mode #tree-toolbar a:hover { color: #88ccff !important; }
+body.dark-mode #mainContent, body.dark-mode #bookshelfImageArea { color: #ffffff !important; background-color: #000000 !important; }
+body.dark-mode .tree-content { background: rgba(0, 0, 0, 0.75) !important; }
+body.dark-mode .tree-content::-webkit-scrollbar-thumb { background: #444; }
+body.dark-mode .tree-content::-webkit-scrollbar-thumb:hover { background: #555; }
+body.dark-mode .group-header { color: #ffffff; }
+body.dark-mode .group-header .arrow { color: #66FF66; }
+body.dark-mode .group-header .arrow.open { color: #AB4EAD; }
+body.dark-mode .group-links a { color: #99ccff; }
+body.dark-mode .group-links a:hover { color: #ffffff; background: rgba(153, 204, 255, 0.15); }
+body.dark-mode .dev-tooltip-exact { background: #1e1e2e; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+body.dark-mode .tag-exact { color: #c586c0; }
+body.dark-mode .dim-exact { color: #e0e0e0; }
+body.dark-mode .line-exact { border-top-color: #3a3a52; }
+body.dark-mode .value-exact { color: #e0e0e0; }
+body.dark-mode .arrow-exact { border-left-color: #1e1e2e; }
+body.dark-mode #floating-window .info-icon-permanent { color: #9a9ab0; }
+body.dark-mode #header-logo { filter: invert(1.5) !important; }
+body.dark-mode #sidebar, body.dark-mode #tree-toolbar { background-color: #000000 !important; border-color: #444 !important; }
+body.dark-mode #magnifierLens { background-color: #000000; border: 2px solid #99ccff; }
+body.dark-mode #magnifierToggle img { filter: invert(1) brightness(2); }
+body.dark-mode #floating-window::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+body.dark-mode #floating-window::-webkit-scrollbar-thumb { background: #444; }
+body.dark-mode #floating-window::-webkit-scrollbar-thumb:hover { background: #555; }
+body.dark-mode #darkModeIconLight { display: none !important; }
+body.dark-mode #darkModeIconDark { display: inline-block !important; }
 
-/* 8a. Dark Mode – Global */
-body.dark-mode {
-    background-color: #000000 !important;
-    color: #ffffff !important;
-}
-
-body.dark-mode h1 {
-    color: #ffffff;
-}
-body.dark-mode h1 .big-letter {
-    background: linear-gradient(180deg, #66FF66, #00A307);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-body.dark-mode #header-logo {
-    filter: invert(1.5) !important;
-}
-
-/* 8b. Dark Mode – Sidebar & Toggle */
-body.dark-mode #sidebar,
-body.dark-mode #tree-toolbar {
-    background-color: #000000 !important;
-    border-color: #444 !important;
-}
-
-body.dark-mode .sidebar-tab,
-body.dark-mode #showTab {
-    color: #e0e0e0;
-    background-color: #000000;
-    border-color: #444;
-}
-body.dark-mode .sidebar-tab:hover,
-body.dark-mode #showTab:hover {
-    background-color: #3a3a3a;
-}
-
-/* 8c. Dark Mode – Tree */
-body.dark-mode .tree-content {
-    background: rgba(0, 0, 0, 0.75) !important;
-}
-body.dark-mode .tree-content::-webkit-scrollbar-thumb {
-    background: #444;
-}
-body.dark-mode .tree-content::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-body.dark-mode .group-header {
-    color: #ffffff;
-}
-body.dark-mode .group-header .arrow {
-    color: #66FF66;
-}
-body.dark-mode .group-header .arrow.open {
-    color: #AB4EAD;
-}
-body.dark-mode .group-links a {
-    color: #99ccff;
-}
-body.dark-mode .group-links a:hover {
-    color: #ffffff;
-    background: rgba(153, 204, 255, 0.15);
-}
-
-/* 8d. Dark Mode – Floating Window */
-body.dark-mode .dev-tooltip-exact {
-    background: #1e1e2e;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-}
-body.dark-mode .tag-exact {
-    color: #c586c0;
-}
-body.dark-mode .dim-exact {
-    color: #e0e0e0;
-}
-body.dark-mode .line-exact {
-    border-top-color: #3a3a52;
-}
-body.dark-mode .value-exact {
-    color: #e0e0e0;
-}
-body.dark-mode .arrow-exact {
-    border-left-color: #1e1e2e;
-}
-body.dark-mode #floating-window .info-icon-permanent {
-    color: #9a9ab0;
-}
-
-/* 8e. Dark Mode – Toolbar */
-body.dark-mode #tree-toolbar a {
-    color: #ffffff !important;
-}
-body.dark-mode #tree-toolbar a:hover {
-    color: #88ccff !important;
-}
-
-/* 8f. Dark Mode – Main Content & Magnifier */
-body.dark-mode #mainContent,
-body.dark-mode #bookshelfImageArea {
-    color: #ffffff !important;
-    background-color: #000000 !important;
-}
-
-body.dark-mode #magnifierLens {
-    background-color: #000000;
-    border: 2px solid #99ccff;
-}
-body.dark-mode #magnifierToggle img {
-    filter: invert(1) brightness(2);
-}
-
-/* 8g. Dark Mode – Icons */
-body.dark-mode #darkModeIconLight {
-    display: none !important;
-}
-body.dark-mode #darkModeIconDark {
-    display: inline-block !important;
-}
-
-/* ============================================================
-   9. RESPONSIVE DESIGN (mobile)
-   ============================================================ */
 @media (max-width: 480px) {
+    /* --- BODY --- */
+    body {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        font-size: clamp(7px, 2vw, 9px);
+    }
+
+    /* --- HEADER --- */
     #header-wrapper {
-        flex-wrap: wrap;
-        padding: 5px 10px;
+        flex: 0 0 auto !important;
+        padding: 4px 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        background: transparent !important;
+        z-index: 10 !important;
+        width: 100% !important;
     }
     body > h1 {
-        font-size: 8px !important;
+        font-size: clamp(7px, 2.5vw, 10px) !important;
         padding-left: 0;
         margin-right: auto;
     }
     body > h1 .big-letter {
-        font-size: 18px !important;
+        font-size: clamp(16px, 5vw, 22px) !important;
     }
     #header-logo {
-        width: 40px !important;
-        min-width: 40px !important;
-        max-width: 40px !important;
+        width: clamp(35px, 10vw, 45px) !important;
+        min-width: 35px !important;
+        max-width: 45px !important;
         margin-left: 5px !important;
-        padding-top: 15px !important;
+        padding-top: clamp(8px, 2vw, 15px) !important;
     }
     #header {
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 6px;
     }
 
-    #sidebar {
-        left: 5px !important;
-        top: 80px !important;
-        bottom: 0 !important;
-        min-width: 200px !important;
-        width: 240px !important;
-        max-height: none !important;
+    /* --- CONTENT WRAPPER --- */
+    #content-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
     }
 
-    .tree-content {
-        width: 100% !important;
-        max-height: none !important;
-    }
+#sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 56px !important;
+    bottom: 0 !important;                     /* ← still fills the full height */
+    width: clamp(100px, 25vw, 160px) !important;
+    min-width: 80px !important;
+    max-width: 180px !important;
+    z-index: 9998 !important;
+    pointer-events: auto !important;
+    background: transparent;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;   /* ← pack to top */
+    align-items: stretch !important;
+    overflow: visible !important;
+    border: none !important;
+}
 
-    .sidebar-tab,
-    #showTab {
-        left: 0 !important;
-        top: 200px !important;
-        width: 18px !important;
-        height: 40px !important;
-        font-size: 10px !important;
-    }
+#sidebar .tree-content {
+    width: 100% !important;
+    flex: 0 0 auto !important;               /* ← never grows */
+    max-height: none !important;
+    overflow-y: auto !important;
+    padding: 4px 0 !important;
+    margin-bottom: 15px !important;           /* ← exactly 15px gap */
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(4px) !important;
+    border-radius: 0 !important;
+    border: none !important;
+    outline: none !important;
+}
 
-    #mainContent {
-        margin-left: 0 !important;
-        padding: 10px !important;
-        margin-top: 0 !important;
-    }
+#tree-toolbar {
+    display: flex !important;
+    flex: 0 0 auto !important;               /* ← never grows or shrinks */
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 16px !important;
+    padding: 4px 0 !important;
+    margin-top: 0 !important;                 /* ← remove any margin */
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(4px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border-top: 1px solid rgba(0,0,0,0.05) !important;
+}
 
-    #floating-window {
-        left: 0 !important;
-        top: 0 !important;
-        position: relative !important;
-        width: 100% !important;
-    }
-
-    .dev-tooltip-exact {
-        width: 180px;
-        min-height: 120px;
-        padding: 8px;
-    }
-
+    /* --- TREE TEXT SIZES --- */
     .group-header {
-        font-size: 7px !important;
+        font-size: clamp(6px, 1.8vw, 8px) !important;
     }
     .group-header .arrow {
-        font-size: 10px !important;
+        font-size: clamp(8px, 2.2vw, 7px) !important;
     }
     .group-links a {
-        font-size: 6px !important;
+        font-size: clamp(5px, 1.6vw, 7px) !important;
+    }
+
+    /* --- MAIN IMAGE – capped at 60vh for portraits --- */
+    #mainContent {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: clamp(100px, 25vw, 160px) !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+        background: transparent !important;
+        height: 100% !important;
+        max-height: 60vh !important;
+        position: relative !important;
+    }
+    #bookshelfImageArea {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 60vh !important;
+        min-height: auto !important;
+        pointer-events: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: transparent !important;
+    }
+    #bookshelfImageArea img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+        pointer-events: none !important;
+    }
+
+    /* --- FLOATING WINDOW – fixed, right of tree, adapts to text --- */
+    #floating-window {
+        position: fixed !important;
+        left: clamp(110px, 27vw, 170px) !important;
+        top: clamp(80px, 12vh, 100px) !important;
+        width: clamp(150px, 32vw, 190px) !important;
+        max-width: 210px !important;
+        z-index: 999999 !important;
+        pointer-events: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .dev-tooltip-exact {
+        width: 100% !important;
+        min-height: auto !important;
+        padding: 8px !important;
+        border-radius: 4px !important;
+        background: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.12) !important;
+        box-sizing: border-box !important;
+    }
+    #floating-window .info-icon-permanent {
+        font-size: clamp(12px, 3vw, 16px) !important;
+    }
+    .tag-exact {
+        font-size: clamp(10px, 2.5vw, 13px) !important;
+    }
+    .dim-exact {
+        font-size: clamp(10px, 2.5vw, 13px) !important;
+    }
+    .value-exact {
+        font-size: clamp(10px, 2.5vw, 13px) !important;
+    }
+    .row-exact.body-row .value-exact {
+        font-size: clamp(10px, 2.5vw, 13px) !important;
+    }
+    .line-exact {
+        margin: 4px 0 8px auto !important;
+    }
+    .arrow-exact {
+        display: none !important;
+    }
+
+    /* --- TOOLBAR – visible at bottom of sidebar --- */
+    #tree-toolbar {
+        display: flex !important;             /* ← SHOW the toolbar */
+        flex: 0 0 auto !important;           /* ← don't grow/shrink, keep at bottom */
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 16px !important;
+        padding: 4px 0px 0px 0px !important;
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(4px) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        border-top: 1px solid rgba(0,0,0,0.05) !important;
+    }
+    #tree-toolbar a {
+        color: #000000 !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+    }
+    #tree-toolbar img {
+        width: 18px !important;
+        height: 18px !important;
+        vertical-align: middle !important;
+    }
+
+    /* --- SIDEBAR TOGGLE --- */
+    .sidebar-tab,
+    #showTab {
+        position: fixed !important;
+        left: 0 !important;
+        top: clamp(180px, 40vh, 220px) !important;
+        width: clamp(16px, 4vw, 22px) !important;
+        height: clamp(36px, 8vh, 46px) !important;
+        font-size: clamp(10px, 2.5vw, 14px) !important;
+        z-index: 9999999 !important;
+        pointer-events: auto !important;
+        background-color: #f8f9fa !important;
+        border: 1px solid #a2a9b1 !important;
+        border-left: none !important;
+        border-radius: 0 4px 4px 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        color: #202122 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 1 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+    .sidebar-tab:hover,
+    #showTab:hover {
+        background-color: #eaecf0 !important;
+    }
+
+    /* --- DARK MODE --- */
+    body.dark-mode #sidebar .tree-content,
+    body.dark-mode #tree-toolbar {
+        background: rgba(0, 0, 0, 0.85) !important;
+    }
+    body.dark-mode .sidebar-tab,
+    body.dark-mode #showTab {
+        background-color: #000000 !important;
+        border-color: #444 !important;
+        color: #e0e0e0 !important;
+    }
+    body.dark-mode .sidebar-tab:hover,
+    body.dark-mode #showTab:hover {
+        background-color: #3a3a3a !important;
+    }
+    body.dark-mode #mainContent,
+    body.dark-mode #bookshelfImageArea {
+        background: transparent !important;
+    }
+    body.dark-mode #tree-toolbar a {
+        color: #ffffff !important;
+    }
+    body.dark-mode #tree-toolbar a:hover {
+        color: #88ccff !important;
     }
 }

@@ -11,7 +11,7 @@
 <body>
 
     <!-- ============================================================
-         HEADER
+         HEADER – stays at the top on all screen sizes
          ============================================================ -->
     <div id="header-wrapper">
         <h1><span class="big-letter">W</span>elcome!</h1>
@@ -21,30 +21,35 @@
     </div>
 
     <!-- ============================================================
-         SIDEBAR (no more wrappers – clean and flat)
+         CONTENT WRAPPER – holds sidebar + main image side‑by‑side
          ============================================================ -->
-    <div id="sidebar">
-        <!-- Tree content – moved directly into sidebar -->
-        <div class="tree-content" id="treeDropdownContent" tabindex="0"></div>
+    <div id="content-wrapper">
 
-        <!-- Floating window -->
-        <div id="floating-window">
-            <div class="dev-tooltip-exact">
-                <div class="file-content"></div>
+        <!-- SIDEBAR -->
+        <div id="sidebar">
+            <div class="tree-content" id="treeDropdownContent" tabindex="0"></div>
+            <div id="floating-window">
+                <div class="dev-tooltip-exact">
+                    <div class="file-content"></div>
+                </div>
+            </div>
+            <div id="tree-toolbar">
+                <a href="#" id="magnifierToggle" aria-label="Toggle magnifier">
+                    <img src="collections/homepage/magnifier-icon.png" alt="magnifier icon">
+                </a>
+                <a href="#" id="darkModeToggle" aria-label="Toggle dark mode">
+                    <img id="darkModeIconLight" src="collections/homepage/dark-icon.png" alt="dark mode icon">
+                    <img id="darkModeIconDark" src="collections/homepage/light-icon.png" alt="light mode icon">
+                </a>
             </div>
         </div>
 
-        <!-- Toolbar -->
-        <div id="tree-toolbar">
-            <a href="#" id="magnifierToggle" aria-label="Toggle magnifier">
-                <img src="collections/homepage/magnifier-icon.png" alt="magnifier icon">
-            </a>
-            <a href="#" id="darkModeToggle" aria-label="Toggle dark mode">
-                <img id="darkModeIconLight" src="collections/homepage/dark-icon.png" alt="dark mode icon">
-                <img id="darkModeIconDark" src="collections/homepage/light-icon.png" alt="light mode icon">
-            </a>
+        <!-- MAIN IMAGE AREA -->
+        <div id="mainContent">
+            <div id="bookshelfImageArea"></div>
         </div>
-    </div>
+
+    </div><!-- /content-wrapper -->
 
     <!-- Sidebar toggle -->
     <div class="sidebar-tab" id="showTab" title="Toggle sidebar">◀</div>
@@ -55,13 +60,8 @@
         <img id="magnifierCorner" src="collections/homepage/green-corner-icon.png" alt="corner">
     </div>
 
-    <!-- Main content -->
-    <div id="mainContent">
-        <div id="bookshelfImageArea"></div>
-    </div>
-
     <!-- ============================================================
-         JAVASCRIPT
+         JAVASCRIPT (full copy from your original)
          ============================================================ -->
     <script>
         // ============================================================
