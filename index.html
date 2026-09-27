@@ -11,7 +11,7 @@
 <body>
 
     <!-- ============================================================
-         HEADER – stays at the top on all screen sizes
+         HEADER
          ============================================================ -->
     <div id="header-wrapper">
         <h1><span class="big-letter">W</span>elcome!</h1>
@@ -21,7 +21,7 @@
     </div>
 
     <!-- ============================================================
-         CONTENT WRAPPER – holds sidebar + main image side‑by‑side
+         CONTENT WRAPPER – sidebar + image side‑by‑side
          ============================================================ -->
     <div id="content-wrapper">
 
@@ -44,24 +44,30 @@
             </div>
         </div>
 
-        <!-- MAIN IMAGE AREA -->
+        <!-- MAIN IMAGE -->
         <div id="mainContent">
-            <div id="bookshelfImageArea"></div>
+            <div id="bookshelfImageArea">
+                <div id="intro-text">
+                    <div>This is a working and ongoing copy of Photographs by George Rump</div>
+                    <div>Select an image or folder and Swipe or Press Arrow keys (←, →) to navigate through entire collection.</div>
+                    <div>All Rights Reserved Copyright © Photographs by George Rump</div>
+                </div>
+            </div>
         </div>
 
     </div><!-- /content-wrapper -->
 
-    <!-- Sidebar toggle -->
+    <!-- SIDEBAR TOGGLE -->
     <div class="sidebar-tab" id="showTab" title="Toggle sidebar">◀</div>
 
-    <!-- Magnifier lens -->
+    <!-- MAGNIFIER LENS -->
     <div id="magnifierLens" aria-hidden="true">
         <canvas></canvas>
         <img id="magnifierCorner" src="collections/homepage/green-corner-icon.png" alt="corner">
     </div>
 
     <!-- ============================================================
-         JAVASCRIPT (full copy from your original)
+         JAVASCRIPT (complete – independent folder toggles and navigation)
          ============================================================ -->
     <script>
         // ============================================================
@@ -144,12 +150,38 @@
                     floatingWin.style.display = 'block';
                     highlightActiveLink(imagePath);
                     refreshMagnifierIfActive();
+                    preloadNearbyImages();
+                    positionFloatingWindow();
                 });
             } else {
                 renderToBookshelf(imagePath, true);
             }
         }
 
+        // ============================================================
+        // UPDATE TREE – expand only the folder containing the given path
+        // ============================================================
+        function updateTreeForImage(path) {
+            const folder = path.split('/')[1];        
+
+            const headers = document.querySelectorAll('.group-header');        
+
+            headers.forEach(header => {
+                if (header.dataset.folder !== folder) return;        
+
+                const linksContainer = header.nextElementSibling;
+                const arrow = header.querySelector('.arrow');        
+
+                if (linksContainer && linksContainer.classList.contains('group-links')) {
+                    linksContainer.classList.add('open');
+                    linksContainer.style.display = 'inline';        
+
+                    if (arrow) {
+                        arrow.textContent = 'v';
+                    }
+                }
+            });
+        }
         // ============================================================
         // MAGNIFIER REFRESH
         // ============================================================
@@ -160,6 +192,31 @@
                     window._magnifier.captureScreen();
                 }
             }
+        }
+
+        // ============================================================
+        // IMAGE PRELOADING – cache nearby images for faster navigation
+        // ============================================================
+        function preloadNearbyImages() {
+            const preloadIndexes = [
+                globalCurrentIndex - 1,
+                globalCurrentIndex + 1,
+                globalCurrentIndex + 2
+            ];
+
+            preloadIndexes.forEach(index => {
+                if (index >= 0 && index < globalImageList.length) {
+                    const preload = new Image();
+                    preload.src = globalImageList[index];
+                }
+            });
+        }
+
+        function preloadFirstImages() {
+            globalImageList.slice(0, 2).forEach(path => {
+                const preload = new Image();
+                preload.src = path;
+            });
         }
 
         // ============================================================
@@ -319,86 +376,86 @@
         }
 
         // ============================================================
-        // BUILD GROUPED TREE DROPDOWN – ALWAYS VISIBLE
+        // BUILD GROUPED TREE DROPDOWN – ALL FOLDERS OPEN, INDEPENDENT TOGGLES
         // ============================================================
-        function buildTreeDropdown() {
-            const treeContent = document.getElementById('treeDropdownContent');
-            if (!treeContent) return;
+function buildTreeDropdown() {
+    const treeContent = document.getElementById('treeDropdownContent');
+    if (!treeContent) return;
 
-            const groups = {};
-            MASTER_IMAGE_REGISTRY.forEach(path => {
-                const parts = path.split('/');
-                if (parts.length < 2) return;
+    const groups = {};
+    MASTER_IMAGE_REGISTRY.forEach(path => {
+        const parts = path.split('/');
+        if (parts.length < 2) return;
+        const folder = parts[1];
+        if (folder === 'homepage') return;
+        if (!groups[folder]) groups[folder] = [];
+        groups[folder].push(path);
+    });
+
+    Object.keys(groups).forEach(folder => {
+        groups[folder].sort((a, b) => {
+            const numA = a.match(/(\d+)/);
+            const numB = b.match(/(\d+)/);
+            const valA = numA ? parseInt(numA[0], 10) : 0;
+            const valB = numB ? parseInt(numB[0], 10) : 0;
+            return valA - valB;
+        });
+    });
+
+    const sortedFolders = Object.keys(groups).sort();
+
+    treeContent.innerHTML = '';
+
+    sortedFolders.forEach(folder => {
+        const paths = groups[folder];
+        const count = paths.length;
+
+        const header = document.createElement('span');
+        header.className = 'group-header';
+        header.dataset.folder = folder;
+        // ✅ Compact: no spaces
+        header.innerHTML = `<span>[${folder}(${count})]</span><span class="arrow">v</span>`;
+
+        const linksContainer = document.createElement('span');
+        linksContainer.className = 'group-links open';
+        linksContainer.style.display = 'inline';
+
+        paths.forEach(path => {
+            const fileName = path.split('/').pop();
+            const a = document.createElement('a');
+            a.href = path;
+            a.textContent = fileName;
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const href = this.getAttribute('href');
+                const parts = href.split('/');
                 const folder = parts[1];
-                if (folder === 'homepage') return;
-                if (!groups[folder]) groups[folder] = [];
-                groups[folder].push(path);
+                loadImageAndUpdateFloating(href, folder, false);
+                treeContent.focus();
             });
+            linksContainer.appendChild(a);
+        });
 
-            Object.keys(groups).forEach(folder => {
-                groups[folder].sort((a, b) => {
-                    const numA = a.match(/(\d+)/);
-                    const numB = b.match(/(\d+)/);
-                    const valA = numA ? parseInt(numA[0], 10) : 0;
-                    const valB = numB ? parseInt(numB[0], 10) : 0;
-                    return valA - valB;
-                });
-            });
-
-            const sortedFolders = Object.keys(groups).sort();
-
-            treeContent.innerHTML = '';
-
-            sortedFolders.forEach(folder => {
-                const paths = groups[folder];
-                const count = paths.length;
-
-                const header = document.createElement('span');
-                header.className = 'group-header';
-                header.innerHTML = `<span>[ ${folder} (${count}) </span><span class="arrow">v</span>`;
-
-                const linksContainer = document.createElement('span');
-                linksContainer.className = 'group-links';
+        header.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = linksContainer.classList.contains('open');
+            const arrow = this.querySelector('.arrow');
+            if (isOpen) {
+                linksContainer.classList.remove('open');
+                linksContainer.style.display = 'none';
+                arrow.textContent = '>';
+            } else {
                 linksContainer.classList.add('open');
                 linksContainer.style.display = 'inline';
+                arrow.textContent = 'v';
+            }
+        });
 
-                paths.forEach(path => {
-                    const fileName = path.split('/').pop();
-                    const a = document.createElement('a');
-                    a.href = path;
-                    a.textContent = fileName;
-                    a.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const href = this.getAttribute('href');
-                        const parts = href.split('/');
-                        const folder = parts[1];
-                        loadImageAndUpdateFloating(href, folder, false);
-                        treeContent.focus();
-                    });
-                    linksContainer.appendChild(a);
-                });
-
-                header.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const isOpen = linksContainer.classList.contains('open');
-                    const arrow = this.querySelector('.arrow');
-                    if (isOpen) {
-                        linksContainer.classList.remove('open');
-                        linksContainer.style.display = 'none';
-                        arrow.textContent = '>';
-                    } else {
-                        linksContainer.classList.add('open');
-                        linksContainer.style.display = 'inline';
-                        arrow.textContent = 'v';
-                    }
-                });
-
-                treeContent.appendChild(header);
-                treeContent.appendChild(linksContainer);
-            });
-        }
-
+        treeContent.appendChild(header);
+        treeContent.appendChild(linksContainer);
+    });
+}
         // ============================================================
         // KEYBOARD NAVIGATION
         // ============================================================
@@ -441,35 +498,34 @@
             const touch = e.changedTouches[0];
             const deltaX = touch.clientX - touchStartX;
             const deltaY = touch.clientY - touchStartY;
-
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > swipeThreshold) {
-                if (deltaX < 0) {
-                    navigate(1);
-                } else {
-                    navigate(-1);
-                }
+                if (deltaX < 0) navigate(1);
+                else navigate(-1);
             }
         }, { passive: true });
 
         // ============================================================
-        // SIDEBAR TOGGLE
+        // SIDEBAR TOGGLE – with text change
         // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const showTab = document.getElementById('showTab');
-            const mainContent = document.getElementById('mainContent');
-            let visible = true;
-            showTab.addEventListener('click', function(e) {
-                e.stopPropagation();
-                visible = !visible;
-                sidebar.classList.toggle('hidden-sidebar', !visible);
-                showTab.textContent = visible ? '◀' : '▶';
-                mainContent.style.marginLeft = visible ? 'auto' : '0';
-            });
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const showTab = document.getElementById('showTab');
+    const mainContent = document.getElementById('mainContent');
+    let visible = true;
 
+    // Set initial text
+    showTab.textContent = '[Hide]';
+
+    showTab.addEventListener('click', function(e) {
+        e.stopPropagation();
+        visible = !visible;
+        sidebar.classList.toggle('hidden-sidebar', !visible);
+        showTab.textContent = visible ? '[Hide]' : '[Open]';
+        mainContent.style.marginLeft = '0';
+    });
+});
         // ============================================================
-        // MAGNIFIER
+        // MAGNIFIER (unchanged)
         // ============================================================
         (function() {
             const toggle = document.getElementById('magnifierToggle');
@@ -594,6 +650,51 @@
         })();
 
         // ============================================================
+        // FLOATING INFO BOX – sidebar on desktop, below image on mobile
+        // ============================================================
+        function placeFloatingWindow() {
+            const floatingWin = document.getElementById('floating-window');
+            const mainContent = document.getElementById('mainContent');
+            const imageArea = document.getElementById('bookshelfImageArea');
+            if (!floatingWin || !mainContent || !imageArea) return;
+
+            if (window.matchMedia('(max-width: 480px)').matches) {
+                if (floatingWin.parentElement !== mainContent) {
+                    imageArea.insertAdjacentElement('afterend', floatingWin);
+                }
+                floatingWin.style.left = '';
+                floatingWin.style.top = '';
+            } else {
+                if (floatingWin.parentElement !== document.body) {
+                    document.body.appendChild(floatingWin);
+                }
+                positionFloatingWindow();
+            }
+        }
+
+        // Desktop: place info box to the right of the rendered photograph,
+        // with the bottom of the box aligned to the bottom of the photograph.
+        function positionFloatingWindow() {
+            if (window.matchMedia('(max-width: 480px)').matches) return;
+
+            const floatingWin = document.getElementById('floating-window');
+            const img = document.querySelector('#bookshelfImageArea img');
+            if (!floatingWin || !img || floatingWin.style.display === 'none') return;
+
+            const rect = img.getBoundingClientRect();
+            const gap = 18;
+            const boxHeight = floatingWin.offsetHeight;
+
+            floatingWin.style.left = (rect.right + gap) + 'px';
+            floatingWin.style.top = (rect.bottom - boxHeight) + 'px';
+        }
+
+        window.addEventListener('resize', function() {
+            placeFloatingWindow();
+            positionFloatingWindow();
+        });
+
+        // ============================================================
         // INIT ON LOAD
         // ============================================================
         window.addEventListener('load', function() {
@@ -601,21 +702,39 @@
             globalCurrentIndex = 0;
 
             buildTreeDropdown();
+            placeFloatingWindow();
 
-            renderDefaultTooltip();
+            // Homepage starts with intro text only.
+            const floatingWin = document.getElementById('floating-window');
+            if (floatingWin) floatingWin.style.display = 'none';
+
+            // Quietly cache the first couple of images after the page itself has loaded.
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(preloadFirstImages);
+            } else {
+                setTimeout(preloadFirstImages, 250);
+            }
 
             function goHome() {
                 const imageArea = document.getElementById('bookshelfImageArea');
-                if (imageArea) imageArea.innerHTML = '';
+                if (imageArea) {
+                    imageArea.innerHTML = `
+                        <div id="intro-text">
+                            <div>This is a working and ongoing copy of Photographs by George Rump</div>
+                            <div>Select an image or folder and Swipe or Press Arrow keys (←, →) to navigate through entire collection.</div>
+                            <div>All Rights Reserved Copyright © Photographs by George Rump</div>
+                        </div>
+                    `;
+                }
                 const floatingWin = document.getElementById('floating-window');
                 if (floatingWin) {
-                    renderDefaultTooltip();
                     delete floatingWin.dataset.paths;
                     delete floatingWin.dataset.currentIndex;
                     delete floatingWin.dataset.currentPath;
+                    floatingWin.style.display = 'none';
                 }
                 globalCurrentIndex = 0;
-                if (floatingWin) floatingWin.style.display = 'block';
+                highlightActiveLink(null);
             }
 
             const headerLogo = document.getElementById('header-logo');

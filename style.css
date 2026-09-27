@@ -157,7 +157,7 @@ body > h1 .big-letter {
 
 .group-header {
     display: inline;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 7px;
     cursor: pointer;
     color: #202122;
@@ -166,11 +166,13 @@ body > h1 .big-letter {
     margin: 0;
     border: none !important;
     outline: none !important;
+    word-spacing: 3px;
+    line-height: 1.6;
 }
 
 .group-header .arrow {
     display: inline;
-    margin-left: 2px;
+    margin-left: 0px;
 }
 
 .group-header .arrow.open {
@@ -198,6 +200,8 @@ body > h1 .big-letter {
     margin: 0;
     white-space: normal;
     word-break: break-all;
+    word-spacing: 4px;
+    line-height: 1.6;
     cursor: pointer;
 }
 
@@ -288,10 +292,12 @@ body > h1 .big-letter {
    8. MAIN CONTENT & IMAGE DISPLAY
    ============================================================ */
 #mainContent {
-    margin-left: auto;
+    width: 100%;
+    margin-left: 0;
     padding: 0;
     min-height: 50vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background: transparent;
@@ -299,6 +305,7 @@ body > h1 .big-letter {
 }
 
 #bookshelfImageArea {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -318,18 +325,39 @@ body > h1 .big-letter {
     display: block;
 }
 
+#intro-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(760px, 80vw);
+    font-size: 14.4px;
+    line-height: 1.5;
+    text-align: center;
+    color: #202122;
+    padding: 0;
+}
+
+#intro-text > div + div {
+    margin-top: 1.5em;
+}
+
+body.dark-mode #intro-text {
+    color: #e0e0e0;
+}
+
 /* ============================================================
    9. FLOATING WINDOW – desktop (positioned relative to sidebar)
    ============================================================ */
 #floating-window {
-    position: relative;
+    position: fixed;
     left: 0;
     top: 0;
     z-index: 999999;
     display: block;
     pointer-events: none;
-    width: 100%;
-    margin-top: 8px;
+    width: 210px;
+    margin: 0;
     flex-shrink: 0;
 }
 
@@ -339,10 +367,8 @@ body > h1 .big-letter {
     min-height: 140px;
     background: #ffffff;
     padding: 10px 10px 10px 8px;
-    border-radius: 6px;
     box-sizing: border-box;
     font-family: "Segoe UI", -apple-system, sans-serif;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
     pointer-events: auto;
 }
 
@@ -564,7 +590,7 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
     flex: 0 0 auto !important;               /* ← never grows */
     max-height: none !important;
     overflow-y: auto !important;
-    padding: 4px 0 !important;
+    padding: 45px 0 !important;
     margin-bottom: 15px !important;           /* ← exactly 15px gap */
     background: rgba(255, 255, 255, 0.85) !important;
     backdrop-filter: blur(4px) !important;
@@ -581,11 +607,8 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
     gap: 16px !important;
     padding: 4px 0 !important;
     margin-top: 0 !important;                 /* ← remove any margin */
-    background: rgba(255, 255, 255, 0.85) !important;
-    backdrop-filter: blur(4px) !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    border-top: 1px solid rgba(0,0,0,0.05) !important;
 }
 
     /* --- TREE TEXT SIZES --- */
@@ -604,6 +627,7 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         flex: 1 1 auto !important;
         min-width: 0 !important;
         display: flex !important;
+        flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         padding: 0 !important;
@@ -613,12 +637,12 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         pointer-events: none !important;
         background: transparent !important;
         height: 100% !important;
-        max-height: 60vh !important;
+        max-height: none !important;
         position: relative !important;
     }
     #bookshelfImageArea {
         width: 100% !important;
-        height: 100% !important;
+        height: auto !important;
         max-height: 60vh !important;
         min-height: auto !important;
         pointer-events: none !important;
@@ -636,44 +660,53 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         pointer-events: none !important;
     }
 
+
+    #intro-text {
+        position: absolute !important;
+        top: 0 !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 80% !important;
+        font-size: 9.6px !important;
+        line-height: 1.5 !important;
+        text-align: center !important;
+    }
     /* --- FLOATING WINDOW – fixed, right of tree, adapts to text --- */
     #floating-window {
-        position: fixed !important;
-        left: clamp(110px, 27vw, 170px) !important;
-        top: clamp(80px, 12vh, 100px) !important;
-        width: clamp(150px, 32vw, 190px) !important;
-        max-width: 210px !important;
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: min(150px, 70%) !important;
+        max-width: 150px !important;
         z-index: 999999 !important;
         pointer-events: auto !important;
-        margin: 0 !important;
+        margin: 8px auto 0 !important;
         padding: 0 !important;
+        flex: 0 0 auto !important;
     }
     .dev-tooltip-exact {
         width: 100% !important;
         min-height: auto !important;
-        padding: 8px !important;
-        border-radius: 4px !important;
-        background: #ffffff !important;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.12) !important;
+        padding: 4px !important;
         box-sizing: border-box !important;
     }
     #floating-window .info-icon-permanent {
-        font-size: clamp(12px, 3vw, 16px) !important;
+        font-size: 8px !important;
     }
     .tag-exact {
-        font-size: clamp(10px, 2.5vw, 13px) !important;
+        font-size: 8px !important;
     }
     .dim-exact {
-        font-size: clamp(10px, 2.5vw, 13px) !important;
+        font-size: 8px !important;
     }
     .value-exact {
-        font-size: clamp(10px, 2.5vw, 13px) !important;
+        font-size: 8px !important;
     }
     .row-exact.body-row .value-exact {
-        font-size: clamp(10px, 2.5vw, 13px) !important;
+        font-size: 8px !important;
     }
     .line-exact {
-        margin: 4px 0 8px auto !important;
+        margin: 1px 0 1px auto !important;
     }
     .arrow-exact {
         display: none !important;
@@ -682,11 +715,10 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
     /* --- TOOLBAR – visible at bottom of sidebar --- */
     #tree-toolbar {
         display: flex !important;             /* ← SHOW the toolbar */
-        flex: 0 0 auto !important;           /* ← don't grow/shrink, keep at bottom */
         align-items: center !important;
         justify-content: center !important;
         gap: 16px !important;
-        padding: 4px 0px 0px 0px !important;
+        padding: 146px 10px 0px 0px !important;
         background: rgba(255, 255, 255, 0.85) !important;
         backdrop-filter: blur(4px) !important;
         width: 100% !important;
@@ -702,64 +734,51 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         gap: 4px !important;
     }
     #tree-toolbar img {
-        width: 18px !important;
-        height: 18px !important;
+        width: 14px !important;
+        height: 14px !important;
         vertical-align: middle !important;
     }
 
     /* --- SIDEBAR TOGGLE --- */
     .sidebar-tab,
     #showTab {
-        position: fixed !important;
-        left: 0 !important;
+        /* Remove background and border, use text only */
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        color: #202122 !important;
+        padding: 0 4px !important;
+        width: auto !important;
+        height: auto !important;
         top: clamp(180px, 40vh, 220px) !important;
-        width: clamp(16px, 4vw, 22px) !important;
-        height: clamp(36px, 8vh, 46px) !important;
-        font-size: clamp(10px, 2.5vw, 14px) !important;
+        left: 6px !important;
+        /* adjust position to avoid touching edge */
+        border-radius: 0 !important;
+        line-height: 1.4 !important;
+        cursor: pointer !important;
         z-index: 9999999 !important;
         pointer-events: auto !important;
-        background-color: #f8f9fa !important;
-        border: 1px solid #a2a9b1 !important;
-        border-left: none !important;
-        border-radius: 0 4px 4px 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        cursor: pointer !important;
-        color: #202122 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        line-height: 1 !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        text-decoration: none !important;
+        background-color: transparent !important;
     }
     .sidebar-tab:hover,
     #showTab:hover {
-        background-color: #eaecf0 !important;
-    }
-
-    /* --- DARK MODE --- */
-    body.dark-mode #sidebar .tree-content,
-    body.dark-mode #tree-toolbar {
-        background: rgba(0, 0, 0, 0.85) !important;
+        background: none !important;
+        color: #000000 !important;
+        text-decoration: underline !important;
     }
     body.dark-mode .sidebar-tab,
     body.dark-mode #showTab {
-        background-color: #000000 !important;
-        border-color: #444 !important;
         color: #e0e0e0 !important;
+        background: none !important;
+        border: none !important;
     }
     body.dark-mode .sidebar-tab:hover,
     body.dark-mode #showTab:hover {
-        background-color: #3a3a3a !important;
-    }
-    body.dark-mode #mainContent,
-    body.dark-mode #bookshelfImageArea {
-        background: transparent !important;
-    }
-    body.dark-mode #tree-toolbar a {
         color: #ffffff !important;
-    }
-    body.dark-mode #tree-toolbar a:hover {
-        color: #88ccff !important;
+        background: none !important;
     }
 }
