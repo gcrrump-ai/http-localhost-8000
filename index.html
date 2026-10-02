@@ -53,6 +53,7 @@
                     <div>All Rights Reserved Copyright © Photographs by George Rump</div>
                 </div>
             </div>
+            <div id="mobile-under-image"></div>
         </div>
 
     </div><!-- /content-wrapper -->
@@ -152,6 +153,7 @@
                     refreshMagnifierIfActive();
                     preloadNearbyImages();
                     positionFloatingWindow();
+                    positionLeftControls();
                 });
             } else {
                 renderToBookshelf(imagePath, true);
@@ -520,8 +522,13 @@ document.addEventListener('DOMContentLoaded', function() {
         e.stopPropagation();
         visible = !visible;
         sidebar.classList.toggle('hidden-sidebar', !visible);
+        document.body.classList.toggle('tree-hidden', !visible);
         showTab.textContent = visible ? '[Hide]' : '[Open]';
-        mainContent.style.marginLeft = '0';
+        mainContent.style.marginLeft = '';
+        requestAnimationFrame(function() {
+            positionFloatingWindow();
+            positionLeftControls();
+        });
     });
 });
         // ============================================================
@@ -656,18 +663,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const floatingWin = document.getElementById('floating-window');
             const mainContent = document.getElementById('mainContent');
             const imageArea = document.getElementById('bookshelfImageArea');
-            if (!floatingWin || !mainContent || !imageArea) return;
+            const mobileRow = document.getElementById('mobile-under-image');
+            const toolbar = document.getElementById('tree-toolbar');
+            const sidebar = document.getElementById('sidebar');
+            if (!floatingWin || !mainContent || !imageArea || !toolbar || !sidebar) return;
 
             if (window.matchMedia('(max-width: 480px)').matches) {
-                if (floatingWin.parentElement !== mainContent) {
-                    imageArea.insertAdjacentElement('afterend', floatingWin);
+                if (mobileRow) {
+                    if (toolbar.parentElement !== mobileRow) mobileRow.appendChild(toolbar);
+                    if (floatingWin.parentElement !== mobileRow) mobileRow.appendChild(floatingWin);
                 }
                 floatingWin.style.left = '';
                 floatingWin.style.top = '';
             } else {
-                if (floatingWin.parentElement !== document.body) {
-                    document.body.appendChild(floatingWin);
-                }
+                if (toolbar.parentElement !== sidebar) sidebar.appendChild(toolbar);
+                if (floatingWin.parentElement !== document.body) document.body.appendChild(floatingWin);
                 positionFloatingWindow();
             }
         }
@@ -689,9 +699,35 @@ document.addEventListener('DOMContentLoaded', function() {
             floatingWin.style.top = (rect.bottom - boxHeight) + 'px';
         }
 
+        // Keep the whole left-side control group aligned with the top of
+        // the current photograph, or with the intro text on the homepage.
+        function positionLeftControls() {
+            const sidebar = document.getElementById('sidebar');
+            const showTab = document.getElementById('showTab');
+            const tree = document.getElementById('treeDropdownContent');
+            if (!sidebar || !showTab || !tree) return;
+
+            const img = document.querySelector('#bookshelfImageArea img');
+            const intro = document.getElementById('intro-text');
+            const target = img || intro;
+            if (!target) return;
+
+            const rect = target.getBoundingClientRect();
+            const treeStyle = window.getComputedStyle(tree);
+            const treePaddingTop = parseFloat(treeStyle.paddingTop) || 0;
+
+            // Subtract the tree's own top padding so the first visible link/text
+            // aligns with the photograph/intro top edge.
+            const groupTop = Math.max(0, rect.top - treePaddingTop);
+
+            sidebar.style.setProperty('top', groupTop + 'px', 'important');
+            showTab.style.setProperty('top', groupTop + 'px', 'important');
+        }
+
         window.addEventListener('resize', function() {
             placeFloatingWindow();
             positionFloatingWindow();
+            positionLeftControls();
         });
 
         // ============================================================
@@ -707,6 +743,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Homepage starts with intro text only.
             const floatingWin = document.getElementById('floating-window');
             if (floatingWin) floatingWin.style.display = 'none';
+
+            // Align the left controls with the homepage intro text.
+            requestAnimationFrame(positionLeftControls);
 
             // Quietly cache the first couple of images after the page itself has loaded.
             if ('requestIdleCallback' in window) {
@@ -735,6 +774,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 globalCurrentIndex = 0;
                 highlightActiveLink(null);
+                requestAnimationFrame(positionLeftControls);
             }
 
             const headerLogo = document.getElementById('header-logo');

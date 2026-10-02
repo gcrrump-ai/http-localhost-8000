@@ -291,6 +291,8 @@ body > h1 .big-letter {
 /* ============================================================
    8. MAIN CONTENT & IMAGE DISPLAY
    ============================================================ */
+#mobile-under-image { display: none; }
+
 #mainContent {
     width: 100%;
     margin-left: 0;
@@ -430,10 +432,7 @@ body.dark-mode #intro-text {
     font-weight: 400;
 }
 .line-exact {
-    width: 58%;
-    border-top: 1px solid #dadce0;
-    margin: 5px 0 16px auto;
-    display: block;
+    display: none;
 }
 .arrow-exact {
     position: absolute;
@@ -461,7 +460,7 @@ body.dark-mode #intro-text {
     overflow: hidden;
     display: none;
 }
-body.magnifier-mode #magnifierLens { display: block; }
+body.magnifier-mode #magnifierLens { display: block; border: 1px solid #000; box-sizing: border-box; }
 #magnifierLens canvas { position: absolute; top: 0; left: 0; }
 body.magnifier-mode { cursor: default; }
 #magnifierCorner { position: absolute; top: 0; right: 0; width: 20px; height: 20px; pointer-events: none; z-index: 10; }
@@ -505,7 +504,7 @@ body.dark-mode .arrow-exact { border-left-color: #1e1e2e; }
 body.dark-mode #floating-window .info-icon-permanent { color: #9a9ab0; }
 body.dark-mode #header-logo { filter: invert(1.5) !important; }
 body.dark-mode #sidebar, body.dark-mode #tree-toolbar { background-color: #000000 !important; border-color: #444 !important; }
-body.dark-mode #magnifierLens { background-color: #000000; border: 2px solid #99ccff; }
+body.dark-mode #magnifierLens { background-color: #000000; }
 body.dark-mode #magnifierToggle img { filter: invert(1) brightness(2); }
 body.dark-mode #floating-window::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
 body.dark-mode #floating-window::-webkit-scrollbar-thumb { background: #444; }
@@ -629,8 +628,8 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: center !important;
-        padding: 0 !important;
+        justify-content: flex-start !important;
+        padding: clamp(110px, 16vh, 170px) 0 0 !important;
         margin: 0 !important;
         margin-left: clamp(100px, 25vw, 160px) !important;
         z-index: 1 !important;
@@ -660,6 +659,18 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         pointer-events: none !important;
     }
 
+    body.tree-hidden #mainContent {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    body.tree-hidden #bookshelfImageArea {
+        max-height: 72vh !important;
+    }
+    body.tree-hidden #bookshelfImageArea img {
+        max-width: 92vw !important;
+        max-height: 72vh !important;
+    }
+
 
     #intro-text {
         position: absolute !important;
@@ -671,6 +682,18 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         line-height: 1.5 !important;
         text-align: center !important;
     }
+    /* --- MOBILE ROW DIRECTLY UNDER IMAGE --- */
+    #mobile-under-image {
+        display: flex !important;
+        width: 100% !important;
+        align-items: flex-start !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+        margin-top: 8px !important;
+        box-sizing: border-box !important;
+        pointer-events: auto !important;
+    }
+
     /* --- FLOATING WINDOW – fixed, right of tree, adapts to text --- */
     #floating-window {
         position: static !important;
@@ -680,7 +703,7 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         max-width: 150px !important;
         z-index: 999999 !important;
         pointer-events: auto !important;
-        margin: 8px auto 0 !important;
+        margin: 0 !important;
         padding: 0 !important;
         flex: 0 0 auto !important;
     }
@@ -714,14 +737,16 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
 
     /* --- TOOLBAR – visible at bottom of sidebar --- */
     #tree-toolbar {
-        display: flex !important;             /* ← SHOW the toolbar */
+        display: flex !important;
+        flex: 0 0 136px !important;
         align-items: center !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
         gap: 16px !important;
-        padding: 146px 10px 0px 0px !important;
+        padding: 4px 7px !important;
+        margin: 0 !important;
         background: rgba(255, 255, 255, 0.85) !important;
         backdrop-filter: blur(4px) !important;
-        width: 100% !important;
+        width: 136px !important;
         box-sizing: border-box !important;
         border-top: 1px solid rgba(0,0,0,0.05) !important;
     }
