@@ -17,7 +17,7 @@ Save and refresh your website
 
 "Server Start"
 
-cd C:\Users\user\Desktop\WEB.300
+cd C:\Users\user\Desktop\WEB.300\collections
 python -m http.server       
 
 
