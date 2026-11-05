@@ -1,15 +1,23 @@
+
 /* ============================================================
    FILE: style.css
    PURPOSE: George Rump website – main stylesheet
    ============================================================ */
 
+
 /* ============================================================
    1. RESET & BASE STYLES
    ============================================================ */
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+html {
+    min-height: 100%;
+    overflow-y: auto;
 }
 
 body {
@@ -30,69 +38,11 @@ img {
     image-rendering: auto;
 }
 
-/* ============================================================
-   2. HEADER
-   ============================================================ */
-#header-wrapper {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    position: relative;
-    z-index: 101;
-    background: transparent;
-}
-
-body > h1 {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    font-family: monospace, monospace;
-    font-size: 20px;
-    font-weight: 700;
-    color: #202122;
-    z-index: 1;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-body > h1 .big-letter {
-    font-size: 80px;
-    background: linear-gradient(180deg, #00FF00, #007D09);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-#header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex: 1;
-    justify-content: flex-start;
-    max-width: 100%;
-    min-height: 50px;
-    padding: 0;
-    background-color: transparent;
-    position: relative;
-    z-index: 101;
-}
-
-#header-logo {
-    flex-shrink: 0;
-    width: 170px;
-    height: auto;
-    max-width: 350px;
-    min-width: 100px;
-    z-index: 101;
-    padding-top: 0;
-    margin: 0 15px 0 0;
-    display: block;
-    object-fit: contain;
-}
 
 /* ============================================================
-   3. CONTENT WRAPPER – flex container for sidebar + image
+   2. CONTENT WRAPPER
    ============================================================ */
+
 #content-wrapper {
     display: flex;
     flex-direction: row;
@@ -100,13 +50,15 @@ body > h1 .big-letter {
     min-height: 0;
 }
 
+
 /* ============================================================
-   4. SIDEBAR (desktop – fixed, left)
+   3. SIDEBAR
    ============================================================ */
+
 #sidebar {
     position: fixed !important;
-    left: 20px !important;
-    top: 200px !important;
+    left: 0 !important;
+    top: 110px !important;
     display: flex;
     flex-direction: column;
     z-index: 9999 !important;
@@ -122,9 +74,11 @@ body > h1 .big-letter {
     display: none !important;
 }
 
+
 /* ============================================================
-   5. TREE CONTENT (inside sidebar)
+   4. TREE CONTENT
    ============================================================ */
+
 .tree-content {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(4px);
@@ -144,13 +98,16 @@ body > h1 .big-letter {
 .tree-content::-webkit-scrollbar {
     width: 4px;
 }
+
 .tree-content::-webkit-scrollbar-track {
     background: transparent;
 }
+
 .tree-content::-webkit-scrollbar-thumb {
     background: #c8ccd1;
     border-radius: 2px;
 }
+
 .tree-content::-webkit-scrollbar-thumb:hover {
     background: #a2a9b1;
 }
@@ -172,11 +129,7 @@ body > h1 .big-letter {
 
 .group-header .arrow {
     display: inline;
-    margin-left: 0px;
-}
-
-.group-header .arrow.open {
-    color: #AB4EAD;
+    margin-left: 0;
 }
 
 .group-links {
@@ -217,26 +170,31 @@ body > h1 .big-letter {
     font-weight: 700 !important;
 }
 
+
 /* ============================================================
-   6. SIDEBAR TOGGLE TAB
+   5. SIDEBAR TOGGLE TAB
+   Desktop position and appearance controlled here.
    ============================================================ */
+
 .sidebar-tab,
 #showTab {
     position: fixed;
-    left: 0;
-    top: 200px;
-    width: 16px;
-    height: 50px;
-    background-color: #f8f9fa;
-    border: 1px solid #a2a9b1;
-    border-left: none;
-    border-radius: 0 4px 4px 0;
+    left: 5px;
+    top: 90px;
+    width: auto;
+    height: auto;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 10px;
-    color: #202122;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: #800080;
     padding: 0;
     margin: 0;
     line-height: 1;
@@ -246,12 +204,18 @@ body > h1 .big-letter {
 
 .sidebar-tab:hover,
 #showTab:hover {
-    background-color: #eaecf0;
+    background: transparent;
 }
 
+body.tree-hidden #showTab {
+    color: green !important;
+}
+
+
 /* ============================================================
-   7. TOOLBAR
+   6. TOOLBAR
    ============================================================ */
+
 #tree-toolbar {
     display: flex;
     align-items: center;
@@ -288,10 +252,14 @@ body > h1 .big-letter {
     vertical-align: middle;
 }
 
+
 /* ============================================================
-   8. MAIN CONTENT & IMAGE DISPLAY
+   7. MAIN CONTENT & IMAGE DISPLAY
    ============================================================ */
-#mobile-under-image { display: none; }
+
+#mobile-under-image {
+    display: none;
+}
 
 #mainContent {
     width: 100%;
@@ -303,7 +271,7 @@ body > h1 .big-letter {
     align-items: center;
     justify-content: center;
     background: transparent;
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 #bookshelfImageArea {
@@ -313,7 +281,7 @@ body > h1 .big-letter {
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 0vh;
+    min-height: 0;
     box-sizing: border-box;
     z-index: 10;
 }
@@ -368,13 +336,17 @@ body.dark-mode #intro-title .big-letter {
     margin-top: 1.5em;
 }
 
-body.dark-mode #intro-text {
-    color: #e0e0e0;
+/* Keep toolbar and floating information window moving together. */
+#tree-toolbar,
+#floating-window {
+    transform: translateY(10px);
 }
 
+
 /* ============================================================
-   9. FLOATING WINDOW – desktop (positioned relative to sidebar)
+   8. FLOATING INFORMATION WINDOW
    ============================================================ */
+
 #floating-window {
     position: fixed;
     left: 0;
@@ -390,9 +362,9 @@ body.dark-mode #intro-text {
 .dev-tooltip-exact {
     position: relative;
     width: 210px;
-    min-height: 140px;
+    min-height: 0;
     background: #ffffff;
-    padding: 10px 10px 10px 8px;
+    padding: 10px 10px 4px 8px;
     box-sizing: border-box;
     font-family: "Segoe UI", -apple-system, sans-serif;
     pointer-events: auto;
@@ -402,11 +374,13 @@ body.dark-mode #intro-text {
     display: block;
     width: 100%;
 }
+
 .icon-and-tag {
     display: flex;
     align-items: center;
     gap: 4px;
 }
+
 #floating-window .info-icon-permanent {
     font-size: 14px;
     color: #5f6368;
@@ -416,6 +390,7 @@ body.dark-mode #intro-text {
     display: inline-block;
     margin: 0;
 }
+
 .tag-exact {
     color: #9c1180;
     font-weight: 700;
@@ -423,45 +398,51 @@ body.dark-mode #intro-text {
     letter-spacing: -0.5px;
     line-height: 1;
 }
+
 .dim-exact {
     color: #202124;
     font-size: 12px;
     font-weight: 400;
     text-decoration: none;
 }
+
 .row-exact {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     width: 100%;
 }
+
 .row-exact.body-row {
     flex-wrap: wrap;
     align-items: flex-start;
     gap: 2px 0;
     margin-top: 5px;
 }
+
 .row-exact.body-row .value-exact {
     flex: 1 1 100%;
     white-space: normal;
     word-wrap: break-word;
     line-height: 1.5;
 }
+
 .row-exact:not(.body-row) .value-exact {
     flex: 1 1 auto;
     text-align: right;
 }
+
 .value-exact {
     color: #202124;
     font-size: 12px;
     font-weight: 400;
 }
-.line-exact {
-    display: none;
-}
+
+
 /* ============================================================
-   10. MAGNIFIER LENS
+   9. MAGNIFIER LENS
    ============================================================ */
+
 #magnifierLens {
     position: fixed;
     width: 200px;
@@ -473,447 +454,177 @@ body.dark-mode #intro-text {
     display: none;
     touch-action: none;
 }
-body.magnifier-mode #magnifierLens { display: block; border: 0; box-sizing: border-box; }
-#magnifierLens canvas { position: absolute; top: 0; left: 0; }
-body.magnifier-mode { cursor: default; }
+
+body.magnifier-mode #magnifierLens {
+    display: block;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body.magnifier-mode #magnifierLens {
+    z-index: 2147483647;
+}
+
+#magnifierLens canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+body.magnifier-mode {
+    cursor: default;
+}
+
 
 /* ============================================================
-   11. DARK MODE TOGGLE ICONS
+   10. DARK MODE ICONS
    ============================================================ */
-#darkModeIconLight { width: 14px; height: 14px; }
-#darkModeIconDark { width: 14px; height: 14px; }
+
+#darkModeIconLight,
+#darkModeIconDark {
+    width: 14px;
+    height: 14px;
+}
+
 
 /* ============================================================
-   12. UTILITY
+   11. UTILITY
    ============================================================ */
-.hidden { display: none !important; }
+
+.hidden {
+    display: none !important;
+}
+
 
 /* ============================================================
-   13. DARK MODE
+   12. DARK MODE
    ============================================================ */
-body.dark-mode { background-color: #000000 !important; color: #ffffff !important; }
-body.dark-mode h1 { color: #ffffff; }
-body.dark-mode h1 .big-letter { background: linear-gradient(180deg, #66FF66, #00A307); -webkit-background-clip: text; background-clip: text; color: transparent; }
-body.dark-mode .sidebar-tab, body.dark-mode #showTab { color: #e0e0e0; background-color: #000000; border-color: #444; }
-body.dark-mode .sidebar-tab:hover, body.dark-mode #showTab:hover { background-color: #3a3a3a; }
-body.dark-mode #tree-toolbar a { color: #ffffff !important; }
-body.dark-mode #tree-toolbar a:hover { color: #88ccff !important; }
-body.dark-mode #mainContent, body.dark-mode #bookshelfImageArea { color: #ffffff !important; background-color: #000000 !important; }
-body.dark-mode .tree-content { background: rgba(0, 0, 0, 0.75) !important; }
-body.dark-mode .tree-content::-webkit-scrollbar-thumb { background: #444; }
-body.dark-mode .tree-content::-webkit-scrollbar-thumb:hover { background: #555; }
-body.dark-mode .group-header { color: #ffffff; }
-body.dark-mode .group-header .arrow { color: #66FF66; }
-body.dark-mode .group-header .arrow.open { color: #AB4EAD; }
-body.dark-mode .group-links a { color: #99ccff; }
-body.dark-mode .group-links a:hover { color: #ffffff; background: rgba(153, 204, 255, 0.15); }
-body.dark-mode .dev-tooltip-exact { background: #1e1e2e; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
-body.dark-mode .tag-exact { color: #c586c0; }
-body.dark-mode .dim-exact { color: #e0e0e0; }
-body.dark-mode .line-exact { border-top-color: #3a3a52; }
-body.dark-mode .value-exact { color: #e0e0e0; }
-body.dark-mode #floating-window .info-icon-permanent { color: #9a9ab0; }
-body.dark-mode #header-logo { filter: invert(1.5) !important; }
-body.dark-mode #sidebar, body.dark-mode #tree-toolbar { background-color: #000000 !important; border-color: #444 !important; }
-body.dark-mode #magnifierLens { background-color: #000000; }
-body.dark-mode #magnifierToggle img { filter: invert(1) brightness(2); }
-body.dark-mode #floating-window::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
-body.dark-mode #floating-window::-webkit-scrollbar-thumb { background: #444; }
-body.dark-mode #floating-window::-webkit-scrollbar-thumb:hover { background: #555; }
-body.dark-mode #darkModeIconLight { display: none !important; }
-body.dark-mode #darkModeIconDark { display: inline-block !important; }
 
-@media (max-width: 480px) {
-    /* --- BODY --- */
-    body {
-        display: flex !important;
-        flex-direction: column !important;
-        height: 100vh !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-        font-size: clamp(7px, 2vw, 9px);
-    }
+body.dark-mode {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
 
-    /* --- HEADER --- */
-    #header-wrapper {
-        flex: 0 0 auto !important;
-        padding: 4px 10px !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        background: transparent !important;
-        z-index: 10 !important;
-        width: 100% !important;
-    }
-    body > h1 {
-        font-size: clamp(7px, 2.5vw, 10px) !important;
-        padding-left: 0;
-        margin-right: auto;
-    }
-    body > h1 .big-letter {
-        font-size: clamp(16px, 5vw, 22px) !important;
-    }
-    #header-logo {
-        width: clamp(35px, 10vw, 45px) !important;
-        min-width: 35px !important;
-        max-width: 45px !important;
-        margin-left: 5px !important;
-        padding-top: clamp(8px, 2vw, 15px) !important;
-    }
-    #header {
-        flex-wrap: wrap;
-        gap: 6px;
-    }
+body.dark-mode #intro-text {
+    color: #e0e0e0;
+}
 
-    /* --- CONTENT WRAPPER --- */
-    #content-wrapper {
-        display: flex !important;
-        flex-direction: row !important;
-        flex: 1 1 auto !important;
-        min-height: 0 !important;
-        overflow: hidden !important;
-    }
-
-#sidebar {
-    position: fixed !important;
-    left: 0 !important;
-    top: 56px !important;
-    bottom: 0 !important;
-    width: clamp(100px, 25vw, 160px) !important;
-    min-width: 80px !important;
-    max-width: 180px !important;
-    z-index: 9998 !important;
-    pointer-events: auto !important;
+body.dark-mode .sidebar-tab,
+body.dark-mode #showTab {
+    color: #e0e0e0;
     background: transparent;
-    padding: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    align-items: stretch !important;
-    overflow: visible !important;
-    border: none !important;
+    border: 0;
 }
 
-#sidebar .tree-content {
-    width: 100% !important;
-    flex: 0 0 auto !important;
-    max-height: none !important;
-    overflow-y: auto !important;
-    padding: 45px 0 !important;
-    margin-bottom: 15px !important;
-    background: rgba(255, 255, 255, 0.85) !important;
-    backdrop-filter: blur(4px) !important;
-    border-radius: 0 !important;
-    border: none !important;
-    outline: none !important;
+body.dark-mode:not(.tree-hidden) #showTab {
+    color: #800080 !important;
 }
 
-#tree-toolbar {
-    display: flex !important;
-    flex: 0 0 auto !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 16px !important;
-    padding: 4px 0 !important;
-    margin-top: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
+body.dark-mode.tree-hidden #showTab {
+    color: green !important;
 }
 
-    /* --- TREE TEXT SIZES --- */
-    .group-header {
-        font-size: clamp(6px, 1.8vw, 8px) !important;
-    }
-    .group-header .arrow {
-        font-size: clamp(8px, 2.2vw, 7px) !important;
-    }
-    .group-links a {
-        font-size: clamp(5px, 1.6vw, 7px) !important;
-    }
-
-    /* --- MAIN IMAGE – capped at 60vh for portraits --- */
-    #mainContent {
-        flex: 1 1 auto !important;
-        min-width: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding: clamp(110px, 16vh, 170px) 0 0 !important;
-        margin: 0 !important;
-        margin-left: clamp(100px, 25vw, 160px) !important;
-        z-index: 1 !important;
-        pointer-events: none !important;
-        background: transparent !important;
-        height: 100% !important;
-        max-height: none !important;
-        position: relative !important;
-    }
-    #bookshelfImageArea {
-        width: 100% !important;
-        height: auto !important;
-        max-height: 60vh !important;
-        min-height: auto !important;
-        pointer-events: none !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: transparent !important;
-    }
-    #bookshelfImageArea img {
-        max-width: 100% !important;
-        max-height: 100% !important;
-        width: auto !important;
-        height: auto !important;
-        object-fit: contain !important;
-        pointer-events: none !important;
-    }
-
-    body.tree-hidden #mainContent {
-        margin-left: 0 !important;
-        width: 100% !important;
-    }
-    body.tree-hidden #bookshelfImageArea {
-        max-height: 72vh !important;
-    }
-    body.tree-hidden #bookshelfImageArea img {
-        max-width: 92vw !important;
-        max-height: 72vh !important;
-    }
-
-
-    #intro-title {
-        font-size: 14px !important;
-        margin-bottom: 6px !important;
-    }
-    #intro-title .big-letter {
-        font-size: 22px !important;
-    }
-
-    #intro-text {
-        position: absolute !important;
-        top: 0 !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        width: 80% !important;
-        font-size: 9.6px !important;
-        line-height: 1.5 !important;
-        text-align: center !important;
-    }
-    /* --- MOBILE ROW DIRECTLY UNDER IMAGE --- */
-    #mobile-under-image {
-        display: flex !important;
-        width: 100% !important;
-        align-items: flex-start !important;
-        justify-content: space-between !important;
-        gap: 8px !important;
-        margin-top: 8px !important;
-        box-sizing: border-box !important;
-        pointer-events: auto !important;
-    }
-
-    /* --- FLOATING WINDOW – fixed, right of tree, adapts to text --- */
-    #floating-window {
-        position: static !important;
-        left: auto !important;
-        top: auto !important;
-        width: min(150px, 70%) !important;
-        max-width: 150px !important;
-        z-index: 999999 !important;
-        pointer-events: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        flex: 0 0 auto !important;
-    }
-    .dev-tooltip-exact {
-        width: 100% !important;
-        min-height: auto !important;
-        padding: 4px !important;
-        box-sizing: border-box !important;
-    }
-    #floating-window .info-icon-permanent {
-        font-size: 8px !important;
-    }
-    .tag-exact {
-        font-size: 8px !important;
-    }
-    .dim-exact {
-        font-size: 8px !important;
-    }
-    .value-exact {
-        font-size: 8px !important;
-    }
-    .row-exact.body-row .value-exact {
-        font-size: 8px !important;
-    }
-    .line-exact {
-        margin: 1px 0 1px auto !important;
-    }
-    /* --- TOOLBAR – visible at bottom of sidebar --- */
-    #tree-toolbar {
-        display: flex !important;
-        flex: 0 0 136px !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        gap: 16px !important;
-        padding: 4px 7px !important;
-        margin: 0 !important;
-        background: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(4px) !important;
-        width: 136px !important;
-        box-sizing: border-box !important;
-        border-top: 1px solid rgba(0,0,0,0.05) !important;
-    }
-    #tree-toolbar a {
-        color: #000000 !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-    }
-    #tree-toolbar img {
-        width: 14px !important;
-        height: 14px !important;
-        vertical-align: middle !important;
-    }
-
-    /* --- SIDEBAR TOGGLE --- */
-    .sidebar-tab,
-    #showTab {
-        background: none !important;
-        border: none !important;
-        box-shadow: none !important;
-        font-size: 12px !important;
-        font-weight: 400 !important;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-        color: #202122 !important;
-        padding: 0 4px !important;
-        width: auto !important;
-        height: auto !important;
-        top: clamp(180px, 40vh, 220px) !important;
-        left: 6px !important;
-        border-radius: 0 !important;
-        line-height: 1.4 !important;
-        cursor: pointer !important;
-        z-index: 9999999 !important;
-        pointer-events: auto !important;
-        text-decoration: none !important;
-        background-color: transparent !important;
-    }
-    .sidebar-tab:hover,
-    #showTab:hover {
-        background: none !important;
-        color: #000000 !important;
-        text-decoration: underline !important;
-    }
-    body.dark-mode .sidebar-tab,
-    body.dark-mode #showTab {
-        color: #e0e0e0 !important;
-        background: none !important;
-        border: none !important;
-    }
-    body.dark-mode .sidebar-tab:hover,
-    body.dark-mode #showTab:hover {
-        color: #ffffff !important;
-        background: none !important;
-    }
+body.dark-mode #tree-toolbar a {
+    color: #ffffff !important;
 }
 
-/* ============================================================
-   DESKTOP-ONLY UPDATE — 2026-10-02
-   Mobile rules are intentionally untouched.
-   ============================================================ */
-@media (min-width: 481px) {
-    #header-wrapper h1 .big-letter {
-        font-size: 32px !important;
-    }
+body.dark-mode #tree-toolbar a:hover {
+    color: #88ccff !important;
+}
 
-    #header-wrapper h1 .big-letter {
-        background: linear-gradient(180deg, #00FF00, #007D09);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
+body.dark-mode #mainContent,
+body.dark-mode #bookshelfImageArea {
+    color: #ffffff !important;
+    background-color: #000000 !important;
+}
 
-    .sidebar-tab,
-    #showTab {
-        left: 6px;
-        width: auto;
-        height: auto;
-        padding: 0;
-        background: transparent !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        color: #800080 !important;
-    }
+body.dark-mode .tree-content {
+    background: rgba(0, 0, 0, 0.75) !important;
+}
 
-    .sidebar-tab:hover,
-    #showTab:hover {
-        background: transparent !important;
-    }
+body.dark-mode .tree-content::-webkit-scrollbar-thumb {
+    background: #444;
+}
 
-    body.tree-hidden #showTab {
-        color: green !important;
-    }
+body.dark-mode .tree-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
-    body.dark-mode .sidebar-tab,
-    body.dark-mode #showTab,
-    body.dark-mode .sidebar-tab:hover,
-    body.dark-mode #showTab:hover {
-        background: transparent !important;
-        border: 0 !important;
-        box-shadow: none !important;
-    }
+body.dark-mode .group-header {
+    color: #ffffff;
+}
 
-    body.dark-mode:not(.tree-hidden) #showTab { color: #800080 !important; }
-    body.dark-mode.tree-hidden #showTab { color: green !important; }
+body.dark-mode .group-header .arrow {
+    color: #66FF66;
+}
+
+body.dark-mode .group-links a {
+    color: #99ccff;
+}
+
+body.dark-mode .group-links a:hover {
+    color: #ffffff;
+    background: rgba(153, 204, 255, 0.15);
+}
+
+body.dark-mode .dev-tooltip-exact {
+    background: #1e1e2e;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .tag-exact {
+    color: #c586c0;
+}
+
+body.dark-mode .dim-exact,
+body.dark-mode .value-exact {
+    color: #e0e0e0;
+}
+
+body.dark-mode #floating-window .info-icon-permanent {
+    color: #9a9ab0;
+}
+
+body.dark-mode #sidebar,
+body.dark-mode #tree-toolbar {
+    background-color: #000000 !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode #magnifierLens {
+    background-color: #000000;
+}
+
+body.dark-mode #magnifierToggle img {
+    filter: invert(1) brightness(2);
+}
+
+body.dark-mode #darkModeIconLight {
+    display: none !important;
+}
+
+body.dark-mode #darkModeIconDark {
+    display: inline-block !important;
 }
 
 
 /* ============================================================
-   DESKTOP REFINEMENT — toolbar visibility / compact info / flush tree
-   Mobile remains unchanged.
+   13. DESKTOP IMAGE POSITION & EXPAND TOOL
    ============================================================ */
+
 @media (min-width: 481px) {
-    #sidebar {
-        left: 0 !important;
-    }
 
-    .sidebar-tab,
-    #showTab {
-        left: 0 !important;
-        font-size: 11px !important;
-    }
-
-    .dev-tooltip-exact {
-        min-height: 0 !important;
-        padding-bottom: 4px !important;
-    }
-
-    #tree-toolbar {
-        display: none;
-    }
-}
-
-
-/* ============================================================
-   DESKTOP IMAGE POSITION + EXPAND TOOL
-   ============================================================ */
-@media (min-width: 481px) {
-    body.magnifier-mode #magnifierLens {
-        z-index: 2147483647 !important;
+    body.image-open:not(.expand-image) #mainContent {
+        margin-top: 80px !important;
     }
 
     body.image-open:not(.expand-image) #bookshelfImageArea {
-        transform: translateY(-28px);
+        transform: none !important;
     }
 
-    body.image-open #mosaic-view { display: none; }
-
+    /* Desktop toolbar placement and dimensions. */
     #tree-toolbar {
+        display: none;
         background: rgba(255, 255, 255, 0.85) !important;
         width: 76px !important;
         min-width: 76px !important;
@@ -978,12 +689,25 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         box-shadow: none !important;
     }
 
-    #darkModeToggle #darkModeIconLight { display: inline-block; }
-    #darkModeToggle #darkModeIconDark { display: none; }
-    body.dark-mode #darkModeToggle #darkModeIconLight { display: none !important; }
-    body.dark-mode #darkModeToggle #darkModeIconDark { display: inline-block !important; }
+    #darkModeToggle #darkModeIconLight {
+        display: inline-block;
+    }
 
-    body.expand-image #header-wrapper,
+    #darkModeToggle #darkModeIconDark {
+        display: none;
+    }
+
+    body.dark-mode #darkModeToggle #darkModeIconLight {
+        display: none !important;
+    }
+
+    body.dark-mode #darkModeToggle #darkModeIconDark {
+        display: inline-block !important;
+    }
+
+
+    /* Expanded image mode. */
+
     body.expand-image #sidebar,
     body.expand-image #showTab {
         display: none !important;
@@ -1018,7 +742,7 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
         min-height: 0 !important;
         max-height: none !important;
         margin: 0 !important;
-        padding: 0 !important;
+        padding-top: 30px !important;
         transform: none !important;
         display: flex !important;
         align-items: center !important;
@@ -1058,71 +782,111 @@ body.dark-mode #darkModeIconDark { display: inline-block !important; }
     }
 }
 
+
 /* ============================================================
-   14. MOSAIC VIEW — gallery preview
+   14. IMAGE STRIPS
+   Continuous columns, no gaps or internal scrolling.
    ============================================================ */
 
-/* Compact mosaic preview below the gallery welcome text. */
-#mosaic-view {
-    width: 120px;
-    max-width: 120px;
-    height: 120px;
+#img-strip-view {
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
     margin: 16px auto 0;
     padding: 0;
+    overflow: visible;
     box-sizing: border-box;
-    display: block;
     position: relative;
+    display: block;
+    pointer-events: auto;
 }
 
-body.image-open #mosaic-view { display: none; }
+body.image-open #img-strip-view {
+    display: none;
+}
 
-#mosaic-frame {
+#img-strip-list {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0;
+    width: 100%;
+    max-width: none;
+}
+
+.img-strip-column {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.img-strip-item {
     position: relative;
-    width: 120px;
-    height: 120px;
-    max-width: 120px;
-    margin: 0 auto;
-    aspect-ratio: 1 / 1;
+    display: block;
+    flex: 0 0 21px;
+    width: 21px;
+    height: 21px;
+    min-height: 21px;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
     background: transparent;
-}
-
-body.dark-mode #mosaic-frame { background: transparent; }
-
-.mosaic-cell {
-    position: absolute;
-    display: block;
-    overflow: hidden;
     text-decoration: none;
-    background: #e8e8e8;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    line-height: 0;
+    pointer-events: auto;
 }
 
-.mosaic-cell:hover { filter: brightness(1.1); z-index: 5; }
-.mosaic-cell img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.img-strip-item img {
+    display: block;
+    width: 21px;
+    height: 21px;
+    object-fit: contain;
+    object-position: center;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
 
-.mosaic-tint {
+.img-strip-filename {
     position: absolute;
     inset: 0;
-    background: var(--tint, transparent);
-    opacity: var(--tint-op, 1);
-    transition: opacity .28s ease;
-    pointer-events: none;
-}
-
-.mosaic-cell:hover .mosaic-tint { opacity: 0; }
-
-.mosaic-cell-text {
-    position: absolute;
-    left: 4px;
-    top: 4px;
-    max-width: calc(100% - 8px);
-    pointer-events: none;
-    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 3px;
+    overflow-wrap: anywhere;
+    text-align: center;
+    font-size: 9px;
     line-height: 1.15;
-    word-wrap: break-word;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.72);
+    opacity: 0;
+    transition: opacity 0.12s ease;
+    pointer-events: none;
 }
+
+.img-strip-item:hover .img-strip-filename,
+.img-strip-item:focus-visible .img-strip-filename {
+    opacity: 1;
+}
+
+.img-strip-item:hover img {
+    opacity: 1;
+}
+
+
+/* ============================================================
+   15. TREE MARKERS
+   Created dynamically by the JavaScript.
+   ============================================================ */
 
 .tree-marker {
     display: block;
@@ -1132,5 +896,343 @@ body.dark-mode #mosaic-frame { background: transparent; }
     margin: 4px 0;
 }
 
-.tree-marker-top { margin-bottom: 6px; }
-.tree-marker-bottom { margin-top: 6px; }
+.tree-marker-top {
+    margin-bottom: 6px;
+}
+
+.tree-marker-bottom {
+    margin-top: 6px;
+}
+
+
+/* ============================================================
+   16. MOBILE LAYOUT
+   Mobile layout retained.
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    /* BODY */
+
+    body {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        font-size: clamp(7px, 2vw, 9px);
+    }
+
+
+    /* CONTENT WRAPPER */
+
+    #content-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+    }
+
+
+    /* SIDEBAR */
+
+    #sidebar {
+        position: fixed !important;
+        left: 0 !important;
+        top: 56px !important;
+        bottom: 0 !important;
+        width: clamp(100px, 25vw, 160px) !important;
+        min-width: 80px !important;
+        max-width: 180px !important;
+        z-index: 9998 !important;
+        pointer-events: auto !important;
+        background: transparent;
+        padding: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        overflow: visible !important;
+        border: none !important;
+    }
+
+    #sidebar .tree-content {
+        width: 100% !important;
+        flex: 0 0 auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        padding: 45px 0 !important;
+        margin-bottom: 15px !important;
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(4px) !important;
+        border-radius: 0 !important;
+        border: none !important;
+        outline: none !important;
+    }
+
+
+    /* TOOLBAR */
+
+    #tree-toolbar {
+        display: flex !important;
+        flex: 0 0 136px !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 16px !important;
+        padding: 4px 7px !important;
+        margin: 0 !important;
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(4px) !important;
+        width: 136px !important;
+        box-sizing: border-box !important;
+        border-top: 1px solid rgba(0,0,0,0.05) !important;
+    }
+
+    #tree-toolbar a {
+        color: #000000 !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+    }
+
+    #tree-toolbar img {
+        width: 14px !important;
+        height: 14px !important;
+        vertical-align: middle !important;
+    }
+
+
+    /* TREE TEXT SIZES */
+
+    .group-header {
+        font-size: clamp(6px, 1.8vw, 8px) !important;
+    }
+
+    .group-header .arrow {
+        font-size: clamp(8px, 2.2vw, 7px) !important;
+    }
+
+    .group-links a {
+        font-size: clamp(5px, 1.6vw, 7px) !important;
+    }
+
+
+    /* MAIN IMAGE */
+
+    #mainContent {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding: clamp(110px, 16vh, 170px) 0 0 !important;
+        margin: 0 !important;
+        margin-left: clamp(100px, 25vw, 160px) !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+        background: transparent !important;
+        height: 100% !important;
+        max-height: none !important;
+        position: relative !important;
+    }
+
+    #bookshelfImageArea {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 60vh !important;
+        min-height: auto !important;
+        pointer-events: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: transparent !important;
+    }
+
+    #bookshelfImageArea img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+        pointer-events: none !important;
+    }
+
+    body.tree-hidden #mainContent {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    body.tree-hidden #bookshelfImageArea {
+        max-height: 72vh !important;
+    }
+
+    body.tree-hidden #bookshelfImageArea img {
+        max-width: 92vw !important;
+        max-height: 72vh !important;
+    }
+
+
+    /* INTRO TEXT */
+
+    #intro-title {
+        font-size: 14px !important;
+        margin-bottom: 6px !important;
+    }
+
+    #intro-title .big-letter {
+        font-size: 22px !important;
+    }
+
+    #intro-text {
+        position: absolute !important;
+        top: 0 !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 80% !important;
+        font-size: 9.6px !important;
+        line-height: 1.5 !important;
+        text-align: center !important;
+    }
+
+
+    /* MOBILE ROW UNDER IMAGE */
+
+    #mobile-under-image {
+        display: flex !important;
+        width: 100% !important;
+        align-items: flex-start !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+        margin-top: 8px !important;
+        box-sizing: border-box !important;
+        pointer-events: auto !important;
+    }
+
+
+    /* FLOATING INFORMATION WINDOW */
+
+    #floating-window {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: min(150px, 70%) !important;
+        max-width: 150px !important;
+        z-index: 999999 !important;
+        pointer-events: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        flex: 0 0 auto !important;
+    }
+
+    .dev-tooltip-exact {
+        width: 100% !important;
+        min-height: auto !important;
+        padding: 4px !important;
+        box-sizing: border-box !important;
+    }
+
+    #floating-window .info-icon-permanent {
+        font-size: 8px !important;
+    }
+
+    .tag-exact,
+    .dim-exact,
+    .value-exact,
+    .row-exact.body-row .value-exact {
+        font-size: 8px !important;
+    }
+
+
+    /* SIDEBAR TOGGLE */
+
+    .sidebar-tab,
+    #showTab {
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        color: #202122 !important;
+        padding: 0 4px !important;
+        width: auto !important;
+        height: auto !important;
+        top: clamp(180px, 40vh, 220px) !important;
+        left: 6px !important;
+        border-radius: 0 !important;
+        line-height: 1.4 !important;
+        cursor: pointer !important;
+        z-index: 9999999 !important;
+        pointer-events: auto !important;
+        text-decoration: none !important;
+        background-color: transparent !important;
+    }
+
+    .sidebar-tab:hover,
+    #showTab:hover {
+        background: none !important;
+        color: #000000 !important;
+        text-decoration: underline !important;
+    }
+
+    body.dark-mode .sidebar-tab,
+    body.dark-mode #showTab {
+        color: #e0e0e0 !important;
+        background: none !important;
+        border: none !important;
+    }
+
+    body.dark-mode .sidebar-tab:hover,
+    body.dark-mode #showTab:hover {
+        color: #ffffff !important;
+        background: none !important;
+    }
+
+
+    /* IMAGE STRIPS */
+
+    #img-strip-view {
+        width: 0 !important;
+        max-width: none !important;
+        height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        margin-top: 12px !important;
+    }
+
+    #img-strip-list {
+        gap: 0 !important;
+    }
+
+    .img-strip-item,
+    .img-strip-column {
+        gap: 0 !important;
+    }
+
+
+    /* MOBILE PAGE SCROLL */
+
+    body {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+
+    #content-wrapper {
+        overflow: visible !important;
+        min-height: 0 !important;
+    }
+
+    #mainContent {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        flex: 0 0 auto !important;
+    }
+}
