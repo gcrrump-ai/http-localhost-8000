@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,11 +21,11 @@
             </div>
             <div id="tree-toolbar">
                 <a href="#" id="magnifierToggle" aria-label="Toggle magnifier">
-                    <img src="Collections/Icons/magnifier-icon.png" alt="magnifier icon">
+                    <img src="collections/Icons/magnifier-icon.png" alt="magnifier icon">
                 </a>
                 <a href="#" id="darkModeToggle" aria-label="Toggle dark mode">
-                    <img id="darkModeIconLight" src="Collections/Icons/dark-icon.png" alt="dark mode icon">
-                    <img id="darkModeIconDark" src="Collections/Icons/light-icon.png" alt="light mode icon">
+                    <img id="darkModeIconLight" src="collections/Icons/dark-icon.png" alt="dark mode icon">
+                    <img id="darkModeIconDark" src="collections/Icons/light-icon.png" alt="light mode icon">
                 </a>
                 <a href="#" id="expandImageToggle" aria-label="Expand image">E</a>
             </div>
@@ -345,15 +346,15 @@ function buildTreeDropdown() {
         treeContent.appendChild(header);
         treeContent.appendChild(linksContainer);
     });
-	
-	    var pink = document.createElement('img');
-    pink.src = 'collections/homepage/pink.png';
+
+    var pink = document.createElement('img');
+    pink.src = 'collections/pink.png';
     pink.className = 'tree-marker tree-marker-top';
     pink.alt = '';
     treeContent.insertBefore(pink, treeContent.firstChild);
 
     var purple = document.createElement('img');
-    purple.src = 'collections/homepage/purple.png';
+    purple.src = 'collections/purple.png';
     purple.className = 'tree-marker tree-marker-bottom';
     purple.alt = '';
     treeContent.appendChild(purple);
@@ -853,7 +854,7 @@ window.addEventListener('load', function() {
 (function () {
     'use strict';
 
-    const rootUrl = new URL('Collections/', window.location.href);
+    const rootUrl = new URL('collections/', window.location.href);
     const mount = document.getElementById('img-strip-list');
     if (!mount) return;
 
@@ -938,7 +939,7 @@ window.addEventListener('load', function() {
 
     fetch(rootUrl.href, { cache: 'no-store' })
         .then(function (response) {
-            if (!response.ok) throw new Error('Could not read Collections directory.');
+            if (!response.ok) throw new Error('Could not read collections directory.');
             return response.text();
         })
         .then(function (html) {
@@ -962,12 +963,10 @@ window.addEventListener('load', function() {
             });
         })
         .catch(function (error) {
-            console.warn('Image strips could not load. Check that Collections/ and its imgStrip folders are served with directory listing enabled.', error);
+            console.warn('Image strips could not load. Check that collections/ and its imgStrip folders are served with directory listing enabled.', error);
         });
 })();
 </script>
-
-
 
 </body>
 </html>
