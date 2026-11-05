@@ -68,7 +68,7 @@
 
 <script>
 /* ============================================================
-   APP — sidebar, tree, magnifier, dark mode, expand
+   APP
    ============================================================ */
 
 let globalImageList = [];
@@ -354,6 +354,18 @@ function buildTreeDropdown() {
         treeContent.appendChild(header);
         treeContent.appendChild(linksContainer);
     });
+	
+	    var pink = document.createElement('img');
+    pink.src = 'collections/homepage/pink.png';
+    pink.className = 'tree-marker tree-marker-top';
+    pink.alt = '';
+    treeContent.insertBefore(pink, treeContent.firstChild);
+
+    var purple = document.createElement('img');
+    purple.src = 'collections/homepage/purple.png';
+    purple.className = 'tree-marker tree-marker-bottom';
+    purple.alt = '';
+    treeContent.appendChild(purple);
 }
 
 document.addEventListener('keydown', function(e) {
@@ -781,11 +793,12 @@ window.addEventListener('load', function() {
         setTimeout(preloadFirstImages, 250);
     }
 
-    function goHome() {
+    function returnToGalleryIntro() {
         const imageArea = document.getElementById('bookshelfImageArea');
         if (imageArea) {
             imageArea.innerHTML =
                 '<div id="intro-text">' +
+                    '<div id="intro-title"><span class="big-letter">W</span>elcome!</div>' +
                     '<div>Select an image or folder and Swipe or Press Arrow keys (\u2190, \u2192) to navigate through entire collection.</div>' +
                     '<div>' +
                         '<div>All Rights Reserved Copyright \u00a9 Photographs by George Rump.</div>' +
@@ -831,10 +844,11 @@ window.addEventListener('load', function() {
     const headerLogo = document.getElementById('header-logo');
     if (headerLogo) {
         headerLogo.style.cursor = 'pointer';
-        headerLogo.addEventListener('click', goHome);
+        headerLogo.addEventListener('click', returnToGalleryIntro);
     }
 });
-
+</script>
+<script>
 /* ============================================================
    MOSAIC
    ============================================================ */
@@ -844,67 +858,35 @@ window.addEventListener('load', function() {
 
     const THUMB_BASE = 'collections/Thumbs';
 
-    const DEFAULTS = {
-        ratio: '4 / 3',
+    function saveToFile() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8001/save', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(CFG));
+    }
+
+                                                                                                                                                                            const DEFAULTS = {
+        falloff: 0.27,
+        ramp: 0.12,
+        sliverPx: 6,
         mirror: true,
-        gap: 0,
-        radius: 0,
-
-        sizeMode: 'decay',
-        tailStart: 1,
-        decay: 0.85,
-        powerExp: 4,
-        sizePower: 0.9,
-        sizeFloor: 0.015,
-        headBoost: 8.6,
-
-        folderWeights: {
-            'Belgrade':     1.2,
-            'Chroma':       0.85,
-            'Hangzhou':     1.05,
-            'Music':        0.3,
-            'South Island': 0.45,
-            'Walking':      0.35
-        },
-
-        hue: 127,
-        sat: 11,
-        light: 51,
-        spread: 26,
-        tint: 0.82,
+        folderWeights: {"Belgrade":0.8,"Chroma":1.05,"Hangzhou":3,"Music":1.6,"South Island":2.3,"Walking":0.5},
+        albumLargest: {"Belgrade":0,"Chroma":0,"Hangzhou":0,"Music":66,"South Island":0,"Walking":279},
+        albumSmallest: {"Belgrade":0,"Chroma":31,"Hangzhou":31,"Music":0,"South Island":0,"Walking":25},
+        folderHex: {"Belgrade":"#ffffff","Chroma":"#6be9ff","Hangzhou":"#000000","Music":"#c2c2c2","South Island":"#3b7500","Walking":"#cc0000"},
         colourMode: 'folder',
-        folderHues: {
-            'Belgrade':     30,
-            'Chroma':      280,
-            'Hangzhou':    160,
-            'Music':       340,
-            'South Island':200,
-            'Walking':     100
-        },
-
-        overlay: {
-            on: true,
-            colour: '#dedede',
-            opacity: 0.36,
-            weight: 400,
-            spacing: 0.04,
-            items: '[C 66 3 20\n' +
-                   'h 88 15 15\n' +
-                   'iSland 32 30 12\n' +
-                   'outh 29 51 10 90\n' +
-                   'w 12 60 20\n' +
-                   'alking  24 70 2\n' +
-                   'M 68 63 26\n' +
-                   'usi  78 85 14\n' +
-                   'p-O-a  10 20 6'
-        }
-    };
+        tint: 0.76,
+        cellText: {},
+        cellFont: {},
+        cellColour: {},
+        cellSize: {},
+        cellRot: {}
+    };;
 
     let CFG = JSON.parse(JSON.stringify(DEFAULTS));
 
     function buildAlbums() {
         if (typeof MASTER_IMAGE_REGISTRY === 'undefined') return [];
-
         const byFolder = {};
         MASTER_IMAGE_REGISTRY.forEach(function (path) {
             const parts = path.split('/');
@@ -913,80 +895,35 @@ window.addEventListener('load', function() {
             if (folder === 'homepage') return;
             (byFolder[folder] = byFolder[folder] || []).push(path);
         });
-
         Object.keys(byFolder).forEach(function (folder) {
             byFolder[folder].sort(function (a, b) {
-                const na = a.match(/(\d+)/);
-                const nb = b.match(/(\d+)/);
+                const na = a.match(/(\d+)/), nb = b.match(/(\d+)/);
                 return (na ? +na[0] : 0) - (nb ? +nb[0] : 0);
             });
         });
-
         const folders = Object.keys(byFolder).sort();
-        const albums = [];
-
-        folders.forEach(function (folder) {
+        return folders.map(function (folder) {
             const photos = byFolder[folder].map(function (path, i) {
-                const fileName = path.split('/').pop();
-                const thumbPath = THUMB_BASE + '/' +
-                    encodeURIComponent(folder) + '/' +
-                    encodeURIComponent(fileName);
+                const fname = path.split('/').pop();
                 return {
                     path: path,
-                    thumb: thumbPath,
+                    thumb: THUMB_BASE + '/' + encodeURIComponent(folder) + '/' + encodeURIComponent(fname),
                     folder: folder,
                     localIdx: i
                 };
             });
-
-            const weight = (CFG.folderWeights[folder] != null ? CFG.folderWeights[folder] : 1)
-                         * photos.length;
-
-            albums.push({ name: folder, photos: photos, weight: weight });
+            return {
+                name: folder,
+                photos: photos,
+                weight: (CFG.folderWeights[folder] || 1) * photos.length
+            };
         });
-
-        return albums;
     }
 
-    function weightAt(i, n) {
-        let w;
-
-        switch (CFG.sizeMode) {
-            case 'power':
-                w = CFG.tailStart / Math.pow(i + 1, CFG.powerExp);
-                break;
-            case 'linear':
-                w = CFG.tailStart * (1 - (i / (n - 1 || 1)));
-                break;
-            case 'equal':
-                w = CFG.tailStart;
-                break;
-            case 'decay':
-            default:
-                w = CFG.tailStart * Math.pow(CFG.decay, i);
-                break;
-        }
-
-        if (CFG.sizePower !== 1) {
-            w = Math.pow(Math.max(w, 0), CFG.sizePower);
-        }
-
-        const floor = CFG.tailStart * CFG.sizeFloor;
-        w = Math.max(w, floor);
-
-        if (i === 0) w = CFG.tailStart * Math.min(CFG.headBoost, 3);
-
-        return w;
-    }
-
-    function paint(i, folder) {
-        if (CFG.colourMode === 'dominant') return null;
-        const hue = CFG.folderHues[folder] != null ? CFG.folderHues[folder] : CFG.hue;
-        const h = (i * 137.508 + hue) % 360;
-        const s = Math.max(0, Math.min(96, CFG.sat + (i % 3) * CFG.spread * 0.6));
-        const l = Math.max(16, Math.min(90,
-            CFG.light + ((i * 2) % 3 - 1) * CFG.spread * 0.4));
-        return 'hsl(' + h.toFixed(1) + ' ' + s.toFixed(1) + '% ' + l.toFixed(1) + '%)';
+    function curveWeight(t, falloff, ramp) {
+        const u = Math.max(0, (t - ramp) / (1 - ramp || 1));
+        const k = 1 / (1 - falloff);
+        return 1 - Math.pow(u, k);
     }
 
     function squarify(items, x, y, w, h, out) {
@@ -996,9 +933,12 @@ window.addEventListener('load', function() {
             return;
         }
         const total = items.reduce(function (s, d) { return s + d.v; }, 0);
+        if (total <= 0) {
+            out.push(Object.assign({}, items[0], { x: x, y: y, w: w, h: h }));
+            return;
+        }
         const short = Math.min(w, h);
         let row = [], sum = 0, best = Infinity;
-
         for (let i = 0; i < items.length; i++) {
             const test = row.concat(items[i]);
             const testSum = sum + items[i].v;
@@ -1009,11 +949,8 @@ window.addEventListener('load', function() {
                 worst = Math.max(worst, thick / e, e / thick);
             }
             if (row.length && worst > best) break;
-            best = worst;
-            row = test;
-            sum = testSum;
+            best = worst; row = test; sum = testSum;
         }
-
         const strip = (sum / total) * w * h / short;
         let p = (w >= h) ? y : x;
         for (const d of row) {
@@ -1022,115 +959,95 @@ window.addEventListener('load', function() {
             else out.push(Object.assign({}, d, { x: p, y: y, w: size, h: strip }));
             p += size;
         }
-
         const rest = items.slice(row.length);
         if (w >= h) squarify(rest, x + strip, y, w - strip, h, out);
         else squarify(rest, x, y + strip, w, h - strip, out);
     }
 
-    function parseOverlay(text) {
-        if (!text) return [];
-        return text.split('\n').flatMap(function (line) {
-            const p = line.trim().split(/\s+/);
-            if (!p[0]) return [];
-            return [{
-                text: p[0],
-                x: parseFloat(p[1]) || 0,
-                y: parseFloat(p[2]) || 0,
-                size: parseFloat(p[3]) || 50,
-                rot: parseFloat(p[4]) || 0
-            }];
-        });
-    }
-
-    function hexToRgba(hex, a) {
-        const h = hex.replace('#', '');
-        return 'rgba(' + parseInt(h.slice(0, 2), 16) + ',' +
-                        parseInt(h.slice(2, 4), 16) + ',' +
-                        parseInt(h.slice(4, 6), 16) + ',' + a + ')';
-    }
-
     const frame = document.getElementById('mosaic-frame');
-    const overlayLayer = document.querySelector('#mosaic-frame .mosaic-overlay');
-    if (!frame || !overlayLayer) return;
-
-    const dominantCache = new Map();
-    function sampleDominant(imgEl) {
-        try {
-            const c = document.createElement('canvas');
-            c.width = 1; c.height = 1;
-            const ctx = c.getContext('2d', { willReadFrequently: true });
-            ctx.drawImage(imgEl, 0, 0, 1, 1);
-            const d = ctx.getImageData(0, 0, 1, 1).data;
-            return [d[0], d[1], d[2]];
-        } catch (e) { return null; }
-    }
+    if (!frame) return;
 
     function render() {
         const W = frame.clientWidth, H = frame.clientHeight;
         if (!W || !H) return;
 
-        frame.style.setProperty('--gap', CFG.gap + 'px');
-        frame.style.setProperty('--radius', CFG.radius + 'px');
-        frame.style.aspectRatio = CFG.ratio;
-
         const albums = buildAlbums();
-        if (!albums.length) {
-            frame.querySelectorAll('.mosaic-cell').forEach(function (el) { el.remove(); });
-            overlayLayer.innerHTML = '';
-            return;
-        }
+        if (!albums.length) return;
 
-        const albumBoxes = [];
-        const albumInput = albums.map(function (a) {
-            return { album: a, v: a.weight };
-        });
+        const albumInput = albums.map(function (a) { return { album: a, v: a.weight }; });
         albumInput.sort(function (a, b) { return b.v - a.v; });
+        const albumBoxes = [];
         squarify(albumInput, 0, 0, W, H, albumBoxes);
-
-        if (CFG.mirror) {
-            for (const a of albumBoxes) a.x = W - a.x - a.w;
-        }
+        if (CFG.mirror) for (const a of albumBoxes) a.x = W - a.x - a.w;
 
         const tiles = [];
-
         albumBoxes.forEach(function (box) {
             const album = box.album;
-            if (!album || !album.photos || !album.photos.length) return;
-
+            if (!album || !album.photos.length) return;
             const n = album.photos.length;
+            const largest = CFG.albumLargest[album.name] || 150;
+            const smallest = CFG.albumSmallest[album.name] || 4;
+            const wMax = largest * largest;
+            const wMin = smallest * smallest;
+
             const weighted = album.photos.map(function (p, i) {
+                const t = n === 1 ? 0 : i / (n - 1);
+                const base = curveWeight(t, CFG.falloff, CFG.ramp);
                 return {
                     path: p.path,
                     thumb: p.thumb,
                     folder: p.folder,
-                    v: weightAt(i, n)
+                    v: wMin + base * (wMax - wMin)
                 };
             });
-
             weighted.sort(function (a, b) { return b.v - a.v; });
-
             const photoBoxes = [];
             squarify(weighted, box.x, box.y, box.w, box.h, photoBoxes);
-
             photoBoxes.forEach(function (b) { tiles.push(b); });
         });
 
+        const slivers = [], main = [];
+        tiles.forEach(function (b) {
+            if (b.w < CFG.sliverPx || b.h < CFG.sliverPx) slivers.push(b);
+            else main.push(b);
+        });
+
+        if (slivers.length >= 3) {
+            const stripH = CFG.sliverPx;
+            const stripW = W / slivers.length;
+            slivers.forEach(function (b, i) {
+                b.x = i * stripW;
+                b.y = H - stripH;
+                b.w = stripW;
+                b.h = stripH;
+            });
+            const mainInput = main.map(function (b) { return { tile: b, v: b.w * b.h }; });
+            mainInput.sort(function (a, b) { return b.v - a.v; });
+            const mainBoxes = [];
+            squarify(mainInput, 0, 0, W, H - stripH, mainBoxes);
+            mainBoxes.forEach(function (b) {
+                b.tile.x = b.x; b.tile.y = b.y; b.tile.w = b.w; b.tile.h = b.h;
+            });
+        } else if (slivers.length > 0) {
+            slivers.forEach(function (s) {
+                const i = tiles.indexOf(s);
+                if (i !== -1) tiles.splice(i, 1);
+            });
+        }
+
         frame.querySelectorAll('.mosaic-cell').forEach(function (el) { el.remove(); });
 
-        const cells = tiles.map(function (b, idx) {
+        const cells = tiles.map(function (b) {
             const el = document.createElement('a');
             el.className = 'mosaic-cell';
             el.href = b.path;
             el.title = b.path.split('/').pop();
             el.dataset.folder = b.folder;
             el.dataset.path = b.path;
-            Object.assign(el.style, {
-                left:   (b.x / W * 100) + '%',
-                top:    (b.y / H * 100) + '%',
-                width:  (b.w / W * 100) + '%',
-                height: (b.h / H * 100) + '%'
-            });
+            el.style.left = (b.x / W * 100) + '%';
+            el.style.top = (b.y / H * 100) + '%';
+            el.style.width = (b.w / W * 100) + '%';
+            el.style.height = (b.h / H * 100) + '%';
 
             const img = document.createElement('img');
             img.src = b.thumb;
@@ -1140,23 +1057,23 @@ window.addEventListener('load', function() {
             img.onerror = function () { this.onerror = null; this.remove(); };
             el.appendChild(img);
 
-            const bg = paint(idx, b.folder);
+            const hex = CFG.folderHex[b.folder] || '#00A307';
             const tint = document.createElement('div');
             tint.className = 'mosaic-tint';
-            tint.style.setProperty('--tint',
-                CFG.colourMode === 'dominant' ? 'transparent' : bg);
+            tint.style.setProperty('--tint', CFG.colourMode === 'dominant' ? 'transparent' : hex);
             tint.style.setProperty('--tint-op', String(CFG.tint));
             el.appendChild(tint);
 
-            if (CFG.colourMode === 'dominant') {
-                img.addEventListener('load', function () {
-                    let rgb = dominantCache.get(b.thumb);
-                    if (!rgb) {
-                        rgb = sampleDominant(img);
-                        if (rgb) dominantCache.set(b.thumb, rgb);
-                    }
-                    if (rgb) tint.style.setProperty('--tint', 'rgb(' + rgb.join(',') + ')');
-                }, { once: true });
+            const txt = CFG.cellText[b.path];
+            if (txt) {
+                const span = document.createElement('span');
+                span.className = 'mosaic-cell-text';
+                span.textContent = txt;
+                span.style.fontFamily = CFG.cellFont[b.path] || "'Linux Libertine','Georgia',serif";
+                span.style.fontSize = (CFG.cellSize[b.path] || 11) + 'px';
+                span.style.color = CFG.cellColour[b.path] || hex;
+                if (CFG.cellRot[b.path]) span.style.transform = 'rotate(' + CFG.cellRot[b.path] + 'deg)';
+                el.appendChild(span);
             }
 
             el.addEventListener('click', function (e) {
@@ -1165,279 +1082,236 @@ window.addEventListener('load', function() {
                     loadImageAndUpdateFloating(this.dataset.path, this.dataset.folder, false);
                 }
             });
-
             return el;
         });
 
         frame.prepend.apply(frame, cells);
-
-        overlayLayer.innerHTML = '';
-        if (!CFG.overlay.on) return;
-        const o = CFG.overlay;
-        const rgba = hexToRgba(o.colour, o.opacity);
-        parseOverlay(o.items).forEach(function (item) {
-            const span = document.createElement('span');
-            span.textContent = item.text;
-            Object.assign(span.style, {
-                left: item.x + '%',
-                top: item.y + '%',
-                fontSize: (item.size / 100 * W) + 'px',
-                fontWeight: o.weight,
-                letterSpacing: o.spacing + 'em',
-                color: rgba
-            });
-            if (item.rot) span.style.transform = 'rotate(' + item.rot + 'deg)';
-            overlayLayer.appendChild(span);
-        });
     }
 
-    new ResizeObserver(render).observe(frame);
-    render();
-
-    /* ---- Editor panel ---- */
-
-    const style = document.createElement('style');
-    style.textContent =
-        '#mosaic-editor-toggle{position:fixed;right:18px;bottom:18px;z-index:9999999;width:44px;height:44px;border-radius:50%;background:#2bff88;color:#04220f;border:0;cursor:pointer;font-size:18px;font-weight:700;box-shadow:0 0 20px rgba(43,255,136,.55);display:flex;align-items:center;justify-content:center;}' +
-        '#mosaic-editor{position:fixed;right:18px;bottom:74px;z-index:9999998;width:300px;max-height:76vh;overflow-y:auto;background:rgba(13,20,36,.96);border:1px solid #12c46a;border-radius:10px;padding:12px;color:#cfe9da;font:12px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;box-shadow:0 0 0 1px rgba(43,255,136,.14),0 10px 30px rgba(0,0,0,.5);display:none;}' +
-        '#mosaic-editor.open{display:block;}' +
-        '#mosaic-editor h3{margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(43,255,136,.22);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#2bff88;}' +
-        '#mosaic-editor .ctl{margin-bottom:8px;}' +
-        '#mosaic-editor .ctl-top{display:flex;justify-content:space-between;margin-bottom:3px;font-size:11px;}' +
-        '#mosaic-editor .ctl-val{color:#2bff88;font-family:monospace;font-weight:700;}' +
-        '#mosaic-editor input[type=range]{width:100%;accent-color:#2bff88;height:14px;}' +
-        '#mosaic-editor select{width:100%;padding:4px 6px;background:#131c30;color:#e7fff2;border:1px solid rgba(43,255,136,.22);border-radius:4px;font-size:11px;}' +
-        '#mosaic-editor .section{margin-top:12px;padding-top:10px;border-top:1px solid rgba(43,255,136,.14);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#12c46a;margin-bottom:6px;}' +
-        '#mosaic-editor .actions{display:flex;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(43,255,136,.14);}' +
-        '#mosaic-editor button{flex:1;padding:6px;border-radius:4px;cursor:pointer;font-weight:700;font-size:11px;background:#2bff88;color:#04220f;border:1px solid #2bff88;}' +
-        '#mosaic-editor button.ghost{background:transparent;color:#2bff88;border:1px solid #12c46a;}';
-    document.head.appendChild(style);
+    const css = document.createElement('style');
+    css.textContent =
+        '#mw{position:fixed;top:80px;right:20px;z-index:9999998;width:340px;max-height:80vh;background:rgba(13,20,36,.96);border:1px solid #12c46a;border-radius:10px;color:#cfe9da;font:12px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;}' +
+        '#mw.collapsed .mw-body{display:none;}' +
+        '#mw-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:move;background:rgba(43,255,136,.08);border-bottom:1px solid rgba(43,255,136,.2);}' +
+        '#mw-head .ttl{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:10px;color:#2bff88;flex:1;}' +
+        '#mw-head button{background:transparent;border:1px solid rgba(43,255,136,.3);color:#2bff88;width:22px;height:22px;border-radius:4px;cursor:pointer;font:700 12px/1 monospace;}' +
+        '.mw-body{overflow-y:auto;padding:10px 12px 14px;max-height:calc(80vh - 44px);}' +
+        '.mw-sec{margin-top:12px;padding-top:10px;border-top:1px solid rgba(43,255,136,.14);}' +
+        '.mw-sec:first-child{margin-top:0;padding-top:0;border-top:0;}' +
+        '.mw-sec h4{margin:0 0 8px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#12c46a;cursor:pointer;user-select:none;}' +
+        '.mw-sec h4::before{content:"\u25be ";color:#2bff88;}' +
+        '.mw-sec.closed h4::before{content:"\u25b8 ";}' +
+        '.mw-sec.closed .mw-sec-body{display:none;}' +
+        '.mw-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;font-size:11px;}' +
+        '.mw-row .lbl{flex:0 0 110px;color:#cfe9da;}' +
+        '.mw-row input[type=range]{flex:1;accent-color:#2bff88;height:14px;}' +
+        '.mw-row input[type=number]{width:60px;padding:3px 5px;background:#131c30;color:#e7fff2;border:1px solid rgba(43,255,136,.22);border-radius:4px;font:600 11px/1.2 monospace;text-align:right;}' +
+        '.mw-row input[type=color]{width:40px;height:24px;padding:1px;background:#131c30;border:1px solid rgba(43,255,136,.22);border-radius:4px;cursor:pointer;}' +
+        '.mw-row select{flex:1;padding:3px;background:#131c30;color:#e7fff2;border:1px solid rgba(43,255,136,.22);border-radius:4px;font:600 11px/1.2 inherit;}' +
+        '.mw-row .val{color:#2bff88;font-family:monospace;font-weight:700;min-width:40px;text-align:right;}' +
+        '.mw-sub{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7bffb4;margin:8px 0 4px;}' +
+        '.mw-actions{display:flex;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(43,255,136,.14);}' +
+        '.mw-actions button{flex:1;padding:6px;border-radius:4px;cursor:pointer;font:700 11px/1 inherit;background:#2bff88;color:#04220f;border:1px solid #2bff88;}' +
+        '.mw-actions button.ghost{background:transparent;color:#2bff88;border:1px solid #12c46a;}' +
+        '#mw-toggle{position:fixed;right:20px;bottom:20px;z-index:9999999;width:44px;height:44px;border-radius:50%;background:#2bff88;color:#04220f;border:0;cursor:pointer;font:700 18px/1 monospace;box-shadow:0 0 20px rgba(43,255,136,.55);}' +
+        '.celltext-popup{position:absolute;background:#0d1424;border:1px solid #12c46a;border-radius:6px;padding:8px;z-index:10;font:11px/1.3 inherit;color:#cfe9da;box-shadow:0 4px 18px rgba(0,0,0,.6);}' +
+        '.celltext-popup input{width:100%;padding:4px 6px;background:#131c30;color:#e7fff2;border:1px solid rgba(43,255,136,.3);border-radius:4px;font:600 11px/1.2 inherit;margin-bottom:4px;}' +
+        '.celltext-popup .row{display:flex;gap:4px;margin-bottom:4px;}' +
+        '.celltext-popup button{padding:4px 8px;background:#2bff88;color:#04220f;border:0;border-radius:4px;font:700 10px/1 inherit;cursor:pointer;}' +
+        '.celltext-popup button.ghost{background:transparent;color:#2bff88;border:1px solid #12c46a;}' +
+        '.mosaic-cell-text{position:absolute;left:4px;top:4px;max-width:calc(100% - 8px);pointer-events:none;font-weight:400;line-height:1.15;word-wrap:break-word;}' +
+        '#mosaic-frame{background:transparent !important;}';
+    document.head.appendChild(css);
 
     const toggleBtn = document.createElement('button');
-    toggleBtn.id = 'mosaic-editor-toggle';
+    toggleBtn.id = 'mw-toggle';
     toggleBtn.textContent = '\u2699';
-    toggleBtn.title = 'Mosaic controls';
+    toggleBtn.title = 'Mosaic editor';
     document.body.appendChild(toggleBtn);
 
     const editor = document.createElement('div');
-    editor.id = 'mosaic-editor';
+    editor.id = 'mw';
 
-    let folderWeightHTML = '';
-    Object.keys(CFG.folderWeights).forEach(function (name) {
-        const key = 'fw_' + name.replace(/\s+/g, '_');
-        folderWeightHTML +=
-            '<div class="ctl">' +
-              '<div class="ctl-top"><span>' + name + '</span>' +
-              '<span class="ctl-val" id="e-' + key + '-v">' + CFG.folderWeights[name].toFixed(2) + '</span></div>' +
-              '<input type="range" id="e-' + key + '" min="0.1" max="6" step="0.05" value="' + CFG.folderWeights[name] + '">' +
-            '</div>';
+    const folders = Object.keys(CFG.folderWeights);
+
+    let physHTML = '';
+    folders.forEach(function (name) {
+        const k = name.replace(/\s+/g, '_');
+        physHTML +=
+            '<div class="mw-sub">' + name + '</div>' +
+            '<div class="mw-row"><span class="lbl">Largest px</span><input type="number" id="mw-L-' + k + '" min="40" max="400" value="' + CFG.albumLargest[name] + '"></div>' +
+            '<div class="mw-row"><span class="lbl">Smallest px</span><input type="number" id="mw-S-' + k + '" min="2" max="50" value="' + CFG.albumSmallest[name] + '"></div>' +
+            '<div class="mw-row"><span class="lbl">Album weight</span><input type="range" id="mw-W-' + k + '" min="0.1" max="3" step="0.05" value="' + CFG.folderWeights[name] + '"><span class="val" id="mw-Wv-' + k + '">' + CFG.folderWeights[name].toFixed(2) + '</span></div>';
     });
 
-    let folderHueHTML = '';
-    Object.keys(CFG.folderHues).forEach(function (name) {
-        const key = 'fh_' + name.replace(/\s+/g, '_');
-        folderHueHTML +=
-            '<div class="ctl">' +
-              '<div class="ctl-top"><span>' + name + '</span>' +
-              '<span class="ctl-val" id="e-' + key + '-v">' + CFG.folderHues[name] + '</span></div>' +
-              '<input type="range" id="e-' + key + '" min="0" max="360" step="1" value="' + CFG.folderHues[name] + '">' +
-            '</div>';
+    let colHTML = '';
+    folders.forEach(function (name) {
+        const k = name.replace(/\s+/g, '_');
+        colHTML += '<div class="mw-row"><span class="lbl">' + name + '</span><input type="color" id="mw-C-' + k + '" value="' + CFG.folderHex[name] + '"></div>';
     });
 
     editor.innerHTML =
-        '<h3>Mosaic Controls</h3>' +
+        '<div id="mw-head"><span class="ttl">Mosaic Editor</span>' +
+        '<button id="mw-min" title="Collapse">\u2212</button>' +
+        '<button id="mw-close" title="Close">\u00d7</button></div>' +
+        '<div class="mw-body">' +
 
-        '<div class="section">Layout</div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Frame aspect</span></div>' +
-        '<select id="e-ratio">' +
-            '<option value="4 / 3"' + (CFG.ratio === '4 / 3' ? ' selected' : '') + '>Landscape 4:3</option>' +
-            '<option value="3 / 2"' + (CFG.ratio === '3 / 2' ? ' selected' : '') + '>Landscape 3:2</option>' +
-            '<option value="16 / 9"' + (CFG.ratio === '16 / 9' ? ' selected' : '') + '>Landscape 16:9</option>' +
-            '<option value="1 / 1"' + (CFG.ratio === '1 / 1' ? ' selected' : '') + '>Square 1:1</option>' +
-            '<option value="3 / 4"' + (CFG.ratio === '3 / 4' ? ' selected' : '') + '>Portrait 3:4</option>' +
-        '</select></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Gap</span><span class="ctl-val" id="e-gap-v">' + CFG.gap + '</span></div>' +
-        '<input type="range" id="e-gap" min="0" max="8" step="1" value="' + CFG.gap + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Corner radius</span><span class="ctl-val" id="e-radius-v">' + CFG.radius + '</span></div>' +
-        '<input type="range" id="e-radius" min="0" max="14" step="1" value="' + CFG.radius + '"></div>' +
+        '<div class="mw-sec" id="mw-phys"><h4>Physics</h4><div class="mw-sec-body">' +
+            '<div class="mw-row"><span class="lbl">Falloff</span><input type="range" id="mw-falloff" min="0.1" max="0.99" step="0.01" value="' + CFG.falloff + '"><span class="val" id="mw-falloff-v">' + CFG.falloff.toFixed(2) + '</span></div>' +
+            '<div class="mw-row"><span class="lbl">Ramp</span><input type="range" id="mw-ramp" min="0" max="0.8" step="0.01" value="' + CFG.ramp + '"><span class="val" id="mw-ramp-v">' + CFG.ramp.toFixed(2) + '</span></div>' +
+            '<div class="mw-row"><span class="lbl">Sliver px</span><input type="number" id="mw-sliver" min="6" max="40" value="' + CFG.sliverPx + '"></div>' +
+            physHTML +
+        '</div></div>' +
 
-        '<div class="section">Album sizes</div>' +
-        folderWeightHTML +
+        '<div class="mw-sec" id="mw-col"><h4>Colour</h4><div class="mw-sec-body">' +
+            colHTML +
+            '<div class="mw-row"><span class="lbl">Mode</span><select id="mw-colmode">' +
+                '<option value="folder"' + (CFG.colourMode === 'folder' ? ' selected' : '') + '>Folder</option>' +
+                '<option value="dominant"' + (CFG.colourMode === 'dominant' ? ' selected' : '') + '>Dominant</option>' +
+            '</select></div>' +
+            '<div class="mw-row"><span class="lbl">Tint opacity</span><input type="range" id="mw-tint" min="0" max="1" step="0.01" value="' + CFG.tint + '"><span class="val" id="mw-tint-v">' + CFG.tint.toFixed(2) + '</span></div>' +
+        '</div></div>' +
 
-        '<div class="section">Size curve (inside each album)</div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Size model</span></div>' +
-        '<select id="e-sizeMode">' +
-            '<option value="decay"' + (CFG.sizeMode === 'decay' ? ' selected' : '') + '>Exponential decay</option>' +
-            '<option value="power"' + (CFG.sizeMode === 'power' ? ' selected' : '') + '>Power law</option>' +
-            '<option value="linear"' + (CFG.sizeMode === 'linear' ? ' selected' : '') + '>Linear ramp</option>' +
-            '<option value="equal"' + (CFG.sizeMode === 'equal' ? ' selected' : '') + '>Equal</option>' +
-        '</select></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Largest photo weight</span><span class="ctl-val" id="e-tailStart-v">' + CFG.tailStart + '</span></div>' +
-        '<input type="range" id="e-tailStart" min="1" max="200" step="1" value="' + CFG.tailStart + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Decay</span><span class="ctl-val" id="e-decay-v">' + CFG.decay.toFixed(3) + '</span></div>' +
-        '<input type="range" id="e-decay" min="0.85" max="0.999" step="0.001" value="' + CFG.decay + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Power exponent k</span><span class="ctl-val" id="e-powerExp-v">' + CFG.powerExp.toFixed(2) + '</span></div>' +
-        '<input type="range" id="e-powerExp" min="0.4" max="4" step="0.05" value="' + CFG.powerExp + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Size power (contrast)</span><span class="ctl-val" id="e-sizePower-v">' + CFG.sizePower.toFixed(2) + '</span></div>' +
-        '<input type="range" id="e-sizePower" min="0.3" max="4" step="0.05" value="' + CFG.sizePower + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Smallest floor</span><span class="ctl-val" id="e-sizeFloor-v">' + CFG.sizeFloor.toFixed(3) + '</span></div>' +
-        '<input type="range" id="e-sizeFloor" min="0.005" max="0.5" step="0.005" value="' + CFG.sizeFloor + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>First-photo boost</span><span class="ctl-val" id="e-headBoost-v">' + CFG.headBoost.toFixed(1) + '</span></div>' +
-        '<input type="range" id="e-headBoost" min="1" max="10" step="0.1" value="' + CFG.headBoost + '"></div>' +
+        '<div class="mw-sec" id="mw-txt"><h4>Text</h4><div class="mw-sec-body">' +
+            '<div style="margin:6px 0;font-size:10.5px;color:#7e93b3;line-height:1.45;">Right-click any tile on the mosaic to add / edit its text.</div>' +
+        '</div></div>' +
 
-        '<div class="section">Palette</div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Colour mode</span></div>' +
-        '<select id="e-colourMode">' +
-            '<option value="folder"' + (CFG.colourMode === 'folder' ? ' selected' : '') + '>Folder hue</option>' +
-            '<option value="dominant"' + (CFG.colourMode === 'dominant' ? ' selected' : '') + '>Image dominant colour</option>' +
-        '</select></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Hue offset</span><span class="ctl-val" id="e-hue-v">' + CFG.hue + '</span></div>' +
-        '<input type="range" id="e-hue" min="0" max="360" step="1" value="' + CFG.hue + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Saturation</span><span class="ctl-val" id="e-sat-v">' + CFG.sat + '</span></div>' +
-        '<input type="range" id="e-sat" min="0" max="95" step="1" value="' + CFG.sat + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Lightness</span><span class="ctl-val" id="e-light-v">' + CFG.light + '</span></div>' +
-        '<input type="range" id="e-light" min="20" max="90" step="1" value="' + CFG.light + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Spread</span><span class="ctl-val" id="e-spread-v">' + CFG.spread + '</span></div>' +
-        '<input type="range" id="e-spread" min="0" max="60" step="1" value="' + CFG.spread + '"></div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Tint opacity</span><span class="ctl-val" id="e-tint-v">' + CFG.tint.toFixed(2) + '</span></div>' +
-        '<input type="range" id="e-tint" min="0" max="1" step="0.01" value="' + CFG.tint + '"></div>' +
-
-        '<div class="section">Folder hues</div>' +
-        folderHueHTML +
-
-        '<div class="section">Overlay text</div>' +
-        '<div class="ctl"><div class="ctl-top"><span>Opacity</span><span class="ctl-val" id="e-ovOpacity-v">' + CFG.overlay.opacity.toFixed(2) + '</span></div>' +
-        '<input type="range" id="e-ovOpacity" min="0" max="1" step="0.01" value="' + CFG.overlay.opacity + '"></div>' +
-
-        '<div class="actions">' +
-            '<button id="e-reset" class="ghost">Reset</button>' +
-            '<button id="e-copy">Copy settings</button>' +
-        '</div>';
+        '<div class="mw-actions">' +
+            '<button id="mw-reset" class="ghost">Reset</button>' +
+            '<button id="mw-copy">Save</button>' +
+        '</div></div>';
 
     document.body.appendChild(editor);
 
     toggleBtn.addEventListener('click', function () {
-        editor.classList.toggle('open');
+        editor.style.display = editor.style.display === 'none' ? 'flex' : 'none';
+    });
+    document.getElementById('mw-min').addEventListener('click', function () { editor.classList.toggle('collapsed'); });
+    document.getElementById('mw-close').addEventListener('click', function () { editor.style.display = 'none'; });
+
+    (function () {
+        const head = document.getElementById('mw-head');
+        let drag = false, ox = 0, oy = 0;
+        head.addEventListener('pointerdown', function (e) {
+            if (e.target.tagName === 'BUTTON') return;
+            drag = true;
+            ox = e.clientX - editor.offsetLeft;
+            oy = e.clientY - editor.offsetTop;
+            head.setPointerCapture(e.pointerId);
+        });
+        head.addEventListener('pointermove', function (e) {
+            if (!drag) return;
+            editor.style.left = (e.clientX - ox) + 'px';
+            editor.style.top = (e.clientY - oy) + 'px';
+            editor.style.right = 'auto';
+        });
+        head.addEventListener('pointerup', function () {
+            drag = false;
+            try { localStorage.setItem('mosaic-editor-pos', JSON.stringify({ l: editor.style.left, t: editor.style.top })); } catch (err) {}
+        });
+        try {
+            const pos = JSON.parse(localStorage.getItem('mosaic-editor-pos') || 'null');
+            if (pos && pos.l) { editor.style.left = pos.l; editor.style.top = pos.t; editor.style.right = 'auto'; }
+        } catch (err) {}
+    })();
+
+    document.querySelectorAll('.mw-sec h4').forEach(function (h) {
+        h.addEventListener('click', function () { h.parentElement.classList.toggle('closed'); });
     });
 
-    function bind(id, key, fmt, onChange) {
+    function bindNum(id, fn) {
         const el = document.getElementById(id);
-        const out = document.getElementById(id + '-v');
         if (!el) return;
-        el.addEventListener('input', function () {
-            const v = el.value;
-            const parsed = isNaN(parseFloat(v)) ? v : parseFloat(v);
-            if (onChange) onChange(parsed);
-            else CFG[key] = parsed;
-            if (out) out.textContent = fmt ? fmt(v) : v;
-            render();
-        });
-        if (out) out.textContent = fmt ? fmt(el.value) : el.value;
+        el.addEventListener('input', function () { const v = parseFloat(el.value); if (!isNaN(v)) { fn(v); render(); } });
     }
-
-    bind('e-gap', 'gap', function (v) { return v + 'px'; });
-    bind('e-radius', 'radius', function (v) { return v + 'px'; });
-    bind('e-tailStart', 'tailStart', function (v) { return v; });
-    bind('e-decay', 'decay', function (v) { return parseFloat(v).toFixed(3); });
-    bind('e-powerExp', 'powerExp', function (v) { return parseFloat(v).toFixed(2); });
-    bind('e-sizePower', 'sizePower', function (v) { return parseFloat(v).toFixed(2); });
-    bind('e-sizeFloor', 'sizeFloor', function (v) { return parseFloat(v).toFixed(3); });
-    bind('e-headBoost', 'headBoost', function (v) { return parseFloat(v).toFixed(1); });
-    bind('e-hue', 'hue', function (v) { return v; });
-    bind('e-sat', 'sat', function (v) { return v; });
-    bind('e-light', 'light', function (v) { return v; });
-    bind('e-spread', 'spread', function (v) { return v; });
-    bind('e-tint', 'tint', function (v) { return parseFloat(v).toFixed(2); });
-    bind('e-ovOpacity', null, function (v) {
-        return parseFloat(v).toFixed(2);
-    }, function (v) { CFG.overlay.opacity = v; });
-
-    document.getElementById('e-sizeMode').addEventListener('change', function () {
-        CFG.sizeMode = this.value;
-        render();
-    });
-
-    document.getElementById('e-ratio').addEventListener('change', function () {
-        CFG.ratio = this.value;
-        render();
-    });
-
-    document.getElementById('e-colourMode').addEventListener('change', function () {
-        CFG.colourMode = this.value;
-        render();
-    });
-
-    Object.keys(CFG.folderWeights).forEach(function (name) {
-        const key = 'fw_' + name.replace(/\s+/g, '_');
-        const el = document.getElementById('e-' + key);
-        const out = document.getElementById('e-' + key + '-v');
+    function bindCol(id, fn) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', function () { fn(el.value); render(); });
+    }
+    function bindRange(id, idv, fn, fmt) {
+        const el = document.getElementById(id), out = document.getElementById(idv);
         if (!el) return;
         el.addEventListener('input', function () {
             const v = parseFloat(el.value);
-            CFG.folderWeights[name] = v;
-            if (out) out.textContent = v.toFixed(2);
+            fn(v);
+            if (out) out.textContent = fmt(v);
             render();
         });
-    });
-
-    Object.keys(CFG.folderHues).forEach(function (name) {
-        const key = 'fh_' + name.replace(/\s+/g, '_');
-        const el = document.getElementById('e-' + key);
-        const out = document.getElementById('e-' + key + '-v');
-        if (!el) return;
-        el.addEventListener('input', function () {
-            const v = parseFloat(el.value);
-            CFG.folderHues[name] = v;
-            if (out) out.textContent = v;
-            render();
-        });
-    });
-
-    document.getElementById('e-reset').addEventListener('click', function () {
-        CFG = JSON.parse(JSON.stringify(DEFAULTS));
-        location.reload();
-    });
-
-    document.getElementById('e-copy').addEventListener('click', function () {
-        const dump = {
-            sizeMode: CFG.sizeMode,
-            tailStart: CFG.tailStart,
-            decay: CFG.decay,
-            powerExp: CFG.powerExp,
-            sizePower: CFG.sizePower,
-            sizeFloor: CFG.sizeFloor,
-            headBoost: CFG.headBoost,
-            ratio: CFG.ratio,
-            gap: CFG.gap,
-            radius: CFG.radius,
-            folderWeights: CFG.folderWeights,
-            colourMode: CFG.colourMode,
-            hue: CFG.hue,
-            sat: CFG.sat,
-            light: CFG.light,
-            spread: CFG.spread,
-            tint: CFG.tint,
-            folderHues: CFG.folderHues,
-            overlayOpacity: CFG.overlay.opacity
-        };
-        navigator.clipboard.writeText(JSON.stringify(dump, null, 2));
-        this.textContent = 'Copied';
-        const self = this;
-        setTimeout(function () { self.textContent = 'Copy settings'; }, 1200);
-    });
-
-    const bookshelf = document.getElementById('bookshelfImageArea');
-    if (bookshelf) {
-        const sync = function () {
-            const hasIntro = !!bookshelf.querySelector('#intro-text');
-            document.body.classList.toggle('mosaic-off', !hasIntro);
-            bookshelf.style.display = hasIntro ? 'none' : '';
-        };
-        new MutationObserver(sync).observe(bookshelf, {
-            childList: true, subtree: true
-        });
-        sync();
     }
+
+    bindRange('mw-falloff', 'mw-falloff-v', function (v) { CFG.falloff = v; }, function (v) { return v.toFixed(2); });
+    bindRange('mw-ramp', 'mw-ramp-v', function (v) { CFG.ramp = v; }, function (v) { return v.toFixed(2); });
+    bindRange('mw-tint', 'mw-tint-v', function (v) { CFG.tint = v; }, function (v) { return v.toFixed(2); });
+    bindNum('mw-sliver', function (v) { CFG.sliverPx = v; });
+    document.getElementById('mw-colmode').addEventListener('change', function () { CFG.colourMode = this.value; render(); });
+
+    folders.forEach(function (name) {
+        const k = name.replace(/\s+/g, '_');
+        bindNum('mw-L-' + k, function (v) { CFG.albumLargest[name] = v; });
+        bindNum('mw-S-' + k, function (v) { CFG.albumSmallest[name] = v; });
+        bindRange('mw-W-' + k, 'mw-Wv-' + k, function (v) { CFG.folderWeights[name] = v; }, function (v) { return v.toFixed(2); });
+        bindCol('mw-C-' + k, function (v) { CFG.folderHex[name] = v; });
+    });
+
+    document.getElementById('mw-reset').addEventListener('click', function () {
+        if (confirm('Reset all mosaic settings?')) {
+            localStorage.removeItem('mosaic-cfg-v3');
+            location.reload();
+        }
+    });
+
+    document.getElementById('mw-copy').addEventListener('click', function () {
+        var btn = this;
+        btn.textContent = 'Saving…';
+        try {
+            saveToFile();
+            setTimeout(function () { btn.textContent = 'Saved ✓'; }, 300);
+        } catch (e) {
+            btn.textContent = 'Server off';
+        }
+        setTimeout(function () { btn.textContent = 'Save'; }, 1800);
+    });
+
+    frame.addEventListener('contextmenu', function (e) {
+        const cell = e.target.closest('.mosaic-cell');
+        if (!cell) return;
+        e.preventDefault();
+        const path = cell.dataset.path;
+        document.querySelectorAll('.celltext-popup').forEach(function (p) { p.remove(); });
+
+        const pop = document.createElement('div');
+        pop.className = 'celltext-popup';
+        pop.style.left = '8px';
+        pop.style.top = '8px';
+        pop.innerHTML =
+            '<input id="ctp-text" placeholder="Text\u2026" value="' + (CFG.cellText[path] || '').replace(/"/g, '&quot;') + '">' +
+            '<div class="row">' +
+              '<input id="ctp-size" type="number" min="6" max="40" value="' + (CFG.cellSize[path] || 11) + '" style="width:50px;padding:3px;" title="Size">' +
+              '<input id="ctp-col" type="color" value="' + (CFG.cellColour[path] || CFG.folderHex[cell.dataset.folder] || '#00A307') + '" style="width:40px;height:24px;">' +
+              '<input id="ctp-rot" type="number" min="-180" max="180" value="' + (CFG.cellRot[path] || 0) + '" style="width:50px;padding:3px;" title="Rotate\u00b0">' +
+            '</div>' +
+            '<div class="row"><button id="ctp-save">Save</button><button id="ctp-del" class="ghost">Del</button><button id="ctp-x" class="ghost">\u00d7</button></div>';
+
+        cell.appendChild(pop);
+        pop.querySelector('#ctp-text').focus();
+
+        pop.querySelector('#ctp-save').addEventListener('click', function () {
+            const t = pop.querySelector('#ctp-text').value;
+            if (t) CFG.cellText[path] = t; else delete CFG.cellText[path];
+            CFG.cellSize[path] = parseFloat(pop.querySelector('#ctp-size').value) || 11;
+            CFG.cellColour[path] = pop.querySelector('#ctp-col').value;
+            CFG.cellRot[path] = parseFloat(pop.querySelector('#ctp-rot').value) || 0;
+            render();
+        });
+        pop.querySelector('#ctp-del').addEventListener('click', function () {
+            delete CFG.cellText[path]; render();
+        });
+        pop.querySelector('#ctp-x').addEventListener('click', function () { pop.remove(); });
+    });
+
+    new ResizeObserver(render).observe(frame);
+    render();
 })();
 </script>
 

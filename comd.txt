@@ -20,6 +20,13 @@ Save and refresh your website
 cd C:\Users\user\Desktop\WEB.300\collections
 python -m http.server       
 
+"Server Start"
+
+cd C:\Users\user\Desktop\WEB.300
+python -m http.server  
+
+cd "C:\Users\user\Desktop\WEB.300"
+node save-server.js
 
 npx wrangler pages deploy .
 
