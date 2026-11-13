@@ -1,42 +1,64 @@
-Commands
+# GEORGE RUMP WEBSITE — COMMAND REFERENCE
 
-Generate Registry (collections Update)
+## 1. Generate Image Registry
+Updates `registry.js` from the images in `collections`.
 
-PS C:\Users\user\Desktop\WEB.300> node generate-registry.js
+```powershell
+cd "C:\Users\user\Desktop\WEB.300"; node .\generate-registry.js
+```
 
-Open registry.js
+## 2. Edit Image Descriptions
+1. Open `registry.js`.
+2. Find `IMAGE_DESCRIPTIONS`.
+3. Find the image path.
+4. Edit its description.
+5. Save and refresh the website.
 
-Find the image path in CUSTOM_DESCRIPTIONS
+Example:
+```javascript
+"collections/image.jpg": "Sunset over Kalemegdan Fortress",
+```
 
-Change the description:
+Use the image's actual current path.
 
-javascript
-"collections/Belgrade/Belgrade_1.jpg": "Sunset over Kalemegdan Fortress",
-Save and refresh your website
+## 3. Start Website Preview
+Starts the local website on port 8000.
 
+```powershell
+cd "C:\Users\user\Desktop\WEB.300"; python -m http.server 8000
+```
 
-"Server Start"
-
-cd C:\Users\user\Desktop\WEB.300\collections
-python -m http.server       
-
-"Server Start"
-
-cd C:\Users\user\Desktop\WEB.300
-python -m http.server  
-
-cd "C:\Users\user\Desktop\WEB.300"
-node save-server.js
-
-npx wrangler pages deploy .
-
+Website address:
 http://localhost:8000
 
+## 4. Start Metadata Save Server
+Run in a **separate PowerShell window**. Keep it open while editing image information.
 
+```powershell
+cd "C:\Users\user\Desktop\WEB.300"; node .\save-server.js
+```
 
+## 5. Deploy Website to Cloudflare Pages
 
+```powershell
+cd "C:\Users\user\Desktop\WEB.300"; npx wrangler pages deploy .
+```
+
+## 6. Save Changes to Git
+
+Stage all changes:
+```powershell
 git add -A
+```
 
+Commit:
+```powershell
 git commit -m "Complete fresh push: all local files overwriting remote"
+```
 
+Push:
+```powershell
 git push origin main --force
+```
+
+**Warning:** `--force` can overwrite changes on the remote repository.

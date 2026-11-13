@@ -35,19 +35,16 @@
             <div id="bookshelfImageArea">
                 <div id="intro-text">
                     <div id="intro-title"><span class="big-letter">W</span>elcome!</div>
-                    <div>Select an image or folder and Swipe or Press Arrow keys (←, →) to navigate through entire collection.</div>
+                    <div>Select any image to enter Swipe or Press(←↑↓→) keys to navigate.
+					                                                              
+					</div>
                     <div>
                         <div>All Rights Reserved Copyright © Photographs by George Rump.</div>
                         <div>email; gcrrump@gmail.com</div>
                     </div>
                 </div>
             </div>
-
-            <div id="img-strip-view" aria-label="Image timeline">
-                <div id="img-strip-list"></div>
-            </div>
-
-            <div id="mobile-under-image"></div>
+<div id="mobile-under-image"></div>
         </div>
 
     </div>
@@ -66,41 +63,142 @@
 let globalImageList = [];
 let globalCurrentIndex = 0;
 
-function groupAndSortByFolder() {
-    const groups = {};
-    MASTER_IMAGE_REGISTRY.forEach(path => {
-        const parts = path.split('/');
-        const folder = parts[1];
-        if (!groups[folder]) groups[folder] = [];
-        groups[folder].push(path);
-    });
-    Object.keys(groups).forEach(folder => {
-        groups[folder].sort((a, b) => {
-            const numA = a.match(/(\d+)/);
-            const numB = b.match(/(\d+)/);
-            const valA = numA ? parseInt(numA[0], 10) : 0;
-            const valB = numB ? parseInt(numB[0], 10) : 0;
-            return valA - valB;
+let imageMetadataByPath = Object.create(null);
+let metadataServerAvailable = false;
+const METADATA_SERVER_URL = 'http://localhost:8001';
+
+async function loadImageMetadata() {
+    try {
+        const response = await fetch(METADATA_SERVER_URL + '/metadata', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Metadata server returned ' + response.status);
+        const payload = await response.json();
+        imageMetadataByPath = Object.create(null);
+        (payload.images || []).forEach(function(record) {
+            if (record && record.path) imageMetadataByPath[record.path] = record;
         });
+        metadataServerAvailable = true;
+    } catch (error) {
+        metadataServerAvailable = false;
+        console.warn('Image metadata server is unavailable. Metadata editing is disabled.', error);
+    }
+}
+
+function formatFileSize(bytes) {
+    const value = Number(bytes);
+    if (!Number.isFinite(value) || value < 0) return '';
+    if (value < 1024) return value + ' B';
+    if (value < 1024 * 1024) return (value / 1024).toFixed(1) + ' KB';
+    if (value < 1024 * 1024 * 1024) return (value / (1024 * 1024)).toFixed(2) + ' MB';
+    return (value / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+}
+
+function addMetadataReadOnlyRow(container, label, value) {
+    if (value === undefined || value === null || value === '') return;
+    const row = document.createElement('div');
+    row.className = 'row-exact body-row metadata-row';
+    const name = document.createElement('span');
+    name.className = 'metadata-label';
+    name.textContent = label;
+    const text = document.createElement('span');
+    text.className = 'value-exact metadata-value';
+    text.textContent = String(value);
+    row.append(name, text);
+    container.appendChild(row);
+}
+
+function addMetadataEditRow(container, label, fieldName, value, multiline, inputType) {
+    const row = document.createElement('div');
+    row.className = 'row-exact body-row metadata-row metadata-edit-row';
+    const name = document.createElement('label');
+    name.className = 'metadata-label';
+    name.textContent = label;
+    const input = document.createElement(multiline ? 'textarea' : 'input');
+    input.className = 'metadata-edit-input';
+    if (inputType) {
+        input.type = inputType;
+        if (inputType === 'color') input.classList.add('metadata-color-input');
+    }
+    input.dataset.metadataField = fieldName;
+    input.value = value || '';
+    input.disabled = !metadataServerAvailable;
+    if (multiline) input.rows = 3;
+    row.append(name, input);
+    container.appendChild(row);
+    return input;
+}
+
+function normalizeImageLinkColor(value) {
+    return typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value) ? value : '';
+}
+
+function applyImageLinkColor(link, path) {
+    if (!link) return;
+    const metadata = imageMetadataByPath[path] || {};
+    const color = normalizeImageLinkColor(metadata.linkColor);
+    if (color) link.style.setProperty('color', color, 'important');
+    else link.style.removeProperty('color');
+}
+
+function updateImageLinkColor(path, color) {
+    const link = Array.from(document.querySelectorAll('#treeDropdownContent a[data-image-path]'))
+        .find(function(item) { return item.dataset.imagePath === path; });
+    if (!link) return;
+    const normalized = normalizeImageLinkColor(color);
+    if (normalized) link.style.setProperty('color', normalized, 'important');
+    else link.style.removeProperty('color');
+}
+
+async function saveImageMetadata(path, id, fields, button) {
+    if (!metadataServerAvailable || !id) return;
+    button.disabled = true;
+    button.textContent = 'Saving…';
+    try {
+        const response = await fetch(METADATA_SERVER_URL + '/save-metadata', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id, title: fields.title, description: fields.description, originalFolder: fields.originalFolder, linkColor: fields.linkColor })
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.error || ('Save failed: ' + response.status));
+        imageMetadataByPath[path] = result.image;
+        const link = Array.from(document.querySelectorAll('#treeDropdownContent a[data-image-path]')).find(function(item) { return item.dataset.imagePath === path; });
+        if (link) link.textContent = result.image.title || path.split('/').pop().replace(/\.[^/.]+$/, '');
+        updateImageLinkColor(path, result.image.linkColor || '');
+        button.textContent = 'Saved';
+    } catch (error) {
+        console.error('Could not save image metadata:', error);
+        button.textContent = 'Save failed';
+    } finally {
+        button.disabled = !metadataServerAvailable;
+    }
+}
+
+function naturalImagePathCompare(a, b) {
+    // Sort the single flat image list naturally by filename.
+    return a.split('/').pop().localeCompare(b.split('/').pop(), undefined, {
+        numeric: true,
+        sensitivity: 'base'
     });
-    return groups;
+}
+
+function isGalleryImagePath(path) {
+    const parts = String(path).replace(/\\/g, '/').split('/');
+    return parts.length === 2 && parts[0] === 'collections' &&
+        /\.(jpg|jpeg|png|gif|webp)$/i.test(parts[1]);
 }
 
 function buildGlobalImageList() {
-    const groups = groupAndSortByFolder();
-    const folderNames = Object.keys(groups).filter(f => f !== 'homepage').sort();
-    const list = [];
-    folderNames.forEach(folder => { list.push(...groups[folder]); });
-    return list;
+    return MASTER_IMAGE_REGISTRY
+        .filter(isGalleryImagePath)
+        .slice()
+        .sort(naturalImagePathCompare);
 }
 
 function navigateToIndex(index) {
     if (index < 0 || index >= globalImageList.length) return;
     globalCurrentIndex = index;
     const path = globalImageList[index];
-    const parts = path.split('/');
-    const folder = parts[1];
-    loadImageAndUpdateFloating(path, folder, true);
+    if (path) loadImageAndUpdateFloating(path, true);
 }
 
 function navigate(direction) {
@@ -109,20 +207,20 @@ function navigate(direction) {
     navigateToIndex(newIndex);
 }
 
-function loadImageAndUpdateFloating(imagePath, folder, fromNavigation) {
-    if (fromNavigation === undefined) fromNavigation = false;
-    const grouped = groupAndSortByFolder();
-    const imagePaths = grouped[folder] || [];
-    const idx = imagePaths.indexOf(imagePath);
-
-    if (!fromNavigation) {
-        const globalIdx = globalImageList.indexOf(imagePath);
-        if (globalIdx !== -1) globalCurrentIndex = globalIdx;
-    }
+function loadImageAndUpdateFloating(imagePath, fromNavigation) {
+    const idx = globalImageList.indexOf(imagePath);
+    if (idx < 0) return;
+    globalCurrentIndex = idx;
 
     const floatingWin = document.getElementById('floating-window');
     if (floatingWin) {
-        floatingWin.dataset.paths = JSON.stringify(imagePaths);
+        // Discard an unsaved colour preview when leaving the previous image.
+        const previousPath = floatingWin.dataset.currentPath;
+        if (previousPath && previousPath !== imagePath) {
+            const previousMetadata = imageMetadataByPath[previousPath] || {};
+            updateImageLinkColor(previousPath, previousMetadata.linkColor || '');
+        }
+        floatingWin.dataset.paths = JSON.stringify(globalImageList);
         floatingWin.dataset.currentIndex = idx;
         renderToBookshelf(imagePath, true, '', function() {
             showFileAtIndex(floatingWin, idx);
@@ -178,11 +276,22 @@ function renderSingleImage(url, name, callback) {
     if (!area) return;
     area.innerHTML = '';
     const img = document.createElement('img');
-    img.src = url;
+    let settled = false;
+    function finish() {
+        if (settled) return;
+        settled = true;
+        if (callback) callback();
+    }
     img.alt = name;
-    img.onload = function() { if (callback) callback(); };
-    if (img.complete) { if (callback) setTimeout(callback, 0); }
+    img.onload = finish;
+    img.onerror = function() {
+        if (settled) return;
+        settled = true;
+        area.innerHTML = '<p class="image-load-error">Image could not be loaded: ' + name.replace(/[&<>"']/g, '') + '</p>';
+    };
     area.appendChild(img);
+    img.src = url;
+    if (img.complete && img.naturalWidth > 0) setTimeout(finish, 0);
     refreshMagnifierIfActive();
 }
 
@@ -211,162 +320,271 @@ function renderToBookshelf(content, single, title, callback) {
 }
 
 function highlightActiveLink(activePath) {
-    document.querySelectorAll('#treeDropdownContent .group-links a').forEach(function(link) {
+    const tree = document.getElementById('treeDropdownContent');
+    if (tree) tree.dataset.keyboardPath = activePath || '';
+
+    document.querySelectorAll('#treeDropdownContent a[data-image-path]').forEach(function(link) {
         link.classList.remove('active');
+        link.removeAttribute('aria-current');
+        if (activePath && link.dataset.imagePath === activePath) {
+            link.classList.add('active');
+            link.setAttribute('aria-current', 'true');
+        }
     });
-    if (activePath) {
-        document.querySelectorAll('#treeDropdownContent .group-links a').forEach(function(link) {
-            if (link.getAttribute('href') === activePath) link.classList.add('active');
-        });
-    }
 }
 
 function showFileAtIndex(floatingWin, index) {
-    const paths = JSON.parse(floatingWin.dataset.paths);
+    const paths = JSON.parse(floatingWin.dataset.paths || '[]');
     const path = paths[index];
-    const title = getImageTitle(path);
-    const description = getImageDescription(path);
+    if (!path) return;
 
+    const metadata = imageMetadataByPath[path] || {};
+    const title = metadata.title || getImageTitle(path);
+    const description = metadata && Object.prototype.hasOwnProperty.call(metadata, 'description')
+        ? metadata.description
+        : getImageDescription(path);
     const imgElement = document.querySelector('#bookshelfImageArea img');
-    let dimensions = '';
-    if (imgElement && imgElement.naturalWidth && imgElement.naturalHeight) {
-        dimensions = imgElement.naturalWidth + ' \u00d7 ' + imgElement.naturalHeight;
-    } else {
-        dimensions = '\u2014 \u00d7 \u2014';
-        setTimeout(function() {
-            if (imgElement && imgElement.naturalWidth && imgElement.naturalHeight) {
-                const dims = imgElement.naturalWidth + ' \u00d7 ' + imgElement.naturalHeight;
-                const dimSpan = floatingWin.querySelector('.dim-exact');
-                if (dimSpan) dimSpan.textContent = dims;
-            }
-        }, 200);
+    const dimensions = imgElement && imgElement.naturalWidth && imgElement.naturalHeight
+        ? imgElement.naturalWidth + ' × ' + imgElement.naturalHeight
+        : (metadata.dimensions || '— × —');
+    const content = floatingWin.querySelector('.file-content');
+    if (!content) return;
+    content.replaceChildren();
+
+    const firstRow = document.createElement('div');
+    firstRow.className = 'row-exact';
+    const iconAndTag = document.createElement('span');
+    iconAndTag.className = 'icon-and-tag';
+    const tag = document.createElement('span');
+    tag.className = 'tag-exact';
+    tag.textContent = 'img';
+    iconAndTag.appendChild(tag);
+    const dimensionText = document.createElement('span');
+    dimensionText.className = 'dim-exact';
+    dimensionText.textContent = dimensions;
+    firstRow.append(iconAndTag, dimensionText);
+    content.appendChild(firstRow);
+
+    const divider = document.createElement('div');
+    divider.className = 'divider-wrapper';
+    const line = document.createElement('div');
+    line.className = 'line-exact';
+    divider.appendChild(line);
+    content.appendChild(divider);
+
+    addMetadataEditRow(content, 'Title', 'title', title, false);
+    addMetadataEditRow(content, 'Description', 'description', description, true);
+    addMetadataEditRow(content, 'Original folder', 'originalFolder', metadata.originalFolder || '', false);
+    const linkColorInput = addMetadataEditRow(content, 'Link colour', 'linkColor', normalizeImageLinkColor(metadata.linkColor) || '#0000ee', false, 'color');
+    linkColorInput.addEventListener('input', function() {
+        // Preview immediately; the Save changes button persists the colour on the local server.
+        updateImageLinkColor(path, linkColorInput.value);
+    });
+
+    addMetadataReadOnlyRow(content, 'Filename', metadata.fileName || path.split('/').pop());
+    addMetadataReadOnlyRow(content, 'Format', metadata.format || path.split('.').pop().toUpperCase());
+    addMetadataReadOnlyRow(content, 'File size', formatFileSize(metadata.sizeBytes));
+    addMetadataReadOnlyRow(content, 'Last modified', metadata.lastModified ? new Date(metadata.lastModified).toLocaleString() : '');
+
+    const exif = metadata.exif || {};
+    addMetadataReadOnlyRow(content, 'Camera make', exif.cameraMake);
+    addMetadataReadOnlyRow(content, 'Camera model', exif.cameraModel);
+    addMetadataReadOnlyRow(content, 'Lens', exif.lensModel);
+    addMetadataReadOnlyRow(content, 'Date taken', exif.dateTaken);
+    addMetadataReadOnlyRow(content, 'Exposure', exif.exposureTime);
+    addMetadataReadOnlyRow(content, 'Aperture', exif.aperture);
+    addMetadataReadOnlyRow(content, 'ISO', exif.iso);
+    addMetadataReadOnlyRow(content, 'Focal length', exif.focalLength);
+    addMetadataReadOnlyRow(content, 'Orientation', exif.orientation);
+
+    const saveRow = document.createElement('div');
+    saveRow.className = 'metadata-save-row';
+    const saveButton = document.createElement('button');
+    saveButton.type = 'button';
+    saveButton.className = 'metadata-save-button';
+    saveButton.textContent = metadataServerAvailable ? 'Save changes' : 'Server offline — editing unavailable';
+    saveButton.disabled = !metadataServerAvailable || !metadata.id;
+    saveButton.addEventListener('click', function() {
+        const fields = {};
+        content.querySelectorAll('[data-metadata-field]').forEach(function(field) {
+            fields[field.dataset.metadataField] = field.value;
+        });
+        saveImageMetadata(path, metadata.id, fields, saveButton);
+    });
+    saveRow.appendChild(saveButton);
+    content.appendChild(saveRow);
+
+    // Update dimensions only for this exact image after its load completes.
+    if (imgElement && !imgElement.complete) {
+        imgElement.addEventListener('load', function updateDimensions() {
+            if (floatingWin.dataset.currentPath !== path) return;
+            dimensionText.textContent = imgElement.naturalWidth + ' × ' + imgElement.naturalHeight;
+        }, { once: true });
     }
-
-    const contentContainer = floatingWin.querySelector('.file-content');
-    if (!contentContainer) return;
-
-    contentContainer.innerHTML =
-        '<div class="row-exact">' +
-            '<span class="icon-and-tag">' +
-                '<span class="info-icon-permanent">\ud83d\udd0d</span>' +
-                '<span class="tag-exact">img</span>' +
-            '</span>' +
-            '<span class="dim-exact">' + dimensions + '</span>' +
-        '</div>' +
-        '<div class="divider-wrapper"><div class="line-exact"></div></div>' +
-        (title ? '<div class="row-exact body-row"><span class="value-exact">' + title + '</span></div>' : '') +
-        (description ? '<div class="row-exact body-row"><span class="value-exact" style="white-space:normal;word-wrap:break-word;line-height:1.5;">' + description + '</span></div>' : '');
-
     floatingWin.dataset.currentPath = path;
     floatingWin.dataset.currentIndex = index;
 }
 
 function getImageTitle(path) {
-    if (typeof IMAGE_TITLES !== 'undefined' && IMAGE_TITLES[path]) return IMAGE_TITLES[path];
-    return '';
+    const key = String(path).replace(/\\/g, '/');
+    const metadata = imageMetadataByPath[key];
+    if (metadata && metadata.title) return metadata.title;
+    if (typeof IMAGE_TITLES !== 'undefined' && IMAGE_TITLES[key]) return IMAGE_TITLES[key];
+    return key.split('/').pop().replace(/\.[^/.]+$/, '');
 }
 
 function getImageDescription(path) {
-    if (typeof IMAGE_DESCRIPTIONS !== 'undefined' && IMAGE_DESCRIPTIONS[path]) return IMAGE_DESCRIPTIONS[path];
-    return '';
+    const key = String(path).replace(/\\/g, '/');
+    const metadata = imageMetadataByPath[key];
+    if (metadata && Object.prototype.hasOwnProperty.call(metadata, 'description')) return metadata.description;
+    return typeof IMAGE_DESCRIPTIONS !== 'undefined' && IMAGE_DESCRIPTIONS[key]
+        ? IMAGE_DESCRIPTIONS[key]
+        : '';
 }
 
 function buildTreeDropdown() {
     const treeContent = document.getElementById('treeDropdownContent');
     if (!treeContent) return;
+    treeContent.replaceChildren();
 
-    const groups = {};
-    MASTER_IMAGE_REGISTRY.forEach(function(path) {
-        const parts = path.split('/');
-        if (parts.length < 2) return;
-        const folder = parts[1];
-        if (folder === 'homepage') return;
-        if (!groups[folder]) groups[folder] = [];
-        groups[folder].push(path);
-    });
+    const linksContainer = document.createElement('span');
+    linksContainer.className = 'image-links';
 
-    Object.keys(groups).forEach(function(folder) {
-        groups[folder].sort(function(a, b) {
-            const numA = a.match(/(\d+)/);
-            const numB = b.match(/(\d+)/);
-            const valA = numA ? parseInt(numA[0], 10) : 0;
-            const valB = numB ? parseInt(numB[0], 10) : 0;
-            return valA - valB;
-        });
-    });
-
-    const sortedFolders = Object.keys(groups).sort();
-    treeContent.innerHTML = '';
-
-    sortedFolders.forEach(function(folder) {
-        const paths = groups[folder];
-        const count = paths.length;
-
-        const header = document.createElement('span');
-        header.className = 'group-header';
-        header.dataset.folder = folder;
-        header.innerHTML = '<span>[' + folder + '(' + count + ')]</span><span class="arrow">v</span>';
-
-        const linksContainer = document.createElement('span');
-        linksContainer.className = 'group-links open';
-        linksContainer.style.display = 'inline';
-
-        paths.forEach(function(path) {
-            const fileName = path.split('/').pop();
-            const a = document.createElement('a');
-            a.href = path;
-            a.textContent = fileName;
-            a.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const href = this.getAttribute('href');
-                const parts = href.split('/');
-                const folder = parts[1];
-                loadImageAndUpdateFloating(href, folder, false);
-                treeContent.focus();
-            });
-            linksContainer.appendChild(a);
-        });
-
-        header.addEventListener('click', function(e) {
+    globalImageList.forEach(function(path) {
+        const link = document.createElement('a');
+        link.href = path;
+        link.textContent = getImageTitle(path);
+        link.dataset.imagePath = path;
+        applyImageLinkColor(link, path);
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
             e.stopPropagation();
-            const isOpen = linksContainer.classList.contains('open');
-            const arrow = this.querySelector('.arrow');
-            if (isOpen) {
-                linksContainer.classList.remove('open');
-                linksContainer.style.display = 'none';
-                arrow.textContent = '>';
-            } else {
-                linksContainer.classList.add('open');
-                linksContainer.style.display = 'inline';
-                arrow.textContent = 'v';
-            }
+            const selectedPath = this.dataset.imagePath;
+            treeContent.dataset.keyboardPath = selectedPath;
+            highlightActiveLink(selectedPath);
+            loadImageAndUpdateFloating(selectedPath, false);
         });
-
-        treeContent.appendChild(header);
-        treeContent.appendChild(linksContainer);
+        linksContainer.appendChild(link);
     });
 
-    var pink = document.createElement('img');
-    pink.src = 'collections/pink.png';
-    pink.className = 'tree-marker tree-marker-top';
-    pink.alt = '';
-    treeContent.insertBefore(pink, treeContent.firstChild);
-
-    var purple = document.createElement('img');
-    purple.src = 'collections/purple.png';
-    purple.className = 'tree-marker tree-marker-bottom';
-    purple.alt = '';
-    treeContent.appendChild(purple);
+    treeContent.appendChild(linksContainer);
 }
 
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        const direction = e.key === 'ArrowRight' ? 1 : -1;
-        navigate(direction);
+function getVisibleTreeImageLinks() {
+    const tree = document.getElementById('treeDropdownContent');
+    if (!tree || document.body.classList.contains('tree-hidden')) return [];
+    if (!tree.getClientRects().length || getComputedStyle(tree).visibility === 'hidden') return [];
+    return Array.from(tree.querySelectorAll('.image-links a[href]')).filter(function(link) {
+        const style = getComputedStyle(link);
+        return style.display !== 'none' && style.visibility !== 'hidden' && !!link.getClientRects().length;
+    });
+}
+
+function openTreeImageLink(link) {
+    if (!link) return false;
+    const tree = document.getElementById('treeDropdownContent');
+    const path = link.dataset.imagePath || link.getAttribute('href');
+    if (!path) return false;
+
+    // Track the selected file without focusing the anchor. This avoids the
+    // browser's rectangular keyboard-focus frame and keeps the tree as text.
+    if (tree) tree.dataset.keyboardPath = path;
+    highlightActiveLink(path);
+    loadImageAndUpdateFloating(path, false);
+    return true;
+}
+
+function navigateTreeSequence(direction) {
+    // Left/Right use the same ordered collection list as the tree, rather than
+    // relying on the links' screen positions or focus state.
+    if (!globalImageList.length) return false;
+
+    const tree = document.getElementById('treeDropdownContent');
+    const floatingWin = document.getElementById('floating-window');
+    const currentPath = (tree && tree.dataset.keyboardPath) ||
+        (floatingWin && floatingWin.dataset.currentPath) || '';
+    let currentIndex = currentPath ? globalImageList.indexOf(currentPath) : -1;
+
+    let nextIndex;
+    if (currentIndex < 0) {
+        nextIndex = direction > 0 ? 0 : globalImageList.length - 1;
+    } else {
+        nextIndex = currentIndex + direction;
     }
-});
+
+    // Stop at the first and last files; do not wrap unexpectedly.
+    if (nextIndex < 0 || nextIndex >= globalImageList.length) return true;
+
+    const nextPath = globalImageList[nextIndex];
+    if (tree) tree.dataset.keyboardPath = nextPath;
+    highlightActiveLink(nextPath);
+    navigateToIndex(nextIndex);
+    return true;
+}
+
+function navigateTreeByLine(direction) {
+    // Up/Down move to the nearest file link on the adjacent rendered line.
+    const links = getVisibleTreeImageLinks();
+    if (!links.length) return false;
+
+    const tree = document.getElementById('treeDropdownContent');
+    const floatingWin = document.getElementById('floating-window');
+    const currentPath = (tree && tree.dataset.keyboardPath) ||
+        (floatingWin && floatingWin.dataset.currentPath) || '';
+    const current = currentPath ? links.find(function(link) {
+        return (link.dataset.imagePath || link.getAttribute('href')) === currentPath;
+    }) : null;
+
+    if (!current) {
+        return openTreeImageLink(direction > 0 ? links[0] : links[links.length - 1]);
+    }
+
+    const currentRect = current.getBoundingClientRect();
+    const currentX = currentRect.left + currentRect.width / 2;
+    const currentY = currentRect.top + currentRect.height / 2;
+    const candidates = [];
+
+    links.forEach(function(link) {
+        if (link === current) return;
+        const rects = Array.from(link.getClientRects());
+        rects.forEach(function(rect) {
+            const dx = Math.abs((rect.left + rect.width / 2) - currentX);
+            const dy = (rect.top + rect.height / 2) - currentY;
+            const verticalGap = dy * direction;
+            if (verticalGap > 2) {
+                candidates.push({ link: link, verticalGap: verticalGap, horizontalGap: dx });
+            }
+        });
+    });
+
+    candidates.sort(function(a, b) {
+        // First choose the nearest line; then the link nearest the current x-position.
+        return a.verticalGap - b.verticalGap || a.horizontalGap - b.horizontalGap;
+    });
+
+    if (candidates.length) openTreeImageLink(candidates[0].link);
+    return true;
+}
+
+window.addEventListener('keydown', function(e) {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    const target = e.target;
+    if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(target.tagName))) return;
+
+    if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (e.key === 'ArrowRight') {
+        navigateTreeSequence(1);
+    } else if (e.key === 'ArrowLeft') {
+        navigateTreeSequence(-1);
+    } else if (e.key === 'ArrowDown') {
+        if (!navigateTreeByLine(1)) navigate(1);
+    } else if (e.key === 'ArrowUp') {
+        if (!navigateTreeByLine(-1)) navigate(-1);
+    }
+}, true);
 
 let touchStartX = 0;
 let touchStartY = 0;
@@ -714,7 +932,12 @@ function positionFloatingWindow() {
 
     // Set the toolbar's original image-side position only once.
     // Keep those coordinates when the image enters or leaves expand mode.
+    const layoutSettings = getComputedStyle(document.documentElement);
+    const toolbarWidth = parseFloat(layoutSettings.getPropertyValue('--desktop-toolbar-width')) || 76;
+    const infoToolbarGapRaw = parseFloat(layoutSettings.getPropertyValue('--desktop-info-toolbar-gap'));
+    const infoToolbarGap = Number.isFinite(infoToolbarGapRaw) ? infoToolbarGapRaw : 15;
     const toolbarHeight = toolbar.offsetHeight;
+    toolbar.style.width = toolbarWidth + 'px';
     if (!toolbar.dataset.originalLeft || !toolbar.dataset.originalTop) {
         toolbar.dataset.originalLeft = stackLeft + 'px';
         toolbar.dataset.originalTop = (rect.bottom - toolbarHeight) + 'px';
@@ -724,19 +947,37 @@ function positionFloatingWindow() {
 
     // The information panel remains above the stationary toolbar.
     floatingWin.style.left = stackLeft + 'px';
-    floatingWin.style.top = (parseFloat(toolbar.dataset.originalTop) - boxHeight - 15) + 'px';
+    floatingWin.style.top = (parseFloat(toolbar.dataset.originalTop) - boxHeight - infoToolbarGap) + 'px';
 }
 
 function positionLeftControls() {
-    // Desktop sidebar and its toggle are anchored by CSS, not by the current image.
-    // Keep the existing image-relative positioning behaviour on mobile unchanged.
-    if (!window.matchMedia('(max-width: 480px)').matches) return;
-
     const sidebar = document.getElementById('sidebar');
     const showTab = document.getElementById('showTab');
     const tree = document.getElementById('treeDropdownContent');
     if (!sidebar || !showTab || !tree) return;
 
+    // DESKTOP: anchor the toggle to the actual link-tree position.
+    // If the tree is hidden, keep the toggle at its last position.
+    if (!window.matchMedia('(max-width: 480px)').matches) {
+        if (document.body.classList.contains('tree-hidden')) return;
+
+        const treeRect = tree.getBoundingClientRect();
+        if (!treeRect.width || !treeRect.height) return;
+
+        const layoutSettings = getComputedStyle(document.documentElement);
+        // Use the same desktop offsets on the welcome page and gallery pages.
+        // The previous page-dependent variables were not both defined, so the
+        // button jumped horizontally when the first image was opened.
+        const offsetXRaw = parseFloat(layoutSettings.getPropertyValue('--desktop-toggle-offset-x'));
+        const offsetYRaw = parseFloat(layoutSettings.getPropertyValue('--desktop-toggle-offset-y'));
+        const offsetX = Number.isFinite(offsetXRaw) ? offsetXRaw : 7;
+        const offsetY = Number.isFinite(offsetYRaw) ? offsetYRaw : 2;
+        showTab.style.setProperty('left', (treeRect.left + offsetX) + 'px', 'important');
+        showTab.style.setProperty('top', (treeRect.top - showTab.offsetHeight - offsetY) + 'px', 'important');
+        return;
+    }
+
+    // MOBILE: retain the existing image-relative positioning behaviour.
     const img = document.querySelector('#bookshelfImageArea img');
     const intro = document.getElementById('intro-text');
     const target = img || intro;
@@ -744,14 +985,21 @@ function positionLeftControls() {
 
     const rect = target.getBoundingClientRect();
     const treeStyle = window.getComputedStyle(tree);
+    const layoutSettings = getComputedStyle(document.documentElement);
     const treePaddingTop = parseFloat(treeStyle.paddingTop) || 0;
-    const groupTop = Math.max(0, rect.top - treePaddingTop);
+    const sidebarOffsetYRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-sidebar-offset-y'));
+    const sidebarOffsetY = Number.isFinite(sidebarOffsetYRaw) ? sidebarOffsetYRaw : 0;
+    const groupTop = Math.max(0, rect.top - treePaddingTop + sidebarOffsetY);
 
     sidebar.style.setProperty('top', groupTop + 'px', 'important');
     if (!document.body.classList.contains('tree-hidden')) {
         const treeRect = tree.getBoundingClientRect();
-        showTab.style.setProperty('left', (treeRect.left + 7) + 'px', 'important');
-        showTab.style.setProperty('top', (treeRect.top - showTab.offsetHeight - 2) + 'px', 'important');
+        const offsetXRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-toggle-offset-x'));
+        const offsetYRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-toggle-offset-y'));
+        const offsetX = Number.isFinite(offsetXRaw) ? offsetXRaw : 7;
+        const offsetY = Number.isFinite(offsetYRaw) ? offsetYRaw : 2;
+        showTab.style.setProperty('left', (treeRect.left + offsetX) + 'px', 'important');
+        showTab.style.setProperty('top', (treeRect.top - showTab.offsetHeight - offsetY) + 'px', 'important');
     }
 }
 
@@ -774,12 +1022,14 @@ window.addEventListener('resize', function() {
     positionLeftControls();
 });
 
-window.addEventListener('load', function() {
+window.addEventListener('load', async function() {
+    await loadImageMetadata();
     globalImageList = buildGlobalImageList();
     globalCurrentIndex = 0;
 
     buildTreeDropdown();
     placeFloatingWindow();
+    requestAnimationFrame(positionLeftControls);
 
     const floatingWin = document.getElementById('floating-window');
     if (floatingWin) floatingWin.style.display = 'none';
@@ -802,7 +1052,7 @@ window.addEventListener('load', function() {
             imageArea.innerHTML =
                 '<div id="intro-text">' +
                     '<div id="intro-title"><span class="big-letter">W</span>elcome!</div>' +
-                    '<div>Select an image or folder and Swipe or Press Arrow keys (\u2190, \u2192) to navigate through entire collection.</div>' +
+                    '<div>Select any image and Swipe or Press Arrow keys (\u2190, \u2192) to navigate through entire collection.</div>' +
                     '<div>' +
                         '<div>All Rights Reserved Copyright \u00a9 Photographs by George Rump.</div>' +
                         '<div>email; gcrrump@gmail.com</div>' +
@@ -847,126 +1097,5 @@ window.addEventListener('load', function() {
     }
 });
 </script>
-<script>
-/* ============================================================
-   IMAGE STRIPS — imgStrip, imgStrip2, imgStrip3, etc.
-   ============================================================ */
-(function () {
-    'use strict';
-
-    const rootUrl = new URL('collections/', window.location.href);
-    const mount = document.getElementById('img-strip-list');
-    if (!mount) return;
-
-    function parseDirectory(html, directoryUrl) {
-        const parsed = new DOMParser().parseFromString(html, 'text/html');
-        const entries = [];
-        parsed.querySelectorAll('a[href]').forEach(function (link) {
-            const href = link.getAttribute('href');
-            if (!href || href === '../' || href.startsWith('?') || href.startsWith('/')) return;
-            let url;
-            try { url = new URL(href, directoryUrl); } catch (error) { return; }
-            if (url.origin !== window.location.origin) return;
-            const name = decodeURIComponent(url.pathname.replace(/\/$/, '').split('/').pop() || '');
-            const row = link.closest('tr');
-            let modified = 0;
-            if (row) {
-                const cells = row.querySelectorAll('td');
-                if (cells.length > 1) {
-                    const date = Date.parse(cells[1].textContent.trim());
-                    if (!Number.isNaN(date)) modified = date;
-                }
-            }
-            entries.push({ name: name, url: url, isDirectory: href.endsWith('/'), modified: modified });
-        });
-        return entries;
-    }
-
-    function sortFiles(files) {
-        files.sort(function (a, b) {
-            if (a.modified && b.modified && a.modified !== b.modified) return b.modified - a.modified;
-            if (a.modified && !b.modified) return -1;
-            if (!a.modified && b.modified) return 1;
-            return b.name.localeCompare(a.name, undefined, { numeric: true, sensitivity: 'base' });
-        });
-        return files;
-    }
-
-    function loadStrip(folder, label) {
-        return fetch(folder.url.href, { cache: 'no-store' })
-            .then(function (response) {
-                if (!response.ok) throw new Error('Could not read ' + folder.name);
-                return response.text();
-            })
-            .then(function (html) {
-                // Keep the exact order returned by the folder listing.
-                // This makes the first file in the folder the first image in the strip.
-                const files = parseDirectory(html, folder.url).filter(function (entry) {
-                    return !entry.isDirectory &&
-                        /\.(jpe?g|jfif|png|gif|webp|apng|svg|ico|bmp|avif)$/i.test(entry.name);
-                });
-
-                const column = document.createElement('section');
-                column.className = 'img-strip-column';
-                column.setAttribute('aria-label', label);
-
-                files.forEach(function (file) {
-                    const tile = document.createElement('a');
-                    tile.className = 'img-strip-item';
-                    tile.href = file.url.href;
-                    tile.target = '_blank';
-                    tile.rel = 'noopener';
-                    tile.setAttribute('aria-label', file.name);
-
-                    const image = document.createElement('img');
-                    image.src = file.url.href;
-                    image.alt = file.name;
-                    image.loading = 'lazy';
-                    image.decoding = 'async';
-
-                    tile.appendChild(image);
-
-                    const filename = document.createElement('span');
-                    filename.className = 'img-strip-filename';
-                    filename.textContent = file.name;
-                    tile.appendChild(filename);
-
-                    column.appendChild(tile);
-                });
-                return column;
-            });
-    }
-
-    fetch(rootUrl.href, { cache: 'no-store' })
-        .then(function (response) {
-            if (!response.ok) throw new Error('Could not read collections directory.');
-            return response.text();
-        })
-        .then(function (html) {
-            const folders = parseDirectory(html, rootUrl)
-                .filter(function (entry) { return entry.isDirectory && /^imgStrip\d*$/i.test(entry.name); })
-                .sort(function (a, b) {
-                    const number = function (name) {
-                        const match = name.match(/\d+$/);
-                        return match ? Number(match[0]) : 1;
-                    };
-                    return number(a.name) - number(b.name) || a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
-                });
-            mount.replaceChildren();
-            return Promise.all(folders.map(function (folder, index) {
-                return loadStrip(folder, 'Image strip ' + (index + 1));
-            })).then(function (columns) {
-                // Append only after every folder has loaded, preserving folder order.
-                columns.forEach(function (column) {
-                    mount.appendChild(column);
-                });
-            });
-        })
-        .catch(function (error) {
-            console.warn('Image strips could not load. Check that collections/ and its imgStrip folders are served with directory listing enabled.', error);
-        });
-})();
-</script>
-
 </body>
 </html>

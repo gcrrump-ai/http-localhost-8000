@@ -1,79 +1,85 @@
-// ============================================================
-// generateRegistry.js - Run this when you add/remove images!
-// ============================================================
+// generate-registry.js
+// Run from any directory: paths resolve relative to this script.
+// Gallery images are stored directly in collections/. Subfolders such as Icons are ignored.
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+const vm = require('vm');
 
-const collectionsDir = './collections';
+const ROOT = __dirname;
+const COLLECTIONS = path.join(ROOT, 'collections');
+const REGISTRY = path.join(ROOT, 'registry.js');
+const METADATA_FILE = path.join(ROOT, 'image-metadata.json');
+const IMAGE_EXT = /\.(jpg|jpeg|png|gif|webp)$/i;
 
-// ============================================================
-// SCAN FOR IMAGES
-// ============================================================
-const folders = fs.readdirSync(collectionsDir).filter(f => 
-    fs.statSync(path.join(collectionsDir, f)).isDirectory()
-);
-
-const imagePaths = [];
-
-folders.forEach(folder => {
-    const folderPath = path.join(collectionsDir, folder);
-    const files = fs.readdirSync(folderPath)
-        .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
-        .map(f => `collections/${folder}/${f}`);
-    imagePaths.push(...files);
-});
-
-// ============================================================
-// PRESERVE EXISTING DESCRIPTIONS
-// ============================================================
-let existingDescriptions = {};
-try {
-    if (fs.existsSync('registry.js')) {
-        const existing = fs.readFileSync('registry.js', 'utf8');
-        const match = existing.match(/const CUSTOM_DESCRIPTIONS = ({[\s\S]*?});/);
-        if (match) {
-            eval('existingDescriptions = ' + match[1]);
-            console.log('✅ Preserved existing descriptions');
-        }
-    }
-} catch (e) {
-    console.log('ℹ️ No existing registry found');
+function readObject(source, name) {
+    const match = source.match(new RegExp('const\\s+' + name + '\\s*=\\s*(\\{[\\s\\S]*?\\})\\s*;', 'm'));
+    if (!match) return {};
+    try { return vm.runInNewContext('(' + match[1] + ')'); }
+    catch (error) { throw new Error('Cannot read ' + name + ' from registry.js: ' + error.message); }
 }
 
-// ============================================================
-// GENERATE DESCRIPTIONS (keep existing, use placeholder for new)
-// ============================================================
-const descriptions = {};
-imagePaths.forEach(path => {
-    descriptions[path] = existingDescriptions[path] || "Image description";
-});
+function sha256(filePath) {
+    return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
+}
 
-// ============================================================
-// WRITE registry.js
-// ============================================================
-const output = `// ============================================================
-// MASTER_IMAGE_REGISTRY - Auto-generated
-// ============================================================
-const MASTER_IMAGE_REGISTRY = ${JSON.stringify(imagePaths, null, 4)};
-
-// ============================================================
-// CUSTOM DESCRIPTIONS - Edit the text inside the quotes!
-// ============================================================
-const CUSTOM_DESCRIPTIONS = ${JSON.stringify(descriptions, null, 4)};
-
-// ============================================================
-// GET DESCRIPTION FUNCTION
-// ============================================================
-function getImageDescription(path) {
-    if (CUSTOM_DESCRIPTIONS[path]) {
-        return CUSTOM_DESCRIPTIONS[path];
+function main() {
+    if (!fs.existsSync(COLLECTIONS) || !fs.statSync(COLLECTIONS).isDirectory()) {
+        throw new Error('collections folder not found: ' + COLLECTIONS);
     }
-    const filename = path.split('/').pop();
-    const name = filename.replace(/\\.[^/.]+$/, '');
-    return name.replace(/[-_]/g, ' ').replace(/\\b\\w/g, l => l.toUpperCase());
-}`;
 
-fs.writeFileSync('registry.js', output);
-console.log(`✅ registry.js generated with ${imagePaths.length} images.`);
-console.log('ℹ️ Edit descriptions in CUSTOM_DESCRIPTIONS inside registry.js');
+    const existingSource = fs.existsSync(REGISTRY) ? fs.readFileSync(REGISTRY, 'utf8') : '';
+    const oldTitles = readObject(existingSource, 'IMAGE_TITLES');
+    const oldDescriptions = readObject(existingSource, 'IMAGE_DESCRIPTIONS');
+    let store = { version: 1, images: {}, legacyUnmatched: { titles: {}, descriptions: {} } };
+    if (fs.existsSync(METADATA_FILE)) {
+        try { store = JSON.parse(fs.readFileSync(METADATA_FILE, 'utf8')); }
+        catch (error) { throw new Error('image-metadata.json is not valid JSON: ' + error.message); }
+    }
+    store.images = store.images || {};
+
+    const files = fs.readdirSync(COLLECTIONS, { withFileTypes: true })
+        .filter(entry => entry.isFile() && IMAGE_EXT.test(entry.name))
+        .map(entry => entry.name)
+        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+
+    const imagePaths = [];
+    const titles = {};
+    const descriptions = {};
+    files.forEach(fileName => {
+        const fullPath = path.join(COLLECTIONS, fileName);
+        const webPath = 'collections/' + fileName;
+        const id = sha256(fullPath);
+        const record = store.images[id] || {};
+        imagePaths.push(webPath);
+        if (record.title || oldTitles[webPath]) titles[webPath] = record.title || oldTitles[webPath];
+        else titles[webPath] = path.basename(fileName, path.extname(fileName));
+        if (record.description || oldDescriptions[webPath]) descriptions[webPath] = record.description || oldDescriptions[webPath];
+    });
+
+    const output =
+        '// Generated flat image registry. Image metadata is stored in image-metadata.json.\n' +
+        'const MASTER_IMAGE_REGISTRY = ' + JSON.stringify(imagePaths, null, 4) + ';\n\n' +
+        'const IMAGE_TITLES = ' + JSON.stringify(titles, null, 4) + ';\n\n' +
+        'const IMAGE_DESCRIPTIONS = ' + JSON.stringify(descriptions, null, 4) + ';\n\n' +
+        'function getImageTitle(path) {\n' +
+        '    const key = String(path).replace(/\\\\/g, \'/\');\n' +
+        '    return IMAGE_TITLES[key] || key.split(\'/\').pop().replace(/\\.[^/.]+$/, \'\');\n' +
+        '}\n\n' +
+        'function getImageDescription(path) {\n' +
+        '    const key = String(path).replace(/\\\\/g, \'/\');\n' +
+        '    return IMAGE_DESCRIPTIONS[key] || \'\';\n' +
+        '}\n';
+
+    new vm.Script(output, { filename: 'registry.js' });
+    const temp = REGISTRY + '.tmp';
+    fs.writeFileSync(temp, output, 'utf8');
+    fs.copyFileSync(temp, REGISTRY);
+    fs.unlinkSync(temp);
+    console.log('registry.js updated: ' + imagePaths.length + ' images directly in collections/.');
+}
+
+try { main(); }
+catch (error) { console.error('\nREGISTRY GENERATION FAILED\n' + error.message); process.exitCode = 1; }

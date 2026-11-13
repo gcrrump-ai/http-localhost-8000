@@ -6,6 +6,71 @@
 
 
 /* ============================================================
+   LAYOUT CONTROL PANEL — DESKTOP
+   Adjust these values first. Each component has its own grouped controls.
+   ============================================================ */
+:root {
+    /* GALLERY LINK TREE */
+    --gallery-tree-left: 4px;
+    --gallery-tree-top: 60px;
+    --gallery-tree-width: 222px;
+    --gallery-tree-max-height: 800px;
+    --gallery-tree-overflow-y: auto;
+    --gallery-sidebar-max-height: 87vh;
+    --gallery-sidebar-overflow-y: auto;
+    --gallery-tree-padding-x: 0px;
+    --gallery-tree-padding-y: 0px;
+    --gallery-tree-background: 0;
+    --gallery-tree-backdrop-blur: 0px;
+    --gallery-tree-border-radius: 0px;
+    --gallery-tree-scrollbar-width: 0.3px;
+    --gallery-file-font-size: 7px;
+    --gallery-file-line-height: 1.5;
+    --gallery-file-word-spacing: 6px;
+
+    /* WELCOME / PAGE HEADER */
+    --desktop-intro-width: min(760px, 80vw);
+    --desktop-intro-font-size: 12px;
+    --desktop-intro-title-size: 18px;
+    --desktop-intro-letter-size: 28px;
+    --desktop-intro-title-gap: 8px;
+
+    /* MAIN IMAGE */
+    --desktop-image-max-height: 76vh;
+    --desktop-gallery-image-top-gap: 80px;
+    --desktop-expand-image-top-padding: 30px;
+    --desktop-expand-image-max-height: calc(100vh - 80px);
+
+    /* SHOW / HIDE TREE CONTROL */
+    --desktop-toggle-left: 50px;
+    --desktop-toggle-top: 90px;
+    --desktop-toggle-offset-x: 180px;
+    --desktop-toggle-offset-y: 2px;
+    --desktop-toggle-font-size: 11px;
+
+    /* IMAGE TOOLBAR */
+    --desktop-toolbar-width: 76px;
+    --desktop-toolbar-icon-size: 17px;
+    --desktop-toolbar-gap: 8px;
+    --desktop-toolbar-padding-y: 4px;
+    --desktop-toolbar-transform-y: 10px;
+    --desktop-info-toolbar-gap: 15px;
+    --desktop-image-controls-offset-x: 0px;
+    --desktop-image-controls-offset-y: 0px;
+
+    /* FLOATING IMAGE INFORMATION */
+    --desktop-info-width: 210px;
+    --desktop-info-padding: 10px 10px 4px 8px;
+    --desktop-info-text-size: 12px;
+    --desktop-info-icon-size: 14px;
+    --desktop-info-row-gap: 5px;
+
+    /* MAGNIFIER */
+    --desktop-magnifier-size: 200px;
+}
+
+
+/* ============================================================
    1. RESET & BASE STYLES
    ============================================================ */
 
@@ -57,17 +122,17 @@ img {
 
 #sidebar {
     position: fixed !important;
-    left: 0 !important;
-    top: 110px !important;
+    left: var(--active-tree-left, var(--gallery-tree-left)) !important;
+    top: var(--active-tree-top, var(--gallery-tree-top)) !important;
     display: flex;
     flex-direction: column;
     z-index: 9999 !important;
     padding: 0 !important;
-    min-width: 220px !important;
+    min-width: var(--active-tree-width, var(--gallery-tree-width)) !important;
     width: auto !important;
     background: transparent;
-    max-height: 100vh;
-    overflow-y: auto;
+    max-height: var(--active-sidebar-max-height, var(--gallery-sidebar-max-height));
+    overflow-y: var(--active-sidebar-overflow-y, var(--gallery-sidebar-overflow-y));
 }
 
 #sidebar.hidden-sidebar {
@@ -80,13 +145,13 @@ img {
    ============================================================ */
 
 .tree-content {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(4px);
-    border-radius: 2px;
-    padding: 4px 6px;
-    width: 230px !important;
-    max-height: 600px;
-    overflow-y: auto;
+    background: var(--active-tree-background, var(--gallery-tree-background));
+    backdrop-filter: blur(var(--active-tree-backdrop-blur, 4px));
+    border-radius: var(--active-tree-border-radius, 0px);
+    padding: var(--active-tree-padding-y, var(--gallery-tree-padding-y)) var(--active-tree-padding-x, var(--gallery-tree-padding-x));
+    width: var(--active-tree-width, var(--gallery-tree-width)) !important;
+    max-height: var(--active-tree-max-height, var(--gallery-tree-max-height));
+    overflow-y: var(--active-tree-overflow-y, var(--gallery-tree-overflow-y));
     white-space: normal;
     word-wrap: break-word;
     box-sizing: border-box;
@@ -96,7 +161,7 @@ img {
 }
 
 .tree-content::-webkit-scrollbar {
-    width: 4px;
+    width: var(--active-tree-scrollbar-width, var(--gallery-tree-scrollbar-width));
 }
 
 .tree-content::-webkit-scrollbar-track {
@@ -105,47 +170,23 @@ img {
 
 .tree-content::-webkit-scrollbar-thumb {
     background: #c8ccd1;
-    border-radius: 2px;
+    border-radius: 0px;
 }
 
 .tree-content::-webkit-scrollbar-thumb:hover {
     background: #a2a9b1;
 }
 
-.group-header {
-    display: inline;
-    font-weight: 500;
-    font-size: 7px;
-    cursor: pointer;
-    color: #202122;
-    background: transparent !important;
-    padding: 0;
-    margin: 0;
-    border: none !important;
-    outline: none !important;
-    word-spacing: 3px;
-    line-height: 1.6;
-}
-
-.group-header .arrow {
-    display: inline;
-    margin-left: 0;
-}
-
-.group-links {
+.image-links {
     display: inline;
     padding: 0;
     margin: 0;
 }
 
-.group-links:not(.open) {
-    display: none !important;
-}
-
-.group-links a {
+.image-links a {
     display: inline;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 7px !important;
+    font-size: var(--active-file-font-size, var(--gallery-file-font-size)) !important;
     font-weight: 400;
     color: rgb(0, 0, 238);
     text-decoration: none;
@@ -153,19 +194,19 @@ img {
     margin: 0;
     white-space: normal;
     word-break: break-all;
-    word-spacing: 4px;
-    line-height: 1.6;
+    word-spacing: var(--active-file-word-spacing, var(--gallery-file-word-spacing));
+    line-height: var(--active-file-line-height, var(--gallery-file-line-height));
     cursor: pointer;
 }
 
-.group-links a:hover {
+.image-links a:hover {
     text-decoration: underline;
     color: rgb(0, 0, 238);
     background: rgba(0, 0, 238, 0.1);
     border-radius: 2px;
 }
 
-#treeDropdownContent .group-links a.active {
+#treeDropdownContent .image-links a.active {
     color: #00AA00 !important;
     font-weight: 700 !important;
 }
@@ -179,8 +220,8 @@ img {
 .sidebar-tab,
 #showTab {
     position: fixed;
-    left: 5px;
-    top: 90px;
+    left: var(--desktop-toggle-left);
+    top: var(--desktop-toggle-top);
     width: auto;
     height: auto;
     background: transparent;
@@ -192,7 +233,7 @@ img {
     justify-content: center;
     cursor: pointer;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 11px;
+    font-size: var(--desktop-toggle-font-size);
     font-weight: 400;
     color: #800080;
     padding: 0;
@@ -200,6 +241,7 @@ img {
     line-height: 1;
     z-index: 99999 !important;
     pointer-events: auto !important;
+    transform: none; /* JS applies the single active-page toggle offset. */
 }
 
 .sidebar-tab:hover,
@@ -288,7 +330,7 @@ body.tree-hidden #showTab {
 
 #bookshelfImageArea img {
     max-width: 100%;
-    max-height: 76vh;
+    max-height: var(--desktop-image-max-height);
     width: auto;
     height: auto;
     object-fit: contain;
@@ -297,14 +339,14 @@ body.tree-hidden #showTab {
 
 #intro-title {
     font-family: monospace, monospace;
-    font-size: 18px;
+    font-size: var(--desktop-intro-title-size);
     font-weight: 700;
     line-height: 1.2;
-    margin-bottom: 8px;
+    margin-bottom: var(--desktop-intro-title-gap);
 }
 
 #intro-title .big-letter {
-    font-size: 28px;
+    font-size: var(--desktop-intro-letter-size);
     background: linear-gradient(180deg, #00FF00, #007D09);
     -webkit-background-clip: text;
     background-clip: text;
@@ -323,9 +365,9 @@ body.dark-mode #intro-title .big-letter {
     top: auto;
     left: auto;
     transform: none;
-    width: min(760px, 80vw);
+    width: var(--desktop-intro-width);
     margin: 0 auto;
-    font-size: 12px;
+    font-size: var(--desktop-intro-font-size);
     line-height: 1.5;
     text-align: center;
     color: #202122;
@@ -339,7 +381,10 @@ body.dark-mode #intro-title .big-letter {
 /* Keep toolbar and floating information window moving together. */
 #tree-toolbar,
 #floating-window {
-    transform: translateY(10px);
+    transform: translate(
+        var(--desktop-image-controls-offset-x),
+        calc(var(--desktop-toolbar-transform-y) + var(--desktop-image-controls-offset-y))
+    );
 }
 
 
@@ -354,25 +399,103 @@ body.dark-mode #intro-title .big-letter {
     z-index: 999999;
     display: block;
     pointer-events: none;
-    width: 210px;
+    width: var(--desktop-info-width);
     margin: 0;
     flex-shrink: 0;
 }
 
 .dev-tooltip-exact {
     position: relative;
-    width: 210px;
+    width: var(--desktop-info-width);
     min-height: 0;
     background: #ffffff;
-    padding: 10px 10px 4px 8px;
+    padding: var(--desktop-info-padding);
     box-sizing: border-box;
     font-family: "Segoe UI", -apple-system, sans-serif;
     pointer-events: auto;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 #floating-window .file-content {
     display: block;
     width: 100%;
+}
+
+
+/* Additional image-file information and server-saved metadata fields. */
+.metadata-row {
+    align-items: flex-start;
+    gap: 2px 6px;
+}
+
+.metadata-label {
+    flex: 0 0 82px;
+    color: #777777;
+    font-size: 10px;
+    line-height: 1.45;
+}
+
+.row-exact.body-row .metadata-value {
+    flex: 1 1 calc(100% - 88px);
+}
+
+.metadata-value {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: var(--desktop-info-text-size);
+    line-height: 1.45;
+}
+
+.metadata-edit-input {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px dotted #aaaaaa;
+    border-radius: 0;
+    padding: 1px 0 2px;
+    margin: 0;
+    background: transparent;
+    color: #202124;
+    font: inherit;
+    font-size: var(--desktop-info-text-size);
+    line-height: 1.45;
+    outline: none;
+}
+
+.metadata-edit-input:focus {
+    border-bottom: 1px solid #800080;
+}
+
+.metadata-edit-input:disabled {
+    border-bottom-color: transparent;
+    opacity: 0.8;
+}
+
+.metadata-edit-input[rows] {
+    resize: vertical;
+}
+
+.metadata-save-row {
+    margin-top: 7px;
+    text-align: right;
+}
+
+.metadata-save-button {
+    border: 0;
+    padding: 2px 0;
+    background: transparent;
+    color: #800080;
+    font: inherit;
+    font-size: var(--desktop-info-text-size);
+    cursor: pointer;
+}
+
+.metadata-save-button:disabled {
+    color: #888888;
+    cursor: default;
 }
 
 .icon-and-tag {
@@ -382,7 +505,7 @@ body.dark-mode #intro-title .big-letter {
 }
 
 #floating-window .info-icon-permanent {
-    font-size: 14px;
+    font-size: var(--desktop-info-icon-size);
     color: #5f6368;
     font-weight: 400;
     opacity: 0.8;
@@ -394,14 +517,14 @@ body.dark-mode #intro-title .big-letter {
 .tag-exact {
     color: #9c1180;
     font-weight: 700;
-    font-size: 12px;
+    font-size: var(--desktop-info-text-size);
     letter-spacing: -0.5px;
     line-height: 1;
 }
 
 .dim-exact {
     color: #202124;
-    font-size: 12px;
+    font-size: var(--desktop-info-text-size);
     font-weight: 400;
     text-decoration: none;
 }
@@ -417,7 +540,7 @@ body.dark-mode #intro-title .big-letter {
     flex-wrap: wrap;
     align-items: flex-start;
     gap: 2px 0;
-    margin-top: 5px;
+    margin-top: var(--desktop-info-row-gap);
 }
 
 .row-exact.body-row .value-exact {
@@ -434,7 +557,7 @@ body.dark-mode #intro-title .big-letter {
 
 .value-exact {
     color: #202124;
-    font-size: 12px;
+    font-size: var(--desktop-info-text-size);
     font-weight: 400;
 }
 
@@ -445,8 +568,8 @@ body.dark-mode #intro-title .big-letter {
 
 #magnifierLens {
     position: fixed;
-    width: 200px;
-    height: 200px;
+    width: var(--desktop-magnifier-size);
+    height: var(--desktop-magnifier-size);
     pointer-events: auto;
     cursor: grab;
     z-index: 9999;
@@ -550,19 +673,11 @@ body.dark-mode .tree-content::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 
-body.dark-mode .group-header {
-    color: #ffffff;
-}
-
-body.dark-mode .group-header .arrow {
-    color: #66FF66;
-}
-
-body.dark-mode .group-links a {
+body.dark-mode .image-links a {
     color: #99ccff;
 }
 
-body.dark-mode .group-links a:hover {
+body.dark-mode .image-links a:hover {
     color: #ffffff;
     background: rgba(153, 204, 255, 0.15);
 }
@@ -576,8 +691,17 @@ body.dark-mode .tag-exact {
     color: #c586c0;
 }
 
+body.dark-mode .metadata-label {
+    color: #aaaaaa;
+}
+
+body.dark-mode .metadata-save-button {
+    color: #c586c0;
+}
+
 body.dark-mode .dim-exact,
-body.dark-mode .value-exact {
+body.dark-mode .value-exact,
+body.dark-mode .metadata-edit-input {
     color: #e0e0e0;
 }
 
@@ -615,7 +739,7 @@ body.dark-mode #darkModeIconDark {
 @media (min-width: 481px) {
 
     body.image-open:not(.expand-image) #mainContent {
-        margin-top: 80px !important;
+        margin-top: var(--desktop-gallery-image-top-gap) !important;
     }
 
     body.image-open:not(.expand-image) #bookshelfImageArea {
@@ -626,11 +750,11 @@ body.dark-mode #darkModeIconDark {
     #tree-toolbar {
         display: none;
         background: rgba(255, 255, 255, 0.85) !important;
-        width: 76px !important;
-        min-width: 76px !important;
-        max-width: 76px !important;
-        padding: 4px 0 !important;
-        gap: 8px !important;
+        width: var(--desktop-toolbar-width) !important;
+        min-width: var(--desktop-toolbar-width) !important;
+        max-width: var(--desktop-toolbar-width) !important;
+        padding: var(--desktop-toolbar-padding-y) 0 !important;
+        gap: var(--desktop-toolbar-gap) !important;
         justify-content: flex-start !important;
         flex-shrink: 0 !important;
         opacity: 1 !important;
@@ -654,8 +778,8 @@ body.dark-mode #darkModeIconDark {
     }
 
     #tree-toolbar > a > img {
-        width: 17px !important;
-        height: 17px !important;
+        width: var(--desktop-toolbar-icon-size) !important;
+        height: var(--desktop-toolbar-icon-size) !important;
         object-fit: contain !important;
         display: block !important;
         margin: 0 !important;
@@ -681,8 +805,8 @@ body.dark-mode #darkModeIconDark {
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
-        width: 17px !important;
-        height: 17px !important;
+        width: var(--desktop-toolbar-icon-size) !important;
+        height: var(--desktop-toolbar-icon-size) !important;
         margin: 0 !important;
         border: 0 !important;
         outline: 0 !important;
@@ -742,7 +866,7 @@ body.dark-mode #darkModeIconDark {
         min-height: 0 !important;
         max-height: none !important;
         margin: 0 !important;
-        padding-top: 30px !important;
+        padding-top: var(--desktop-expand-image-top-padding) !important;
         transform: none !important;
         display: flex !important;
         align-items: center !important;
@@ -752,7 +876,7 @@ body.dark-mode #darkModeIconDark {
 
     body.expand-image #bookshelfImageArea img {
         max-width: 100% !important;
-        max-height: calc(100vh - 80px) !important;
+        max-height: var(--desktop-expand-image-max-height) !important;
         width: auto !important;
         height: auto !important;
         object-fit: contain !important;
@@ -766,12 +890,12 @@ body.dark-mode #darkModeIconDark {
     body.expand-image #tree-toolbar {
         position: fixed !important;
         flex-direction: row !important;
-        width: 76px !important;
-        min-width: 76px !important;
-        max-width: 76px !important;
+        width: var(--desktop-toolbar-width) !important;
+        min-width: var(--desktop-toolbar-width) !important;
+        max-width: var(--desktop-toolbar-width) !important;
         height: auto !important;
-        padding: 4px 0 !important;
-        gap: 8px !important;
+        padding: var(--desktop-toolbar-padding-y) 0 !important;
+        gap: var(--desktop-toolbar-gap) !important;
         margin: 0 !important;
         opacity: 1 !important;
         background: rgba(255, 255, 255, 0.85) !important;
@@ -783,144 +907,102 @@ body.dark-mode #darkModeIconDark {
 }
 
 
-/* ============================================================
-   14. IMAGE STRIPS
-   Continuous columns, no gaps or internal scrolling.
-   ============================================================ */
-
-#img-strip-view {
-    width: auto;
-    max-width: none;
-    height: auto;
-    max-height: none;
-    margin: 16px auto 0;
-    padding: 0;
-    overflow: visible;
-    box-sizing: border-box;
-    position: relative;
-    display: block;
-    pointer-events: auto;
-}
-
-body.image-open #img-strip-view {
-    display: none;
-}
-
-#img-strip-list {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 0;
-    width: 100%;
-    max-width: none;
-}
-
-.img-strip-column {
-    display: flex;
-    flex: 0 0 auto;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    margin: 0;
-    padding: 0;
-}
-
-.img-strip-item {
-    position: relative;
-    display: block;
-    flex: 0 0 21px;
-    width: 21px;
-    height: 21px;
-    min-height: 21px;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    text-decoration: none;
-    line-height: 0;
-    pointer-events: auto;
-}
-
-.img-strip-item img {
-    display: block;
-    width: 21px;
-    height: 21px;
-    object-fit: contain;
-    object-position: center;
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
-
-.img-strip-filename {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    padding: 3px;
-    overflow-wrap: anywhere;
-    text-align: center;
-    font-size: 9px;
-    line-height: 1.15;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.72);
-    opacity: 0;
-    transition: opacity 0.12s ease;
-    pointer-events: none;
-}
-
-.img-strip-item:hover .img-strip-filename,
-.img-strip-item:focus-visible .img-strip-filename {
-    opacity: 1;
-}
-
-.img-strip-item:hover img {
-    opacity: 1;
-}
 
 
 /* ============================================================
-   15. TREE MARKERS
-   Created dynamically by the JavaScript.
-   ============================================================ */
-
-.tree-marker {
-    display: block;
-    width: 14px;
-    height: 14px;
-    object-fit: contain;
-    margin: 4px 0;
-}
-
-.tree-marker-top {
-    margin-bottom: 6px;
-}
-
-.tree-marker-bottom {
-    margin-top: 6px;
-}
-
-
-/* ============================================================
-   16. MOBILE LAYOUT
-   Mobile layout retained.
+   MOBILE LAYOUT — independent from desktop layout controls
    ============================================================ */
 
 @media (max-width: 480px) {
+
+    /* ========================================================
+       MOBILE CONTROL PANEL — adjust mobile components here only
+       ======================================================== */
+    :root {
+        /* MOBILE LINK TREE */
+        --mobile-sidebar-top: 56px; /* initial fallback; JS then anchors to the image or Welcome */
+        --mobile-sidebar-width: clamp(100px, 25vw, 160px);
+        --mobile-sidebar-min-width: 80px;
+        --mobile-sidebar-max-width: 180px;
+        --mobile-sidebar-offset-x: 0px;
+        --mobile-sidebar-offset-y: 0px;
+        --mobile-tree-padding-top: 45px;
+        --mobile-tree-padding-bottom: 45px;
+        --mobile-tree-max-height: none;
+        --mobile-tree-overflow-y: auto;
+        --mobile-tree-bottom-gap: 15px;
+        --mobile-tree-background: rgba(255, 255, 255, 0.85);
+        --mobile-tree-backdrop-blur: 4px;
+        --mobile-tree-border-radius: 0px;
+        --mobile-tree-scrollbar-width: 3px;
+        --mobile-file-font-size: clamp(5px, 1.6vw, 7px);
+        --mobile-file-word-spacing: 4px;
+        --mobile-file-line-height: 1.2;
+
+        /* MOBILE WELCOME / HEADER */
+        --mobile-intro-width: 80%;
+        --mobile-intro-top: 0px;
+        --mobile-intro-font-size: 9.6px;
+        --mobile-intro-title-size: 14px;
+        --mobile-intro-letter-size: 22px;
+        --mobile-intro-title-gap: 6px;
+
+        /* MOBILE IMAGE AND CONTENT COLUMN */
+        --mobile-main-padding-top: clamp(110px, 16vh, 170px);
+        --mobile-main-sidebar-reserve: clamp(100px, 25vw, 160px);
+        --mobile-image-max-height: 60vh;
+        --mobile-image-max-height-tree-hidden: 72vh;
+        --mobile-image-max-width-tree-hidden: 92vw;
+
+        /* MOBILE TOOLBAR */
+        --mobile-toolbar-width: 136px;
+        --mobile-toolbar-gap: 16px;
+        --mobile-toolbar-padding: 4px 7px;
+        --mobile-toolbar-icon-size: 14px;
+        --mobile-toolbar-background: rgba(255, 255, 255, 0.85);
+        --mobile-toolbar-backdrop-blur: 4px;
+
+        /* MOBILE IMAGE INFORMATION */
+        --mobile-info-width: min(150px, 70%);
+        --mobile-info-max-width: 150px;
+        --mobile-info-padding: 4px;
+        --mobile-info-font-size: 8px;
+        --mobile-info-row-gap: 5px;
+
+        /* MOBILE SHOW/HIDE CONTROL AND UNDER-IMAGE ROW */
+        --mobile-tools-offset-x: 0px;
+        --mobile-tools-offset-y: 10px;
+        --mobile-toggle-initial-top: clamp(180px, 40vh, 220px);
+        --mobile-toggle-left: 6px;
+        --mobile-toggle-offset-x: 0px;
+        --mobile-toggle-offset-y: 0px;
+        --mobile-toggle-font-size: 12px;
+        --mobile-under-image-gap: 8px;
+
+        /* MOBILE PAGE FLOW */
+        --mobile-page-min-height: 100vh;
+        --mobile-page-overflow-x: hidden;
+        --mobile-page-overflow-y: auto;
+
+        /* Shared base selectors use these mobile-only aliases. */
+        --active-sidebar-max-height: 100vh;
+        --active-sidebar-overflow-y: visible;
+        --active-tree-scrollbar-width: var(--mobile-tree-scrollbar-width);
+        --active-file-line-height: var(--mobile-file-line-height);
+        --active-file-word-spacing: var(--mobile-file-word-spacing);
+    }
 
     /* BODY */
 
     body {
         display: flex !important;
         flex-direction: column !important;
-        height: 100vh !important;
+        height: auto !important;
+        min-height: var(--mobile-page-min-height) !important;
         margin: 0 !important;
         padding: 0 !important;
-        overflow: hidden !important;
+        overflow-x: var(--mobile-page-overflow-x) !important;
+        overflow-y: var(--mobile-page-overflow-y) !important;
         font-size: clamp(7px, 2vw, 9px);
     }
 
@@ -932,7 +1014,7 @@ body.image-open #img-strip-view {
         flex-direction: row !important;
         flex: 1 1 auto !important;
         min-height: 0 !important;
-        overflow: hidden !important;
+        overflow: visible !important;
     }
 
 
@@ -941,11 +1023,12 @@ body.image-open #img-strip-view {
     #sidebar {
         position: fixed !important;
         left: 0 !important;
-        top: 56px !important;
+        top: var(--mobile-sidebar-top) !important; /* JS may anchor the sidebar to the image/intro. */
         bottom: 0 !important;
-        width: clamp(100px, 25vw, 160px) !important;
-        min-width: 80px !important;
-        max-width: 180px !important;
+        transform: translateX(var(--mobile-sidebar-offset-x)); /* vertical nudge is applied by JS */
+        width: var(--mobile-sidebar-width) !important;
+        min-width: var(--mobile-sidebar-min-width) !important;
+        max-width: var(--mobile-sidebar-max-width) !important;
         z-index: 9998 !important;
         pointer-events: auto !important;
         background: transparent;
@@ -961,13 +1044,13 @@ body.image-open #img-strip-view {
     #sidebar .tree-content {
         width: 100% !important;
         flex: 0 0 auto !important;
-        max-height: none !important;
-        overflow-y: auto !important;
-        padding: 45px 0 !important;
-        margin-bottom: 15px !important;
-        background: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(4px) !important;
-        border-radius: 0 !important;
+        max-height: var(--mobile-tree-max-height) !important;
+        overflow-y: var(--mobile-tree-overflow-y) !important;
+        padding: var(--mobile-tree-padding-top) 0 var(--mobile-tree-padding-bottom) !important;
+        margin-bottom: var(--mobile-tree-bottom-gap) !important;
+        background: var(--mobile-tree-background) !important;
+        backdrop-filter: blur(var(--mobile-tree-backdrop-blur)) !important;
+        border-radius: var(--mobile-tree-border-radius) !important;
         border: none !important;
         outline: none !important;
     }
@@ -977,15 +1060,15 @@ body.image-open #img-strip-view {
 
     #tree-toolbar {
         display: flex !important;
-        flex: 0 0 136px !important;
+        flex: 0 0 var(--mobile-toolbar-width) !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        gap: 16px !important;
-        padding: 4px 7px !important;
+        gap: var(--mobile-toolbar-gap) !important;
+        padding: var(--mobile-toolbar-padding) !important;
         margin: 0 !important;
-        background: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(4px) !important;
-        width: 136px !important;
+        background: var(--mobile-toolbar-background) !important;
+        backdrop-filter: blur(var(--mobile-toolbar-backdrop-blur)) !important;
+        width: var(--mobile-toolbar-width) !important;
         box-sizing: border-box !important;
         border-top: 1px solid rgba(0,0,0,0.05) !important;
     }
@@ -1000,51 +1083,58 @@ body.image-open #img-strip-view {
     }
 
     #tree-toolbar img {
-        width: 14px !important;
-        height: 14px !important;
+        width: var(--mobile-toolbar-icon-size) !important;
+        height: var(--mobile-toolbar-icon-size) !important;
         vertical-align: middle !important;
     }
 
 
     /* TREE TEXT SIZES */
 
-    .group-header {
-        font-size: clamp(6px, 1.8vw, 8px) !important;
+    .image-links a {
+        font-size: var(--mobile-file-font-size) !important;
+        word-spacing: var(--mobile-file-word-spacing) !important;
+        line-height: var(--mobile-file-line-height) !important;
     }
 
-    .group-header .arrow {
-        font-size: clamp(8px, 2.2vw, 7px) !important;
+
+    .metadata-label {
+        flex-basis: 62px;
+        font-size: var(--mobile-info-font-size) !important;
     }
 
-    .group-links a {
-        font-size: clamp(5px, 1.6vw, 7px) !important;
+    .metadata-value,
+    .metadata-edit-input,
+    .metadata-save-button {
+        font-size: var(--mobile-info-font-size) !important;
     }
-
 
     /* MAIN IMAGE */
 
     #mainContent {
-        flex: 1 1 auto !important;
+        flex: 0 0 auto !important;
         min-width: 0 !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        padding: clamp(110px, 16vh, 170px) 0 0 !important;
+        padding: var(--mobile-main-padding-top) 0 0 !important;
         margin: 0 !important;
-        margin-left: clamp(100px, 25vw, 160px) !important;
+        margin-left: var(--mobile-main-sidebar-reserve) !important;
         z-index: 1 !important;
         pointer-events: none !important;
         background: transparent !important;
-        height: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
         max-height: none !important;
+        overflow: visible !important;
         position: relative !important;
     }
 
     #bookshelfImageArea {
         width: 100% !important;
         height: auto !important;
-        max-height: 60vh !important;
+        max-height: var(--mobile-image-max-height) !important;
         min-height: auto !important;
         pointer-events: none !important;
         display: flex !important;
@@ -1068,33 +1158,33 @@ body.image-open #img-strip-view {
     }
 
     body.tree-hidden #bookshelfImageArea {
-        max-height: 72vh !important;
+        max-height: var(--mobile-image-max-height-tree-hidden) !important;
     }
 
     body.tree-hidden #bookshelfImageArea img {
-        max-width: 92vw !important;
-        max-height: 72vh !important;
+        max-width: var(--mobile-image-max-width-tree-hidden) !important;
+        max-height: var(--mobile-image-max-height-tree-hidden) !important;
     }
 
 
     /* INTRO TEXT */
 
     #intro-title {
-        font-size: 14px !important;
-        margin-bottom: 6px !important;
+        font-size: var(--mobile-intro-title-size) !important;
+        margin-bottom: var(--mobile-intro-title-gap) !important;
     }
 
     #intro-title .big-letter {
-        font-size: 22px !important;
+        font-size: var(--mobile-intro-letter-size) !important;
     }
 
     #intro-text {
         position: absolute !important;
-        top: 0 !important;
+        top: var(--mobile-intro-top) !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
-        width: 80% !important;
-        font-size: 9.6px !important;
+        width: var(--mobile-intro-width) !important;
+        font-size: var(--mobile-intro-font-size) !important;
         line-height: 1.5 !important;
         text-align: center !important;
     }
@@ -1102,13 +1192,18 @@ body.image-open #img-strip-view {
 
     /* MOBILE ROW UNDER IMAGE */
 
+    #tree-toolbar,
+    #floating-window {
+        transform: translate(var(--mobile-tools-offset-x), var(--mobile-tools-offset-y)) !important;
+    }
+
     #mobile-under-image {
         display: flex !important;
         width: 100% !important;
         align-items: flex-start !important;
         justify-content: space-between !important;
-        gap: 8px !important;
-        margin-top: 8px !important;
+        gap: var(--mobile-under-image-gap) !important;
+        margin-top: var(--mobile-under-image-gap) !important;
         box-sizing: border-box !important;
         pointer-events: auto !important;
     }
@@ -1120,8 +1215,8 @@ body.image-open #img-strip-view {
         position: static !important;
         left: auto !important;
         top: auto !important;
-        width: min(150px, 70%) !important;
-        max-width: 150px !important;
+        width: var(--mobile-info-width) !important;
+        max-width: var(--mobile-info-max-width) !important;
         z-index: 999999 !important;
         pointer-events: auto !important;
         margin: 0 !important;
@@ -1132,19 +1227,23 @@ body.image-open #img-strip-view {
     .dev-tooltip-exact {
         width: 100% !important;
         min-height: auto !important;
-        padding: 4px !important;
+        padding: var(--mobile-info-padding) !important;
         box-sizing: border-box !important;
     }
 
     #floating-window .info-icon-permanent {
-        font-size: 8px !important;
+        font-size: var(--mobile-info-font-size) !important;
+    }
+
+    .row-exact.body-row {
+        margin-top: var(--mobile-info-row-gap) !important;
     }
 
     .tag-exact,
     .dim-exact,
     .value-exact,
     .row-exact.body-row .value-exact {
-        font-size: 8px !important;
+        font-size: var(--mobile-info-font-size) !important;
     }
 
 
@@ -1155,15 +1254,16 @@ body.image-open #img-strip-view {
         background: none !important;
         border: none !important;
         box-shadow: none !important;
-        font-size: 12px !important;
+        font-size: var(--mobile-toggle-font-size) !important;
         font-weight: 400 !important;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
         color: #202122 !important;
         padding: 0 4px !important;
         width: auto !important;
         height: auto !important;
-        top: clamp(180px, 40vh, 220px) !important;
-        left: 6px !important;
+        top: var(--mobile-toggle-initial-top) !important;
+        left: var(--mobile-toggle-left) !important; /* JS anchors the toggle and applies its offsets. */
+        transform: none !important;
         border-radius: 0 !important;
         line-height: 1.4 !important;
         cursor: pointer !important;
@@ -1192,47 +1292,17 @@ body.image-open #img-strip-view {
         color: #ffffff !important;
         background: none !important;
     }
+}
 
 
-    /* IMAGE STRIPS */
-
-    #img-strip-view {
-        width: 0 !important;
-        max-width: none !important;
-        height: 0 !important;
-        max-height: none !important;
-        overflow: visible !important;
-        margin-top: 12px !important;
-    }
-
-    #img-strip-list {
-        gap: 0 !important;
-    }
-
-    .img-strip-item,
-    .img-strip-column {
-        gap: 0 !important;
-    }
-
-
-    /* MOBILE PAGE SCROLL */
-
-    body {
-        height: auto !important;
-        min-height: 100vh !important;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-    }
-
-    #content-wrapper {
-        overflow: visible !important;
-        min-height: 0 !important;
-    }
-
-    #mainContent {
-        height: auto !important;
-        max-height: none !important;
-        overflow: visible !important;
-        flex: 0 0 auto !important;
-    }
+/* Navigation: keep the active link marker, remove browser focus rectangles. */
+#treeDropdownContent,
+#treeDropdownContent a {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+}
+#treeDropdownContent .image-links a:focus,
+#treeDropdownContent .image-links a:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
 }
