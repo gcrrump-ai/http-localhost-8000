@@ -7,18 +7,18 @@ const GALLERY_ICON_PATHS = {
 };
 const MASTER_IMAGE_REGISTRY = [
     "Collections/floor.jpg",
-    "Collections/0dce722813662e21b0f1a662b92f5411_result4231-07-2026 6-37-22 PM.jpg",
-    "Collections/020-2.jpg",
+    "Collections/blurry party.jpg",
+    "Collections/Imogen Red 11.jpg",
     "Collections/Auckland Central Parish Pitt Street Methodist Church.jpg",
     "Collections/Auckland Harbour Bridge (2).jpg",
     "Collections/Auckland Harbour Bridge.jpg",
     "Collections/Belgrade_3.jpg",
-    "Collections/Belgrade_4.jpg",
+    "Collections/palata glavne pošte.jpg",
     "Collections/Birdseye View of a Cat.jpg",
     "Collections/Chroma_15.jpg",
     "Collections/Distinction Hotel facade, Christchurch.jpg",
     "Collections/Dog, Christchurch.jpg",
-    "Collections/DSC09674.jpg",
+    "Collections/Ferg, Balltip Pen Springs.jpg",
     "Collections/Elmo, Auckland Christmas Parade (2).jpg",
     "Collections/Elmo, Auckland Christmas Parade.jpg",
     "Collections/European Police Horses.jpg",
@@ -309,12 +309,16 @@ const IMAGE_TITLES = {
     "Collections/Elmo, Auckland Christmas Parade.jpg": "Elmo, Auckland Christmas Parade",
     "Collections/Elmo, Auckland Christmas Parade (2).jpg": "Elmo, Auckland Christmas Parade",
     "Collections/Pigeons, (Deceased).jpg": "Pigeons, (Deceased)",
-    "Collections/floor.jpg": "floor"
+    "Collections/floor.jpg": "floor",
+    "Collections/Imogen Red 11.jpg": "Imogen Red 11",
+    "Collections/blurry party.jpg": "blurry party",
+    "Collections/Ferg, Balltip Pen Springs.jpg": "Ferg, Balltip Pen Springs",
+    "Collections/palata glavne pošte.jpg": "palata glavne pošte"
 };
 const IMAGE_DESCRIPTIONS = {
     "Collections/Belgrade_1.jpg": "The Danube River - froze over 2017, these deep freezes have notably happened in 2012 and 2017 - halting commercial shipping routes.",
     "Collections/Belgrade_3.jpg": "McDonald's Zeleni Venac restaurant located at Zeleni Venac in Belgrade, Serbia",
-    "Collections/Belgrade_4.jpg": "palata glavne pošte headquarters of Pošta Srbije, national postal service of Serbia."
+    "Collections/palata glavne pošte.jpg": "palata glavne pošte headquarters of Pošta Srbije, national postal service of Serbia."
 };
 const IMAGE_FILE_METADATA = {};
 function getImageTitle(path) {

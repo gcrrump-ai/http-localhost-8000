@@ -9,9 +9,10 @@
         },
         "6a23744b06bc8984def9eb3a279209d45762c1a9a3084dc93a0a9e28e753980b": {
             "id": "6a23744b06bc8984def9eb3a279209d45762c1a9a3084dc93a0a9e28e753980b",
-            "title": "Belgrade_4",
+            "title": "palata glavne pošte",
             "description": "palata glavne pošte headquarters of Pošta Srbije, national postal service of Serbia.",
-            "originalFolder": "Belgrade"
+            "originalFolder": "Belgrade",
+            "linkColor": "#c07b21"
         },
         "2354d20a5810355cf13c78b8323fbd42264474d14d85c4f5dd301249f9632ec1": {
             "id": "2354d20a5810355cf13c78b8323fbd42264474d14d85c4f5dd301249f9632ec1",
@@ -1291,23 +1292,24 @@
         },
         "e87a6137814fbf2b83559e09a9fab48d1f6fe2b8f6dac1dd04fc434bf598a280": {
             "id": "e87a6137814fbf2b83559e09a9fab48d1f6fe2b8f6dac1dd04fc434bf598a280",
-            "title": "020-2r",
-            "description": "Imogen Watt red11",
+            "title": "Imogen Red 11",
+            "description": "",
             "originalFolder": "",
             "linkColor": "#f4b8de"
         },
         "ffed343c9ce35582063cbe71b218b7d84e9aa4e19809d765fab7cefc517bb89c": {
             "id": "ffed343c9ce35582063cbe71b218b7d84e9aa4e19809d765fab7cefc517bb89c",
-            "title": "unknown_blurry_party",
+            "title": "blurry party",
             "description": "unknown",
             "originalFolder": "",
             "linkColor": "#b6851b"
         },
         "e9389f79fa311edd1e8a4cddb4c6a7872253b83938fd60db9b8375eab04a1280": {
             "id": "e9389f79fa311edd1e8a4cddb4c6a7872253b83938fd60db9b8375eab04a1280",
-            "title": "DSC09674",
+            "title": "Ferg, Balltip Pen Springs",
             "description": "",
-            "originalFolder": ""
+            "originalFolder": "",
+            "linkColor": "#0000ee"
         },
         "0c58d54aa333ca1c161f2f1f2614554bf4945b5a45b6d108dd0a2c7acc6f16e0": {
             "id": "0c58d54aa333ca1c161f2f1f2614554bf4945b5a45b6d108dd0a2c7acc6f16e0",
