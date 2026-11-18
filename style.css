@@ -1,30 +1,28 @@
+/* =====================================================================
+   GEORGE RUMP PHOTOGRAPHY — ORGANIZED STYLESHEET
+   Rules are grouped by the component they control.
+   Existing declarations and responsive values are retained.
+   ===================================================================== */
 
-/* ============================================================
-   FILE: style.css
-   PURPOSE: George Rump website – main stylesheet
-   ============================================================ */
-
-
-/* ============================================================
-   LAYOUT CONTROL PANEL — DESKTOP
-   Adjust these values first. Each component has its own grouped controls.
-   ============================================================ */
+/* =====================================================================
+   00. DESKTOP CONTROL PANEL
+   ===================================================================== */
 :root {
     /* GALLERY LINK TREE */
     --gallery-tree-left: 4px;
-    --gallery-tree-top: 60px;
+    --gallery-tree-top: 140px;
     --gallery-tree-width: 222px;
     --gallery-tree-max-height: 800px;
     --gallery-tree-overflow-y: auto;
-    --gallery-sidebar-max-height: 87vh;
+    --gallery-sidebar-max-height: 100vh;
     --gallery-sidebar-overflow-y: auto;
     --gallery-tree-padding-x: 0px;
     --gallery-tree-padding-y: 0px;
     --gallery-tree-background: 0;
     --gallery-tree-backdrop-blur: 0px;
     --gallery-tree-border-radius: 0px;
-    --gallery-tree-scrollbar-width: 0.3px;
-    --gallery-file-font-size: 7px;
+    --gallery-tree-scrollbar-width: 0px;
+    --gallery-file-font-size: 9px;
     --gallery-file-line-height: 1.5;
     --gallery-file-word-spacing: 6px;
 
@@ -42,11 +40,11 @@
     --desktop-expand-image-max-height: calc(100vh - 80px);
 
     /* SHOW / HIDE TREE CONTROL */
-    --desktop-toggle-left: 50px;
+    --desktop-toggle-left: 5px;
     --desktop-toggle-top: 90px;
-    --desktop-toggle-offset-x: 180px;
+    --desktop-toggle-offset-x: 165px;
     --desktop-toggle-offset-y: 2px;
-    --desktop-toggle-font-size: 11px;
+    --desktop-toggle-font-size: 13px;
 
     /* IMAGE TOOLBAR */
     --desktop-toolbar-width: 76px;
@@ -69,855 +67,7 @@
     --desktop-magnifier-size: 200px;
 }
 
-
-/* ============================================================
-   1. RESET & BASE STYLES
-   ============================================================ */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    min-height: 100%;
-    overflow-y: auto;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 9px;
-    color: #202122;
-    background-color: #ffffff;
-    line-height: 1;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-}
-
-img {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: auto;
-}
-
-
-/* ============================================================
-   2. CONTENT WRAPPER
-   ============================================================ */
-
-#content-wrapper {
-    display: flex;
-    flex-direction: row;
-    flex: 1 1 auto;
-    min-height: 0;
-}
-
-
-/* ============================================================
-   3. SIDEBAR
-   ============================================================ */
-
-#sidebar {
-    position: fixed !important;
-    left: var(--active-tree-left, var(--gallery-tree-left)) !important;
-    top: var(--active-tree-top, var(--gallery-tree-top)) !important;
-    display: flex;
-    flex-direction: column;
-    z-index: 9999 !important;
-    padding: 0 !important;
-    min-width: var(--active-tree-width, var(--gallery-tree-width)) !important;
-    width: auto !important;
-    background: transparent;
-    max-height: var(--active-sidebar-max-height, var(--gallery-sidebar-max-height));
-    overflow-y: var(--active-sidebar-overflow-y, var(--gallery-sidebar-overflow-y));
-}
-
-#sidebar.hidden-sidebar {
-    display: none !important;
-}
-
-
-/* ============================================================
-   4. TREE CONTENT
-   ============================================================ */
-
-.tree-content {
-    background: var(--active-tree-background, var(--gallery-tree-background));
-    backdrop-filter: blur(var(--active-tree-backdrop-blur, 4px));
-    border-radius: var(--active-tree-border-radius, 0px);
-    padding: var(--active-tree-padding-y, var(--gallery-tree-padding-y)) var(--active-tree-padding-x, var(--gallery-tree-padding-x));
-    width: var(--active-tree-width, var(--gallery-tree-width)) !important;
-    max-height: var(--active-tree-max-height, var(--gallery-tree-max-height));
-    overflow-y: var(--active-tree-overflow-y, var(--gallery-tree-overflow-y));
-    white-space: normal;
-    word-wrap: break-word;
-    box-sizing: border-box;
-    border: none !important;
-    outline: none !important;
-    pointer-events: auto;
-}
-
-.tree-content::-webkit-scrollbar {
-    width: var(--active-tree-scrollbar-width, var(--gallery-tree-scrollbar-width));
-}
-
-.tree-content::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.tree-content::-webkit-scrollbar-thumb {
-    background: #c8ccd1;
-    border-radius: 0px;
-}
-
-.tree-content::-webkit-scrollbar-thumb:hover {
-    background: #a2a9b1;
-}
-
-.image-links {
-    display: inline;
-    padding: 0;
-    margin: 0;
-}
-
-.image-links a {
-    display: inline;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: var(--active-file-font-size, var(--gallery-file-font-size)) !important;
-    font-weight: 400;
-    color: rgb(0, 0, 238);
-    text-decoration: none;
-    padding: 0;
-    margin: 0;
-    white-space: normal;
-    word-break: break-all;
-    word-spacing: var(--active-file-word-spacing, var(--gallery-file-word-spacing));
-    line-height: var(--active-file-line-height, var(--gallery-file-line-height));
-    cursor: pointer;
-}
-
-.image-links a:hover {
-    text-decoration: underline;
-    color: rgb(0, 0, 238);
-    background: rgba(0, 0, 238, 0.1);
-    border-radius: 2px;
-}
-
-#treeDropdownContent .image-links a.active {
-    color: #00AA00 !important;
-    font-weight: 700 !important;
-}
-
-
-/* ============================================================
-   5. SIDEBAR TOGGLE TAB
-   Desktop position and appearance controlled here.
-   ============================================================ */
-
-.sidebar-tab,
-#showTab {
-    position: fixed;
-    left: var(--desktop-toggle-left);
-    top: var(--desktop-toggle-top);
-    width: auto;
-    height: auto;
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: var(--desktop-toggle-font-size);
-    font-weight: 400;
-    color: #800080;
-    padding: 0;
-    margin: 0;
-    line-height: 1;
-    z-index: 99999 !important;
-    pointer-events: auto !important;
-    transform: none; /* JS applies the single active-page toggle offset. */
-}
-
-.sidebar-tab:hover,
-#showTab:hover {
-    background: transparent;
-}
-
-body.tree-hidden #showTab {
-    color: green !important;
-}
-
-
-/* ============================================================
-   6. TOOLBAR
-   ============================================================ */
-
-#tree-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 4px 7px;
-    background: rgba(164, 230, 255, 0.1);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 10px;
-    font-weight: 400;
-    color: #000000;
-    width: 100%;
-    box-sizing: border-box;
-    flex-shrink: 0;
-    margin-top: auto;
-}
-
-#tree-toolbar a {
-    color: #000000;
-    text-decoration: none;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-#tree-toolbar a:hover {
-    text-decoration: underline;
-    color: #000000;
-}
-
-#tree-toolbar img {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-}
-
-
-/* ============================================================
-   7. MAIN CONTENT & IMAGE DISPLAY
-   ============================================================ */
-
-#mobile-under-image {
-    display: none;
-}
-
-#mainContent {
-    width: 100%;
-    margin-left: 0;
-    padding: 0;
-    min-height: 50vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    margin-top: 0;
-}
-
-#bookshelfImageArea {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 0;
-    box-sizing: border-box;
-    z-index: 10;
-}
-
-#bookshelfImageArea img {
-    max-width: 100%;
-    max-height: var(--desktop-image-max-height);
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-#intro-title {
-    font-family: monospace, monospace;
-    font-size: var(--desktop-intro-title-size);
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: var(--desktop-intro-title-gap);
-}
-
-#intro-title .big-letter {
-    font-size: var(--desktop-intro-letter-size);
-    background: linear-gradient(180deg, #00FF00, #007D09);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-body.dark-mode #intro-title .big-letter {
-    background: linear-gradient(180deg, #66FF66, #00A307);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-#intro-text {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    width: var(--desktop-intro-width);
-    margin: 0 auto;
-    font-size: var(--desktop-intro-font-size);
-    line-height: 1.5;
-    text-align: center;
-    color: #202122;
-    padding: 0;
-}
-
-#intro-text > div + div {
-    margin-top: 1.5em;
-}
-
-/* Keep toolbar and floating information window moving together. */
-#tree-toolbar,
-#floating-window {
-    transform: translate(
-        var(--desktop-image-controls-offset-x),
-        calc(var(--desktop-toolbar-transform-y) + var(--desktop-image-controls-offset-y))
-    );
-}
-
-
-/* ============================================================
-   8. FLOATING INFORMATION WINDOW
-   ============================================================ */
-
-#floating-window {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 999999;
-    display: block;
-    pointer-events: none;
-    width: var(--desktop-info-width);
-    margin: 0;
-    flex-shrink: 0;
-}
-
-.dev-tooltip-exact {
-    position: relative;
-    width: var(--desktop-info-width);
-    min-height: 0;
-    background: #ffffff;
-    padding: var(--desktop-info-padding);
-    box-sizing: border-box;
-    font-family: "Segoe UI", -apple-system, sans-serif;
-    pointer-events: auto;
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-#floating-window .file-content {
-    display: block;
-    width: 100%;
-}
-
-
-/* Additional image-file information and server-saved metadata fields. */
-.metadata-row {
-    align-items: flex-start;
-    gap: 2px 6px;
-}
-
-.metadata-label {
-    flex: 0 0 82px;
-    color: #777777;
-    font-size: 10px;
-    line-height: 1.45;
-}
-
-.row-exact.body-row .metadata-value {
-    flex: 1 1 calc(100% - 88px);
-}
-
-.metadata-value {
-    flex: 1 1 0;
-    min-width: 0;
-    overflow-wrap: anywhere;
-    font-size: var(--desktop-info-text-size);
-    line-height: 1.45;
-}
-
-.metadata-edit-input {
-    flex: 1 1 0;
-    min-width: 0;
-    width: 100%;
-    border: 0;
-    border-bottom: 1px dotted #aaaaaa;
-    border-radius: 0;
-    padding: 1px 0 2px;
-    margin: 0;
-    background: transparent;
-    color: #202124;
-    font: inherit;
-    font-size: var(--desktop-info-text-size);
-    line-height: 1.45;
-    outline: none;
-}
-
-.metadata-edit-input:focus {
-    border-bottom: 1px solid #800080;
-}
-
-.metadata-edit-input:disabled {
-    border-bottom-color: transparent;
-    opacity: 0.8;
-}
-
-.metadata-edit-input[rows] {
-    resize: vertical;
-}
-
-.metadata-save-row {
-    margin-top: 7px;
-    text-align: right;
-}
-
-.metadata-save-button {
-    border: 0;
-    padding: 2px 0;
-    background: transparent;
-    color: #800080;
-    font: inherit;
-    font-size: var(--desktop-info-text-size);
-    cursor: pointer;
-}
-
-.metadata-save-button:disabled {
-    color: #888888;
-    cursor: default;
-}
-
-.icon-and-tag {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-#floating-window .info-icon-permanent {
-    font-size: var(--desktop-info-icon-size);
-    color: #5f6368;
-    font-weight: 400;
-    opacity: 0.8;
-    line-height: 1;
-    display: inline-block;
-    margin: 0;
-}
-
-.tag-exact {
-    color: #9c1180;
-    font-weight: 700;
-    font-size: var(--desktop-info-text-size);
-    letter-spacing: -0.5px;
-    line-height: 1;
-}
-
-.dim-exact {
-    color: #202124;
-    font-size: var(--desktop-info-text-size);
-    font-weight: 400;
-    text-decoration: none;
-}
-
-.row-exact {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    width: 100%;
-}
-
-.row-exact.body-row {
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 2px 0;
-    margin-top: var(--desktop-info-row-gap);
-}
-
-.row-exact.body-row .value-exact {
-    flex: 1 1 100%;
-    white-space: normal;
-    word-wrap: break-word;
-    line-height: 1.5;
-}
-
-.row-exact:not(.body-row) .value-exact {
-    flex: 1 1 auto;
-    text-align: right;
-}
-
-.value-exact {
-    color: #202124;
-    font-size: var(--desktop-info-text-size);
-    font-weight: 400;
-}
-
-
-/* ============================================================
-   9. MAGNIFIER LENS
-   ============================================================ */
-
-#magnifierLens {
-    position: fixed;
-    width: var(--desktop-magnifier-size);
-    height: var(--desktop-magnifier-size);
-    pointer-events: auto;
-    cursor: grab;
-    z-index: 9999;
-    overflow: hidden;
-    display: none;
-    touch-action: none;
-}
-
-body.magnifier-mode #magnifierLens {
-    display: block;
-    border: 0;
-    box-sizing: border-box;
-}
-
-body.magnifier-mode #magnifierLens {
-    z-index: 2147483647;
-}
-
-#magnifierLens canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-body.magnifier-mode {
-    cursor: default;
-}
-
-
-/* ============================================================
-   10. DARK MODE ICONS
-   ============================================================ */
-
-#darkModeIconLight,
-#darkModeIconDark {
-    width: 14px;
-    height: 14px;
-}
-
-
-/* ============================================================
-   11. UTILITY
-   ============================================================ */
-
-.hidden {
-    display: none !important;
-}
-
-
-/* ============================================================
-   12. DARK MODE
-   ============================================================ */
-
-body.dark-mode {
-    background-color: #000000 !important;
-    color: #ffffff !important;
-}
-
-body.dark-mode #intro-text {
-    color: #e0e0e0;
-}
-
-body.dark-mode .sidebar-tab,
-body.dark-mode #showTab {
-    color: #e0e0e0;
-    background: transparent;
-    border: 0;
-}
-
-body.dark-mode:not(.tree-hidden) #showTab {
-    color: #800080 !important;
-}
-
-body.dark-mode.tree-hidden #showTab {
-    color: green !important;
-}
-
-body.dark-mode #tree-toolbar a {
-    color: #ffffff !important;
-}
-
-body.dark-mode #tree-toolbar a:hover {
-    color: #88ccff !important;
-}
-
-body.dark-mode #mainContent,
-body.dark-mode #bookshelfImageArea {
-    color: #ffffff !important;
-    background-color: #000000 !important;
-}
-
-body.dark-mode .tree-content {
-    background: rgba(0, 0, 0, 0.75) !important;
-}
-
-body.dark-mode .tree-content::-webkit-scrollbar-thumb {
-    background: #444;
-}
-
-body.dark-mode .tree-content::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-body.dark-mode .image-links a {
-    color: #99ccff;
-}
-
-body.dark-mode .image-links a:hover {
-    color: #ffffff;
-    background: rgba(153, 204, 255, 0.15);
-}
-
-body.dark-mode .dev-tooltip-exact {
-    background: #1e1e2e;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-}
-
-body.dark-mode .tag-exact {
-    color: #c586c0;
-}
-
-body.dark-mode .metadata-label {
-    color: #aaaaaa;
-}
-
-body.dark-mode .metadata-save-button {
-    color: #c586c0;
-}
-
-body.dark-mode .dim-exact,
-body.dark-mode .value-exact,
-body.dark-mode .metadata-edit-input {
-    color: #e0e0e0;
-}
-
-body.dark-mode #floating-window .info-icon-permanent {
-    color: #9a9ab0;
-}
-
-body.dark-mode #sidebar,
-body.dark-mode #tree-toolbar {
-    background-color: #000000 !important;
-    border-color: #444 !important;
-}
-
-body.dark-mode #magnifierLens {
-    background-color: #000000;
-}
-
-body.dark-mode #magnifierToggle img {
-    filter: invert(1) brightness(2);
-}
-
-body.dark-mode #darkModeIconLight {
-    display: none !important;
-}
-
-body.dark-mode #darkModeIconDark {
-    display: inline-block !important;
-}
-
-
-/* ============================================================
-   13. DESKTOP IMAGE POSITION & EXPAND TOOL
-   ============================================================ */
-
-@media (min-width: 481px) {
-
-    body.image-open:not(.expand-image) #mainContent {
-        margin-top: var(--desktop-gallery-image-top-gap) !important;
-    }
-
-    body.image-open:not(.expand-image) #bookshelfImageArea {
-        transform: none !important;
-    }
-
-    /* Desktop toolbar placement and dimensions. */
-    #tree-toolbar {
-        display: none;
-        background: rgba(255, 255, 255, 0.85) !important;
-        width: var(--desktop-toolbar-width) !important;
-        min-width: var(--desktop-toolbar-width) !important;
-        max-width: var(--desktop-toolbar-width) !important;
-        padding: var(--desktop-toolbar-padding-y) 0 !important;
-        gap: var(--desktop-toolbar-gap) !important;
-        justify-content: flex-start !important;
-        flex-shrink: 0 !important;
-        opacity: 1 !important;
-    }
-
-    body.dark-mode:not(.expand-image) #tree-toolbar {
-        background: rgba(0, 0, 0, 0.85) !important;
-    }
-
-    #tree-toolbar > a {
-        width: 20px !important;
-        height: 20px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex: 0 0 20px !important;
-        position: relative !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
-    }
-
-    #tree-toolbar > a > img {
-        width: var(--desktop-toolbar-icon-size) !important;
-        height: var(--desktop-toolbar-icon-size) !important;
-        object-fit: contain !important;
-        display: block !important;
-        margin: 0 !important;
-        border: 0 !important;
-        outline: 0 !important;
-        box-shadow: none !important;
-    }
-
-    #expandImageToggle {
-        font-size: 17px !important;
-        line-height: 20px !important;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        text-decoration: none !important;
-    }
-
-    #darkModeToggle {
-        position: relative !important;
-    }
-
-    #darkModeToggle #darkModeIconLight,
-    #darkModeToggle #darkModeIconDark {
-        position: absolute !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        width: var(--desktop-toolbar-icon-size) !important;
-        height: var(--desktop-toolbar-icon-size) !important;
-        margin: 0 !important;
-        border: 0 !important;
-        outline: 0 !important;
-        box-shadow: none !important;
-    }
-
-    #darkModeToggle #darkModeIconLight {
-        display: inline-block;
-    }
-
-    #darkModeToggle #darkModeIconDark {
-        display: none;
-    }
-
-    body.dark-mode #darkModeToggle #darkModeIconLight {
-        display: none !important;
-    }
-
-    body.dark-mode #darkModeToggle #darkModeIconDark {
-        display: inline-block !important;
-    }
-
-
-    /* Expanded image mode. */
-
-    body.expand-image #sidebar,
-    body.expand-image #showTab {
-        display: none !important;
-    }
-
-    body.expand-image #content-wrapper {
-        display: block !important;
-        width: 100% !important;
-        min-height: 0 !important;
-    }
-
-    body.expand-image #mainContent {
-        position: relative !important;
-        width: calc(100vw - var(--expand-reserve-right, 96px)) !important;
-        height: calc(100vh - 80px) !important;
-        min-height: 0 !important;
-        max-height: none !important;
-        margin-left: 0 !important;
-        margin-top: 0 !important;
-        padding: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        z-index: 10 !important;
-        background: transparent !important;
-    }
-
-    body.expand-image #bookshelfImageArea {
-        position: relative !important;
-        width: 100% !important;
-        height: 100% !important;
-        min-height: 0 !important;
-        max-height: none !important;
-        margin: 0 !important;
-        padding-top: var(--desktop-expand-image-top-padding) !important;
-        transform: none !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        z-index: 10 !important;
-    }
-
-    body.expand-image #bookshelfImageArea img {
-        max-width: 100% !important;
-        max-height: var(--desktop-expand-image-max-height) !important;
-        width: auto !important;
-        height: auto !important;
-        object-fit: contain !important;
-    }
-
-    body.expand-image #floating-window,
-    body.expand-image #tree-toolbar {
-        z-index: 2147483647 !important;
-    }
-
-    body.expand-image #tree-toolbar {
-        position: fixed !important;
-        flex-direction: row !important;
-        width: var(--desktop-toolbar-width) !important;
-        min-width: var(--desktop-toolbar-width) !important;
-        max-width: var(--desktop-toolbar-width) !important;
-        height: auto !important;
-        padding: var(--desktop-toolbar-padding-y) 0 !important;
-        gap: var(--desktop-toolbar-gap) !important;
-        margin: 0 !important;
-        opacity: 1 !important;
-        background: rgba(255, 255, 255, 0.85) !important;
-    }
-
-    body.dark-mode.expand-image #tree-toolbar {
-        background: rgba(0, 0, 0, 0.85) !important;
-    }
-}
-
-
-
-
-/* ============================================================
-   MOBILE LAYOUT — independent from desktop layout controls
-   ============================================================ */
-
 @media (max-width: 480px) {
-
-    /* ========================================================
-       MOBILE CONTROL PANEL — adjust mobile components here only
-       ======================================================== */
     :root {
         /* MOBILE LINK TREE */
         --mobile-sidebar-top: 56px; /* initial fallback; JS then anchors to the image or Welcome */
@@ -991,9 +141,38 @@ body.dark-mode #darkModeIconDark {
         --active-file-line-height: var(--mobile-file-line-height);
         --active-file-word-spacing: var(--mobile-file-word-spacing);
     }
+}
 
-    /* BODY */
+/* =====================================================================
+   01. RESET & BASE
+   ===================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html {
+    min-height: 100%;
+    overflow-y: auto;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    color: #202122;
+    background-color: #ffffff;
+    line-height: 1;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: auto;
+}
 
+@media (max-width: 480px) {
     body {
         display: flex !important;
         flex-direction: column !important;
@@ -1005,10 +184,27 @@ body.dark-mode #darkModeIconDark {
         overflow-y: var(--mobile-page-overflow-y) !important;
         font-size: clamp(7px, 2vw, 9px);
     }
+}
 
+/* =====================================================================
+   02. PAGE STRUCTURE
+   ===================================================================== */
+#content-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    min-height: 0;
+}
 
-    /* CONTENT WRAPPER */
+@media (min-width: 481px) {
+    body.expand-image #content-wrapper {
+        display: block !important;
+        width: 100% !important;
+        min-height: 0 !important;
+    }
+}
 
+@media (max-width: 480px) {
     #content-wrapper {
         display: flex !important;
         flex-direction: row !important;
@@ -1016,10 +212,114 @@ body.dark-mode #darkModeIconDark {
         min-height: 0 !important;
         overflow: visible !important;
     }
+}
 
+/* =====================================================================
+   03. LINK TREE
+   ===================================================================== */
+#sidebar {
+    position: fixed !important;
+    left: var(--active-tree-left, var(--gallery-tree-left)) !important;
+    top: var(--active-tree-top, var(--gallery-tree-top)) !important;
+    display: flex;
+    flex-direction: column;
+    z-index: 9999 !important;
+    padding: 0 !important;
+    min-width: var(--active-tree-width, var(--gallery-tree-width)) !important;
+    width: auto !important;
+    background: transparent;
+    max-height: var(--active-sidebar-max-height, var(--gallery-sidebar-max-height));
+    overflow-y: var(--active-sidebar-overflow-y, var(--gallery-sidebar-overflow-y));
+}
+#sidebar.hidden-sidebar {
+    display: none !important;
+}
+.tree-content {
+    background: var(--active-tree-background, var(--gallery-tree-background));
+    backdrop-filter: blur(var(--active-tree-backdrop-blur, 4px));
+    border-radius: var(--active-tree-border-radius, 0px);
+    padding: var(--active-tree-padding-y, var(--gallery-tree-padding-y)) var(--active-tree-padding-x, var(--gallery-tree-padding-x));
+    width: var(--active-tree-width, var(--gallery-tree-width)) !important;
+    max-height: var(--active-tree-max-height, var(--gallery-tree-max-height));
+    overflow-y: var(--active-tree-overflow-y, var(--gallery-tree-overflow-y));
+    white-space: normal;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    border: none !important;
+    outline: none !important;
+    pointer-events: auto;
+}
+.tree-content::-webkit-scrollbar {
+    width: var(--active-tree-scrollbar-width, var(--gallery-tree-scrollbar-width));
+}
+.tree-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.tree-content::-webkit-scrollbar-thumb {
+    background: #c8ccd1;
+    border-radius: 0px;
+}
+.tree-content::-webkit-scrollbar-thumb:hover {
+    background: #a2a9b1;
+}
+.image-links {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+.image-links a {
+    display: inline;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: var(--active-file-font-size, var(--gallery-file-font-size)) !important;
+    font-weight: 400;
+    color: rgb(0, 0, 238);
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    white-space: normal;
+    word-break: break-all;
+    word-spacing: var(--active-file-word-spacing, var(--gallery-file-word-spacing));
+    line-height: var(--active-file-line-height, var(--gallery-file-line-height));
+    cursor: pointer;
+}
+.image-links a:hover {
+    text-decoration: underline;
+    color: rgb(0, 0, 238);
+    background: rgba(0, 0, 238, 0.1);
+    border-radius: 2px;
+}
+#treeDropdownContent .image-links a.active {
+    color: #00AA00 !important;
+    font-weight: 700 !important;
+}
+body.dark-mode .tree-content {
+    background: rgba(0, 0, 0, 0.75) !important;
+}
+body.dark-mode .tree-content::-webkit-scrollbar-thumb {
+    background: #444;
+}
+body.dark-mode .tree-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+body.dark-mode .image-links a {
+    color: #99ccff;
+}
+body.dark-mode .image-links a:hover {
+    color: #ffffff;
+    background: rgba(153, 204, 255, 0.15);
+}
+#treeDropdownContent,
+#treeDropdownContent a {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+}
+#treeDropdownContent .image-links a:focus,
+#treeDropdownContent .image-links a:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
 
-    /* SIDEBAR */
-
+@media (max-width: 480px) {
     #sidebar {
         position: fixed !important;
         left: 0 !important;
@@ -1040,7 +340,6 @@ body.dark-mode #darkModeIconDark {
         overflow: visible !important;
         border: none !important;
     }
-
     #sidebar .tree-content {
         width: 100% !important;
         flex: 0 0 auto !important;
@@ -1054,10 +353,334 @@ body.dark-mode #darkModeIconDark {
         border: none !important;
         outline: none !important;
     }
+    .image-links a {
+        font-size: var(--mobile-file-font-size) !important;
+        word-spacing: var(--mobile-file-word-spacing) !important;
+        line-height: var(--mobile-file-line-height) !important;
+    }
+}
 
+/* =====================================================================
+   04. LINK-TREE CONTROLS
+   ===================================================================== */
+.sidebar-tab,
+#showTab {
+    position: fixed;
+    left: var(--desktop-toggle-left);
+    top: var(--desktop-toggle-top);
+    width: auto;
+    height: auto;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: var(--desktop-toggle-font-size);
+    font-weight: 400;
+    color: #800080;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+    transform: none; /* Fixed position; JavaScript does not move this control. */
+    min-height: 18px;
+    box-sizing: border-box;
+}
+.sidebar-tab:hover,
+#showTab:hover {
+    background: transparent;
+}
+body.tree-hidden #showTab {
+    color: green !important;
+}
+#returnHomeControl {
+    position: fixed;
+    left: var(--gallery-tree-left);
+    top: 18px;
+    z-index: 100000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+#returnHomeControl img {
+    width: var(--return-home-icon-size, 64px);
+    height: var(--return-home-icon-size, 64px);
+    object-fit: contain;
+}
+#sortByToggle {
+    position: fixed;
+    left: var(--gallery-tree-left);
+    top: calc(var(--gallery-tree-top) - 22px);
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #800080;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: var(--desktop-toggle-font-size);
+    font-weight: 400;
+    line-height: 1;
+    height: 18px;
+    box-sizing: border-box;
+    cursor: pointer;
+    white-space: nowrap;
+}
+#sortByToggle:hover { text-decoration: underline; background: transparent; }
+#sortByIcon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+body.dark-mode #sortByToggle { color: #e0e0e0; }
+body.dark-mode .sidebar-tab,
+body.dark-mode #showTab {
+    color: #e0e0e0;
+    background: transparent;
+    border: 0;
+}
+body.dark-mode:not(.tree-hidden) #showTab {
+    color: #800080 !important;
+}
+body.dark-mode.tree-hidden #showTab {
+    color: green !important;
+}
 
-    /* TOOLBAR */
+@media (min-width: 481px) {
+    body.expand-image #sidebar,
+    body.expand-image #showTab {
+        display: none !important;
+    }
+}
 
+@media (max-width: 480px) {
+    /* Keep both controls visually consistent on mobile. */
+    #sortByToggle {
+        font-size: var(--mobile-toggle-font-size) !important;
+        font-weight: 400 !important;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+        color: #202122 !important;
+        padding: 0 4px !important;
+        height: auto !important;
+        line-height: 1.4 !important;
+        background: transparent !important;
+    }
+    #sortByToggle:hover {
+        background: none !important;
+        color: #000000 !important;
+        text-decoration: underline !important;
+    }
+    body.dark-mode #sortByToggle {
+        color: #e0e0e0 !important;
+    }
+    body.dark-mode #sortByToggle:hover {
+        color: #ffffff !important;
+    }
+
+    .sidebar-tab,
+    #showTab {
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        font-size: var(--mobile-toggle-font-size) !important;
+        font-weight: 400 !important;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+        color: #202122 !important;
+        padding: 0 4px !important;
+        width: auto !important;
+        height: auto !important;
+        top: var(--mobile-toggle-initial-top) !important;
+        left: var(--mobile-toggle-left) !important; /* Fixed position; JavaScript does not move this control. */
+        transform: none !important;
+        border-radius: 0 !important;
+        line-height: 1.4 !important;
+        cursor: pointer !important;
+        z-index: 9999999 !important;
+        pointer-events: auto !important;
+        text-decoration: none !important;
+        background-color: transparent !important;
+    }
+    .sidebar-tab:hover,
+    #showTab:hover {
+        background: none !important;
+        color: #000000 !important;
+        text-decoration: underline !important;
+    }
+    body.dark-mode .sidebar-tab,
+    body.dark-mode #showTab {
+        color: #e0e0e0 !important;
+        background: none !important;
+        border: none !important;
+    }
+    body.dark-mode .sidebar-tab:hover,
+    body.dark-mode #showTab:hover {
+        color: #ffffff !important;
+        background: none !important;
+    }
+}
+
+/* =====================================================================
+   05. IMAGE TOOLBAR & ICONS
+   ===================================================================== */
+#tree-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 4px 7px;
+    background: rgba(164, 230, 255, 0.1);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    color: #000000;
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+#tree-toolbar a {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+#tree-toolbar a:hover {
+    text-decoration: underline;
+    color: #000000;
+}
+#tree-toolbar img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+#darkModeIconLight,
+#darkModeIconDark {
+    width: 14px;
+    height: 14px;
+}
+body.dark-mode #tree-toolbar a {
+    color: #ffffff !important;
+}
+body.dark-mode #tree-toolbar a:hover {
+    color: #88ccff !important;
+}
+body.dark-mode #sidebar,
+body.dark-mode #tree-toolbar {
+    background-color: #000000 !important;
+    border-color: #444 !important;
+}
+body.dark-mode #magnifierToggle img {
+    filter: invert(1) brightness(2);
+}
+body.dark-mode #darkModeIconLight {
+    display: none !important;
+}
+body.dark-mode #darkModeIconDark {
+    display: inline-block !important;
+}
+
+@media (min-width: 481px) {
+    #tree-toolbar {
+        display: none;
+        background: rgba(255, 255, 255, 0.85) !important;
+        width: var(--desktop-toolbar-width) !important;
+        min-width: var(--desktop-toolbar-width) !important;
+        max-width: var(--desktop-toolbar-width) !important;
+        padding: var(--desktop-toolbar-padding-y) 0 !important;
+        gap: var(--desktop-toolbar-gap) !important;
+        justify-content: flex-start !important;
+        flex-shrink: 0 !important;
+        opacity: 1 !important;
+    }
+    body.dark-mode:not(.expand-image) #tree-toolbar {
+        background: rgba(0, 0, 0, 0.85) !important;
+    }
+    #tree-toolbar > a {
+        width: 20px !important;
+        height: 20px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 0 0 20px !important;
+        position: relative !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+    #tree-toolbar > a > img {
+        width: var(--desktop-toolbar-icon-size) !important;
+        height: var(--desktop-toolbar-icon-size) !important;
+        object-fit: contain !important;
+        display: block !important;
+        margin: 0 !important;
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+    }
+    #expandImageToggle {
+        font-size: 17px !important;
+        line-height: 20px !important;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        text-decoration: none !important;
+    }
+    #darkModeToggle {
+        position: relative !important;
+    }
+    #darkModeToggle #darkModeIconLight,
+    #darkModeToggle #darkModeIconDark {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: var(--desktop-toolbar-icon-size) !important;
+        height: var(--desktop-toolbar-icon-size) !important;
+        margin: 0 !important;
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+    }
+    #darkModeToggle #darkModeIconLight {
+        display: inline-block;
+    }
+    #darkModeToggle #darkModeIconDark {
+        display: none;
+    }
+    body.dark-mode #darkModeToggle #darkModeIconLight {
+        display: none !important;
+    }
+    body.dark-mode #darkModeToggle #darkModeIconDark {
+        display: inline-block !important;
+    }
+    body.expand-image #tree-toolbar {
+        position: fixed !important;
+        flex-direction: row !important;
+        width: var(--desktop-toolbar-width) !important;
+        min-width: var(--desktop-toolbar-width) !important;
+        max-width: var(--desktop-toolbar-width) !important;
+        height: auto !important;
+        padding: var(--desktop-toolbar-padding-y) 0 !important;
+        gap: var(--desktop-toolbar-gap) !important;
+        margin: 0 !important;
+        opacity: 1 !important;
+        background: rgba(255, 255, 255, 0.85) !important;
+    }
+    body.dark-mode.expand-image #tree-toolbar {
+        background: rgba(0, 0, 0, 0.85) !important;
+    }
+}
+
+@media (max-width: 480px) {
     #tree-toolbar {
         display: flex !important;
         flex: 0 0 var(--mobile-toolbar-width) !important;
@@ -1072,7 +695,6 @@ body.dark-mode #darkModeIconDark {
         box-sizing: border-box !important;
         border-top: 1px solid rgba(0,0,0,0.05) !important;
     }
-
     #tree-toolbar a {
         color: #000000 !important;
         text-decoration: none !important;
@@ -1081,36 +703,437 @@ body.dark-mode #darkModeIconDark {
         align-items: center !important;
         gap: 4px !important;
     }
-
     #tree-toolbar img {
         width: var(--mobile-toolbar-icon-size) !important;
         height: var(--mobile-toolbar-icon-size) !important;
         vertical-align: middle !important;
     }
+}
 
+/* =====================================================================
+   06. FLOATING INFORMATION WINDOW
+   Shared positioning with the toolbar is kept here because the two move
+   together. All remaining rules in this section belong to the info window.
+   ===================================================================== */
+#tree-toolbar,
+#floating-window {
+    transform: translate(
+        var(--desktop-image-controls-offset-x),
+        calc(var(--desktop-toolbar-transform-y) + var(--desktop-image-controls-offset-y))
+    );
+}
+#floating-window {
+    position: relative;
+    left: 0;
+    top: 0;
+    transform: translateY(-460px);
+    z-index: 999999;
+    display: block;
+    pointer-events: none;
+    width: var(--desktop-info-width);
+    margin: 0;
+    flex-shrink: 0;
+}
+.dev-tooltip-exact {
+    position: relative;
+    width: var(--desktop-info-width);
+    min-height: 0;
+    background: 000000;
+    padding: var(--desktop-info-padding);
+    box-sizing: border-box;
+    font-family: TimesNewPixel;
+    pointer-events: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+#floating-window .file-content {
+    display: block;
+    width: 100%;
+}
+.metadata-row {
+    align-items: flex-start;
+    gap: 2px 6px;
+}
+.metadata-label {
+    flex: 0 0 82px;
+    color: #777777;
+    font-size: 10px;
+    line-height: 1.45;
+}
+.row-exact.body-row .metadata-value {
+    flex: 1 1 calc(100% - 88px);
+}
+.metadata-value {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: var(--desktop-info-text-size);
+    line-height: 1.45;
+}
+.metadata-edit-input {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px dotted #aaaaaa;
+    border-radius: 0;
+    padding: 1px 0 2px;
+    margin: 0;
+    background: transparent;
+    color: #202124;
+    font: inherit;
+    font-size: var(--desktop-info-text-size);
+    line-height: 1.45;
+    outline: none;
+}
+.metadata-edit-input:focus {
+    border-bottom: 1px solid #800080;
+}
+.metadata-edit-input:disabled {
+    border-bottom-color: transparent;
+    opacity: 0.8;
+}
+.metadata-color-input {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 22px;
+    min-height: 22px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.metadata-color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+.metadata-color-input::-webkit-color-swatch {
+    border: 1px solid #999999;
+    border-radius: 2px;
+}
+.metadata-color-input::-moz-color-swatch {
+    border: 1px solid #999999;
+    border-radius: 2px;
+}
+.metadata-color-input:disabled {
+    cursor: default;
+    opacity: 0.65;
+}
+.metadata-edit-input[rows] {
+    resize: vertical;
+}
+.metadata-save-row {
+    margin-top: 7px;
+    text-align: right;
+}
+.metadata-save-button {
+    border: 0;
+    padding: 2px 0;
+    background: transparent;
+    color: #800080;
+    font: inherit;
+    font-size: var(--desktop-info-text-size);
+    cursor: pointer;
+}
+.metadata-save-button:disabled {
+    color: #888888;
+    cursor: default;
+}
+.icon-and-tag {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+#floating-window .info-icon-permanent {
+    font-size: var(--desktop-info-icon-size);
+    color: #5f6368;
+    font-weight: 400;
+    opacity: 0.8;
+    line-height: 1;
+    display: inline-block;
+    margin: 0;
+}
+.tag-exact {
+    color: #9c1180;
+    font-weight: 700;
+    font-size: var(--desktop-info-text-size);
+    letter-spacing: -0.5px;
+    line-height: 1;
+}
+.dim-exact {
+    color: #202124;
+    font-size: var(--desktop-info-text-size);
+    font-weight: 400;
+    text-decoration: none;
+}
+.row-exact {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
+.row-exact.body-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 2px 0;
+    margin-top: var(--desktop-info-row-gap);
+}
+.row-exact.body-row .value-exact {
+    flex: 1 1 100%;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+.row-exact:not(.body-row) .value-exact {
+    flex: 1 1 auto;
+    text-align: right;
+}
+.value-exact {
+    color: #202124;
+    font-size: var(--desktop-info-text-size);
+    font-weight: 400;
+}
+body.dark-mode .dev-tooltip-exact {
+    background: #1e1e2e;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+body.dark-mode .tag-exact {
+    color: #c586c0;
+}
+body.dark-mode .metadata-label {
+    color: #aaaaaa;
+}
+body.dark-mode .metadata-save-button {
+    color: #c586c0;
+}
+body.dark-mode .dim-exact,
+body.dark-mode .value-exact,
+body.dark-mode .metadata-edit-input {
+    color: #e0e0e0;
+}
+body.dark-mode #floating-window .info-icon-permanent {
+    color: #000000;
+}
 
-    /* TREE TEXT SIZES */
-
-    .image-links a {
-        font-size: var(--mobile-file-font-size) !important;
-        word-spacing: var(--mobile-file-word-spacing) !important;
-        line-height: var(--mobile-file-line-height) !important;
+@media (min-width: 481px) {
+    body.expand-image #floating-window,
+    body.expand-image #tree-toolbar {
+        z-index: 2147483647 !important;
     }
+}
 
-
+@media (max-width: 480px) {
     .metadata-label {
         flex-basis: 62px;
         font-size: var(--mobile-info-font-size) !important;
     }
-
     .metadata-value,
     .metadata-edit-input,
     .metadata-save-button {
         font-size: var(--mobile-info-font-size) !important;
     }
+    #tree-toolbar,
+    #floating-window {
+        transform: translate(var(--mobile-tools-offset-x), var(--mobile-tools-offset-y)) !important;
+    }
+    #floating-window {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: var(--mobile-info-width) !important;
+        max-width: var(--mobile-info-max-width) !important;
+        z-index: 999999 !important;
+        pointer-events: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        flex: 0 0 auto !important;
+    }
+    .dev-tooltip-exact {
+        width: 100% !important;
+        min-height: auto !important;
+        padding: var(--mobile-info-padding) !important;
+        box-sizing: border-box !important;
+    }
+    #floating-window .info-icon-permanent {
+        font-size: var(--mobile-info-font-size) !important;
+    }
+    .row-exact.body-row {
+        margin-top: var(--mobile-info-row-gap) !important;
+    }
+    .tag-exact,
+    .dim-exact,
+    .value-exact,
+    .row-exact.body-row .value-exact {
+        font-size: var(--mobile-info-font-size) !important;
+    }
+}
 
-    /* MAIN IMAGE */
+/* =====================================================================
+   07. MAGNIFIER
+   ===================================================================== */
+#magnifierCornerIcon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    z-index: 2;
+    pointer-events: none;
+}
+#magnifierLens {
+    position: fixed;
+    width: var(--desktop-magnifier-size);
+    height: var(--desktop-magnifier-size);
+    pointer-events: auto;
+    cursor: grab;
+    z-index: 9999;
+    overflow: hidden;
+    display: none;
+    touch-action: none;
+}
+body.magnifier-mode #magnifierLens {
+    display: block;
+    border: 0;
+    box-sizing: border-box;
+    z-index: 2147483647;
+}
+#magnifierLens canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+body.dark-mode #magnifierLens {
+    background-color: #000000;
+}
 
+/* =====================================================================
+   09. MAIN CONTENT, WELCOME & IMAGE
+   ===================================================================== */
+#mobile-under-image {
+    display: none;
+}
+#mainContent {
+    width: 100%;
+    margin-left: 0;
+    padding: 0;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    margin-top: 0;
+}
+#bookshelfImageArea {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    z-index: 10;
+}
+#bookshelfImageArea img {
+    max-width: 100%;
+    max-height: var(--desktop-image-max-height);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+#intro-title {
+    font-family: monospace, monospace;
+    font-size: var(--desktop-intro-title-size);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--desktop-intro-title-gap);
+}
+#intro-title .big-letter {
+    font-size: var(--desktop-intro-letter-size);
+    background: linear-gradient(180deg, #00FF00, #007D09);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+body.dark-mode #intro-title .big-letter {
+    background: linear-gradient(180deg, #66FF66, #00A307);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+#intro-text {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: var(--desktop-intro-width);
+    margin: 0 auto;
+    font-size: var(--desktop-intro-font-size);
+    line-height: 1.5;
+    text-align: center;
+    color: #202122;
+    padding: 0;
+}
+#intro-text > div + div {
+    margin-top: 1.5em;
+}
+body.dark-mode #intro-text {
+    color: #e0e0e0;
+}
+body.dark-mode #mainContent,
+body.dark-mode #bookshelfImageArea {
+    color: #ffffff !important;
+    background-color: #000000 !important;
+}
+
+@media (min-width: 481px) {
+    body.image-open:not(.expand-image) #mainContent {
+        margin-top: var(--desktop-gallery-image-top-gap) !important;
+    }
+    body.image-open:not(.expand-image) #bookshelfImageArea {
+        transform: none !important;
+    }
+    body.expand-image #mainContent {
+        position: relative !important;
+        width: calc(100vw - var(--expand-reserve-right, 96px)) !important;
+        height: calc(100vh - 80px) !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 10 !important;
+        background: transparent !important;
+    }
+    body.expand-image #bookshelfImageArea {
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding-top: var(--desktop-expand-image-top-padding) !important;
+        transform: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 10 !important;
+    }
+    body.expand-image #bookshelfImageArea img {
+        max-width: 100% !important;
+        max-height: var(--desktop-expand-image-max-height) !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+    }
+}
+
+@media (max-width: 480px) {
     #mainContent {
         flex: 0 0 auto !important;
         min-width: 0 !important;
@@ -1130,7 +1153,6 @@ body.dark-mode #darkModeIconDark {
         overflow: visible !important;
         position: relative !important;
     }
-
     #bookshelfImageArea {
         width: 100% !important;
         height: auto !important;
@@ -1142,7 +1164,6 @@ body.dark-mode #darkModeIconDark {
         justify-content: center !important;
         background: transparent !important;
     }
-
     #bookshelfImageArea img {
         max-width: 100% !important;
         max-height: 100% !important;
@@ -1151,33 +1172,24 @@ body.dark-mode #darkModeIconDark {
         object-fit: contain !important;
         pointer-events: none !important;
     }
-
     body.tree-hidden #mainContent {
         margin-left: 0 !important;
         width: 100% !important;
     }
-
     body.tree-hidden #bookshelfImageArea {
         max-height: var(--mobile-image-max-height-tree-hidden) !important;
     }
-
     body.tree-hidden #bookshelfImageArea img {
         max-width: var(--mobile-image-max-width-tree-hidden) !important;
         max-height: var(--mobile-image-max-height-tree-hidden) !important;
     }
-
-
-    /* INTRO TEXT */
-
     #intro-title {
         font-size: var(--mobile-intro-title-size) !important;
         margin-bottom: var(--mobile-intro-title-gap) !important;
     }
-
     #intro-title .big-letter {
         font-size: var(--mobile-intro-letter-size) !important;
     }
-
     #intro-text {
         position: absolute !important;
         top: var(--mobile-intro-top) !important;
@@ -1188,15 +1200,6 @@ body.dark-mode #darkModeIconDark {
         line-height: 1.5 !important;
         text-align: center !important;
     }
-
-
-    /* MOBILE ROW UNDER IMAGE */
-
-    #tree-toolbar,
-    #floating-window {
-        transform: translate(var(--mobile-tools-offset-x), var(--mobile-tools-offset-y)) !important;
-    }
-
     #mobile-under-image {
         display: flex !important;
         width: 100% !important;
@@ -1207,102 +1210,18 @@ body.dark-mode #darkModeIconDark {
         box-sizing: border-box !important;
         pointer-events: auto !important;
     }
-
-
-    /* FLOATING INFORMATION WINDOW */
-
-    #floating-window {
-        position: static !important;
-        left: auto !important;
-        top: auto !important;
-        width: var(--mobile-info-width) !important;
-        max-width: var(--mobile-info-max-width) !important;
-        z-index: 999999 !important;
-        pointer-events: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        flex: 0 0 auto !important;
-    }
-
-    .dev-tooltip-exact {
-        width: 100% !important;
-        min-height: auto !important;
-        padding: var(--mobile-info-padding) !important;
-        box-sizing: border-box !important;
-    }
-
-    #floating-window .info-icon-permanent {
-        font-size: var(--mobile-info-font-size) !important;
-    }
-
-    .row-exact.body-row {
-        margin-top: var(--mobile-info-row-gap) !important;
-    }
-
-    .tag-exact,
-    .dim-exact,
-    .value-exact,
-    .row-exact.body-row .value-exact {
-        font-size: var(--mobile-info-font-size) !important;
-    }
-
-
-    /* SIDEBAR TOGGLE */
-
-    .sidebar-tab,
-    #showTab {
-        background: none !important;
-        border: none !important;
-        box-shadow: none !important;
-        font-size: var(--mobile-toggle-font-size) !important;
-        font-weight: 400 !important;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-        color: #202122 !important;
-        padding: 0 4px !important;
-        width: auto !important;
-        height: auto !important;
-        top: var(--mobile-toggle-initial-top) !important;
-        left: var(--mobile-toggle-left) !important; /* JS anchors the toggle and applies its offsets. */
-        transform: none !important;
-        border-radius: 0 !important;
-        line-height: 1.4 !important;
-        cursor: pointer !important;
-        z-index: 9999999 !important;
-        pointer-events: auto !important;
-        text-decoration: none !important;
-        background-color: transparent !important;
-    }
-
-    .sidebar-tab:hover,
-    #showTab:hover {
-        background: none !important;
-        color: #000000 !important;
-        text-decoration: underline !important;
-    }
-
-    body.dark-mode .sidebar-tab,
-    body.dark-mode #showTab {
-        color: #e0e0e0 !important;
-        background: none !important;
-        border: none !important;
-    }
-
-    body.dark-mode .sidebar-tab:hover,
-    body.dark-mode #showTab:hover {
-        color: #ffffff !important;
-        background: none !important;
-    }
 }
 
-
-/* Navigation: keep the active link marker, remove browser focus rectangles. */
-#treeDropdownContent,
-#treeDropdownContent a {
-    outline: none !important;
-    -webkit-tap-highlight-color: transparent;
+/* =====================================================================
+   10. GLOBAL STATES & UTILITIES
+   ===================================================================== */
+body.magnifier-mode {
+    cursor: default;
 }
-#treeDropdownContent .image-links a:focus,
-#treeDropdownContent .image-links a:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
+.hidden {
+    display: none !important;
+}
+body.dark-mode {
+    background-color: #000000 !important;
+    color: #ffffff !important;
 }

@@ -2,10 +2,12 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const vm = require('vm');
 
 const FILE = path.join(__dirname, 'index.html');
-const COLLECTIONS = path.join(__dirname, 'collections');
+const COLLECTIONS = path.join(__dirname, 'Collections');
 const METADATA_FILE = path.join(__dirname, 'image-metadata.json');
+const REGISTRY_FILE = path.join(__dirname, 'registry.js');
 const PORT = 8001;
 const IMAGE_EXT = /\.(jpg|jpeg|png|gif|webp)$/i;
 
@@ -36,6 +38,90 @@ function saveMetadataStore(store) {
 }
 function hashBuffer(buffer) {
     return crypto.createHash('sha256').update(buffer).digest('hex');
+}
+
+function replaceRegistryDeclaration(source, name, value) {
+    const marker = new RegExp('(^|\\n)(\\s*const\\s+' + name + '\\s*=\\s*)', 'm');
+    const match = marker.exec(source);
+    if (!match) throw new Error(name + ' declaration is missing from registry.js.');
+    const valueStart = match.index + match[1].length + match[2].length;
+    let quote = null, escaped = false, depth = 0, end = -1;
+    for (let i = valueStart; i < source.length; i++) {
+        const ch = source[i];
+        if (quote) {
+            if (escaped) escaped = false;
+            else if (ch === '\\') escaped = true;
+            else if (ch === quote) quote = null;
+            continue;
+        }
+        if (ch === '"' || ch === "'" || ch === '`') quote = ch;
+        else if (ch === '[' || ch === '{' || ch === '(') depth++;
+        else if (ch === ']' || ch === '}' || ch === ')') depth--;
+        else if (ch === ';' && depth === 0) { end = i + 1; break; }
+    }
+    if (end < 0) throw new Error('Could not safely locate the end of ' + name + ' in registry.js.');
+    return source.slice(0, valueStart) + JSON.stringify(value, null, 4) + ';' + source.slice(end);
+}
+function updateRegistryForRename(oldPath, newPath, newTitle) {
+    if (!fs.existsSync(REGISTRY_FILE)) throw new Error('registry.js was not found. The image was not renamed.');
+    const source = fs.readFileSync(REGISTRY_FILE, 'utf8');
+    const state = vm.runInNewContext(source + '\n;({ paths: MASTER_IMAGE_REGISTRY, titles: IMAGE_TITLES || {}, descriptions: IMAGE_DESCRIPTIONS || {} })', Object.create(null), { timeout: 1000 });
+    const paths = Array.isArray(state.paths) ? JSON.parse(JSON.stringify(state.paths)) : null;
+    if (!paths) throw new Error('MASTER_IMAGE_REGISTRY is missing or invalid.');
+    if (paths.includes(newPath) && oldPath !== newPath) throw new Error('The new filename already exists in registry.js.');
+    const oldIndex = paths.indexOf(oldPath);
+    if (oldIndex < 0) throw new Error('The original image path was not found in MASTER_IMAGE_REGISTRY. The registry was not changed.');
+    if (oldPath !== newPath) paths[oldIndex] = newPath;
+    const titles = JSON.parse(JSON.stringify(state.titles || {}));
+    const descriptions = JSON.parse(JSON.stringify(state.descriptions || {}));
+    delete titles[oldPath];
+    titles[newPath] = newTitle;
+    if (Object.prototype.hasOwnProperty.call(descriptions, oldPath)) {
+        if (!Object.prototype.hasOwnProperty.call(descriptions, newPath)) descriptions[newPath] = descriptions[oldPath];
+        delete descriptions[oldPath];
+    }
+    let output = source;
+    output = replaceRegistryDeclaration(output, 'MASTER_IMAGE_REGISTRY', paths);
+    output = replaceRegistryDeclaration(output, 'IMAGE_TITLES', titles);
+    output = replaceRegistryDeclaration(output, 'IMAGE_DESCRIPTIONS', descriptions);
+    const temp = REGISTRY_FILE + '.tmp';
+    fs.writeFileSync(temp, output, 'utf8');
+    fs.renameSync(temp, REGISTRY_FILE);
+    return source;
+}
+
+function validateFilenameTitle(value, extension) {
+    let title = String(value == null ? '' : value).trim();
+    if (extension && title.toLowerCase().endsWith(extension.toLowerCase())) {
+        title = title.slice(0, -extension.length).trim();
+    }
+    if (!title) throw new Error('Title cannot be blank.');
+    if (title.length > 200) throw new Error('Title is too long (maximum 200 characters).');
+    const invalidFilenameCharacters = ['<', '>', '"', ':', '/', '\\', '|', '?', '*'];
+    if (Array.from(title).some(character =>
+        invalidFilenameCharacters.includes(character) || character.charCodeAt(0) < 32
+    )) {
+        throw new Error('Title contains a character Windows cannot use in a filename.');
+    }
+    if (/[. ]$/.test(title)) throw new Error('A filename cannot end with a dot or space.');
+    if (/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\\.|$)/i.test(title)) {
+        throw new Error('That title is reserved by Windows and cannot be used as a filename.');
+    }
+    return title;
+}
+
+function renameImageFile(oldFullPath, newFullPath, extension) {
+    const temporaryPath = path.join(
+        COLLECTIONS,
+        '.rename-' + crypto.randomBytes(8).toString('hex') + extension
+    );
+    fs.renameSync(oldFullPath, temporaryPath);
+    try {
+        fs.renameSync(temporaryPath, newFullPath);
+    } catch (error) {
+        try { fs.renameSync(temporaryPath, oldFullPath); } catch (_) {}
+        throw error;
+    }
 }
 
 function readExifValue(tiff, little, type, count, valueOffset) {
@@ -141,7 +227,7 @@ function readImageInfo(buffer, extension) {
 
 function scanAndSyncMetadata() {
     const store = readMetadataStore();
-    if (!fs.existsSync(COLLECTIONS)) throw new Error('collections folder not found: ' + COLLECTIONS);
+    if (!fs.existsSync(COLLECTIONS)) throw new Error('Collections folder not found: ' + COLLECTIONS);
     const files = fs.readdirSync(COLLECTIONS, { withFileTypes: true })
         .filter(entry => entry.isFile() && IMAGE_EXT.test(entry.name))
         .map(entry => entry.name)
@@ -169,7 +255,7 @@ function scanAndSyncMetadata() {
         }
         images.push(Object.assign({}, record, {
             id: id,
-            path: 'collections/' + fileName,
+            path: 'Collections/' + fileName,
             fileName: fileName,
             format: extension,
             sizeBytes: stat.size,
@@ -240,32 +326,73 @@ const server = http.createServer(function (req, res) {
 
     if (req.method === 'POST' && req.url === '/save-metadata') {
         readBody(req, function (body) {
+            let oldFullPath = null;
+            let newFullPath = null;
+            let registryBackup = null;
+            let didRename = false;
             try {
                 const input = JSON.parse(body);
                 if (!/^[a-f0-9]{64}$/i.test(String(input.id || ''))) throw new Error('Invalid image ID');
+
                 const images = scanAndSyncMetadata();
                 const current = images.find(image => image.id === input.id);
                 if (!current) throw new Error('Image not found. Refresh the website and try again.');
 
+                const extension = path.extname(current.fileName);
+                const newTitle = validateFilenameTitle(input.title, extension);
+                const newFileName = newTitle + extension;
+                const oldFileName = current.fileName;
+                oldFullPath = path.join(COLLECTIONS, oldFileName);
+                newFullPath = path.join(COLLECTIONS, newFileName);
+
+                const collision = fs.readdirSync(COLLECTIONS, { withFileTypes: true })
+                    .some(entry => entry.isFile() &&
+                        entry.name.toLowerCase() === newFileName.toLowerCase() &&
+                        entry.name !== oldFileName);
+                if (collision) throw new Error('Another image already has that filename.');
+
+                const oldPath = current.path;
+                const newPath = 'Collections/' + newFileName;
+                if (oldFileName !== newFileName) {
+                    renameImageFile(oldFullPath, newFullPath, extension);
+                    didRename = true;
+                    registryBackup = updateRegistryForRename(oldPath, newPath, newTitle);
+                }
+
                 const store = readMetadataStore();
                 const record = store.images[input.id] || { id: input.id };
-                record.title = String(input.title || '').slice(0, 300);
+                record.title = newTitle;
                 record.description = String(input.description || '').slice(0, 10000);
                 record.originalFolder = String(input.originalFolder || '').slice(0, 300);
-                
-                const linkColor = String(input.linkColor || '');
-                if (linkColor && !/^#[0-9a-f]{6}$/i.test(linkColor)) {
-                    throw new Error('Invalid link colour');
+                if (input.linkColor !== undefined) {
+                    const linkColor = String(input.linkColor || '');
+                    if (linkColor && !/^#[0-9a-f]{6}$/i.test(linkColor)) {
+                        throw new Error('Invalid link colour. Expected a six-digit hex colour.');
+                    }
+                    record.linkColor = linkColor.toLowerCase();
                 }
-                record.linkColor = linkColor;
-                
                 store.images[input.id] = record;
                 saveMetadataStore(store);
 
-                const updated = Object.assign({}, current, record);
+                const updated = Object.assign({}, current, record, {
+                    id: input.id,
+                    path: newPath,
+                    fileName: newFileName,
+                    title: newTitle
+                });
                 sendJson(res, 200, { ok: true, image: updated });
-                console.log('Saved metadata for ' + current.fileName);
+                console.log((didRename ? 'Renamed and saved ' : 'Saved metadata for ') + newFileName);
             } catch (error) {
+                if (registryBackup !== null) {
+                    try { fs.writeFileSync(REGISTRY_FILE, registryBackup, 'utf8'); } catch (_) {}
+                }
+                if (didRename && oldFullPath && newFullPath && fs.existsSync(newFullPath)) {
+                    try {
+                        const rollbackTemp = path.join(COLLECTIONS, '.rollback-' + crypto.randomBytes(8).toString('hex'));
+                        fs.renameSync(newFullPath, rollbackTemp);
+                        fs.renameSync(rollbackTemp, oldFullPath);
+                    } catch (_) {}
+                }
                 sendJson(res, 400, { ok: false, error: String(error.message || error) });
             }
         });

@@ -13,6 +13,7 @@
     <div id="content-wrapper">
 
         <div id="sidebar">
+            <button type="button" id="sortByToggle" aria-label="Sort links">[Sortby] <span id="sortByState">{:}</span><img id="sortByIcon" alt="" hidden></button>
             <div class="tree-content" id="treeDropdownContent" tabindex="0"></div>
             <div id="floating-window">
                 <div class="dev-tooltip-exact">
@@ -21,11 +22,11 @@
             </div>
             <div id="tree-toolbar">
                 <a href="#" id="magnifierToggle" aria-label="Toggle magnifier">
-                    <img src="collections/Icons/magnifier-icon.png" alt="magnifier icon">
+                    <img src="assets/magnifier-icon.png" alt="magnifier icon">
                 </a>
                 <a href="#" id="darkModeToggle" aria-label="Toggle dark mode">
-                    <img id="darkModeIconLight" src="collections/Icons/dark-icon.png" alt="dark mode icon">
-                    <img id="darkModeIconDark" src="collections/Icons/light-icon.png" alt="light mode icon">
+                    <img id="darkModeIconLight" src="assets/dark-icon.png" alt="dark mode icon">
+                    <img id="darkModeIconDark" src="assets/light-icon.png" alt="light mode icon">
                 </a>
                 <a href="#" id="expandImageToggle" aria-label="Expand image">E</a>
             </div>
@@ -49,6 +50,7 @@
 
     </div>
 
+    <a href="#" id="returnHomeControl" aria-label="Return home" title="Return home"><img src="assets/return-icon.png" alt="Return home"></a>
     <div class="sidebar-tab" id="showTab" title="Toggle sidebar">◀</div>
 
     <div id="magnifierLens" aria-hidden="true">
@@ -61,11 +63,13 @@
    ============================================================ */
 
 let globalImageList = [];
+let originalImageList = [];
 let globalCurrentIndex = 0;
+let sortByMode = 0; // 0 = original, 1 = alphabetical, 2 = numerical
 
 let imageMetadataByPath = Object.create(null);
 let metadataServerAvailable = false;
-const METADATA_SERVER_URL = 'http://localhost:8001';
+const METADATA_SERVER_URL = 'http://127.0.0.1:8001';
 
 async function loadImageMetadata() {
     try {
@@ -160,10 +164,31 @@ async function saveImageMetadata(path, id, fields, button) {
         });
         const result = await response.json();
         if (!response.ok || !result.ok) throw new Error(result.error || ('Save failed: ' + response.status));
-        imageMetadataByPath[path] = result.image;
-        const link = Array.from(document.querySelectorAll('#treeDropdownContent a[data-image-path]')).find(function(item) { return item.dataset.imagePath === path; });
-        if (link) link.textContent = result.image.title || path.split('/').pop().replace(/\.[^/.]+$/, '');
-        updateImageLinkColor(path, result.image.linkColor || '');
+
+        const updatedPath = result.image.path;
+        if (!updatedPath) throw new Error('The server did not return the renamed image path.');
+        delete imageMetadataByPath[path];
+        imageMetadataByPath[updatedPath] = result.image;
+
+        // A filename edit replaces the path in the original registry slot.
+        // The active ABC/123 order is then recalculated from those filenames.
+        if (updatedPath !== path) {
+            const originalIndex = originalImageList.indexOf(path);
+            if (originalIndex !== -1) originalImageList[originalIndex] = updatedPath;
+            const image = document.querySelector('#bookshelfImageArea img');
+            if (image) {
+                image.src = updatedPath;
+                image.alt = updatedPath.split('/').pop().replace(/\.[^/.]+$/, '');
+            }
+            const floatingWin = document.getElementById('floating-window');
+            if (floatingWin) floatingWin.dataset.currentPath = updatedPath;
+        }
+
+        applySortByMode();
+        const floatingWin = document.getElementById('floating-window');
+        if (floatingWin && floatingWin.dataset.currentPath === updatedPath) {
+            showFileAtIndex(floatingWin, globalCurrentIndex);
+        }
         button.textContent = 'Saved';
     } catch (error) {
         console.error('Could not save image metadata:', error);
@@ -173,25 +198,95 @@ async function saveImageMetadata(path, id, fields, button) {
     }
 }
 
-function naturalImagePathCompare(a, b) {
-    // Sort the single flat image list naturally by filename.
-    return a.split('/').pop().localeCompare(b.split('/').pop(), undefined, {
-        numeric: true,
-        sensitivity: 'base'
-    });
-}
-
 function isGalleryImagePath(path) {
     const parts = String(path).replace(/\\/g, '/').split('/');
-    return parts.length === 2 && parts[0] === 'collections' &&
+    return parts.length === 2 && parts[0].toLowerCase() === 'collections' &&
         /\.(jpg|jpeg|png|gif|webp)$/i.test(parts[1]);
 }
 
 function buildGlobalImageList() {
-    return MASTER_IMAGE_REGISTRY
-        .filter(isGalleryImagePath)
-        .slice()
-        .sort(naturalImagePathCompare);
+    // Preserve the registry's exact sequence for Original mode.
+    const seen = new Set();
+    return MASTER_IMAGE_REGISTRY.filter(function(path) {
+        if (!isGalleryImagePath(path) || seen.has(path)) return false;
+        seen.add(path);
+        return true;
+    });
+}
+
+// Browser-native filename collators: alphabetical and natural numeric order.
+const filenameAlphaCollator = new Intl.Collator(undefined, {
+    numeric: false,
+    sensitivity: 'base'
+});
+const filenameNumericCollator = new Intl.Collator(undefined, {
+    numeric: true,
+    sensitivity: 'base'
+});
+
+function filenameOnly(imagePath) {
+    return String(imagePath).replace(/\\/g, '/').split('/').pop();
+}
+
+function compareFilenamePaths(a, b, collator) {
+    const nameA = filenameOnly(a);
+    const nameB = filenameOnly(b);
+    const compared = collator.compare(nameA, nameB);
+    return compared || (nameA < nameB ? -1 : nameA > nameB ? 1 : 0);
+}
+
+function applySortByMode() {
+    const floatingWin = document.getElementById('floating-window');
+    const treeContent = document.getElementById('treeDropdownContent');
+    const currentPath = floatingWin?.dataset.currentPath || null;
+    const previousScrollTop = treeContent ? treeContent.scrollTop : 0;
+
+    if (sortByMode === 0) {
+        // Original means the exact order in MASTER_IMAGE_REGISTRY.
+        globalImageList = originalImageList.slice();
+    } else if (sortByMode === 1) {
+        globalImageList = originalImageList.slice().sort(function(a, b) {
+            return compareFilenamePaths(a, b, filenameAlphaCollator);
+        });
+    } else {
+        // Natural numeric filename order, highest-to-lowest.
+        globalImageList = originalImageList.slice().sort(function(a, b) {
+            return compareFilenamePaths(b, a, filenameNumericCollator);
+        });
+    }
+
+    globalCurrentIndex = currentPath ? globalImageList.indexOf(currentPath) : 0;
+    if (globalCurrentIndex < 0) globalCurrentIndex = 0;
+
+    if (floatingWin) {
+        floatingWin.dataset.paths = JSON.stringify(globalImageList);
+        floatingWin.dataset.currentIndex = String(globalCurrentIndex);
+    }
+
+    buildTreeDropdown();
+    if (treeContent) {
+        treeContent.scrollTop = previousScrollTop;
+        if (currentPath) treeContent.dataset.keyboardPath = currentPath;
+    }
+    if (currentPath) highlightActiveLink(currentPath);
+    updateSortByButton();
+}
+
+function updateSortByButton() {
+    const state = document.getElementById('sortByState');
+    const icon = document.getElementById('sortByIcon');
+    if (!state || !icon) return;
+    if (sortByMode === 0) {
+        state.textContent = '{:}';
+        icon.hidden = true;
+        icon.removeAttribute('src');
+    } else {
+        state.textContent = '';
+        icon.hidden = false;
+        icon.src = sortByMode === 1
+            ? 'assets/Abc.png'
+            : 'assets/123.png';
+    }
 }
 
 function navigateToIndex(index) {
@@ -234,7 +329,7 @@ function loadImageAndUpdateFloating(imagePath, fromNavigation) {
             refreshMagnifierIfActive();
             preloadNearbyImages();
             positionFloatingWindow();
-            positionLeftControls();
+            positionMobileSidebar();
         });
     } else {
         renderToBookshelf(imagePath, true);
@@ -339,7 +434,7 @@ function showFileAtIndex(floatingWin, index) {
     if (!path) return;
 
     const metadata = imageMetadataByPath[path] || {};
-    const title = metadata.title || getImageTitle(path);
+    const title = getImageTitle(path);
     const description = metadata && Object.prototype.hasOwnProperty.call(metadata, 'description')
         ? metadata.description
         : getImageDescription(path);
@@ -426,11 +521,8 @@ function showFileAtIndex(floatingWin, index) {
 }
 
 function getImageTitle(path) {
-    const key = String(path).replace(/\\/g, '/');
-    const metadata = imageMetadataByPath[key];
-    if (metadata && metadata.title) return metadata.title;
-    if (typeof IMAGE_TITLES !== 'undefined' && IMAGE_TITLES[key]) return IMAGE_TITLES[key];
-    return key.split('/').pop().replace(/\.[^/.]+$/, '');
+    // The filename (without its extension) is the one true image title.
+    return String(path).replace(/\\/g, '/').split('/').pop().replace(/\.[^/.]+$/, '');
 }
 
 function getImageDescription(path) {
@@ -442,9 +534,40 @@ function getImageDescription(path) {
         : '';
 }
 
+function returnToGalleryIntro() {
+    const imageArea = document.getElementById('bookshelfImageArea');
+    if (imageArea) {
+        imageArea.innerHTML =
+            '<div id="intro-text">' +
+                '<div id="intro-title"><span class="big-letter">W</span>elcome!</div>' +
+                '<div>Select any image and Swipe or Press Arrow keys (\u2190, \u2192) to navigate through entire collection.</div>' +
+                '<div><div>All Rights Reserved Copyright \u00a9 Photographs by George Rump.</div><div>email; gcrrump@gmail.com</div></div>' +
+            '</div>';
+    }
+    const floatingWin = document.getElementById('floating-window');
+    if (floatingWin) {
+        delete floatingWin.dataset.paths;
+        delete floatingWin.dataset.currentIndex;
+        delete floatingWin.dataset.currentPath;
+        floatingWin.style.display = 'none';
+    }
+    globalCurrentIndex = 0;
+    document.body.classList.remove('image-open', 'expand-image');
+    document.body.style.removeProperty('--expand-reserve-right');
+    desktopStackLeft = null;
+    highlightActiveLink(null);
+    if (!window.matchMedia('(max-width: 480px)').matches) {
+        const toolbar = document.getElementById('tree-toolbar');
+        if (toolbar) toolbar.style.display = 'none';
+    }
+    requestAnimationFrame(positionMobileSidebar);
+}
+
 function buildTreeDropdown() {
     const treeContent = document.getElementById('treeDropdownContent');
     if (!treeContent) return;
+    const previousScrollTop = treeContent.scrollTop;
+    const previousKeyboardPath = treeContent.dataset.keyboardPath || '';
     treeContent.replaceChildren();
 
     const linksContainer = document.createElement('span');
@@ -468,6 +591,8 @@ function buildTreeDropdown() {
     });
 
     treeContent.appendChild(linksContainer);
+    treeContent.dataset.keyboardPath = previousKeyboardPath;
+    treeContent.scrollTop = previousScrollTop;
 }
 
 function getVisibleTreeImageLinks() {
@@ -624,7 +749,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const showTab = document.getElementById('showTab');
     const mainContent = document.getElementById('mainContent');
+    const sortButton = document.getElementById('sortByToggle');
+    const homeButton = document.getElementById('returnHomeControl');
     let visible = true;
+
+    if (sortButton) {
+        sortButton.addEventListener('click', function() {
+            sortByMode = (sortByMode + 1) % 3;
+            applySortByMode();
+        });
+    }
+
+    if (homeButton) {
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            returnToGalleryIntro();
+        });
+    }
 
     showTab.textContent = '[Hide]';
     showTab.style.setProperty('color', '#800080', 'important');
@@ -632,18 +773,14 @@ document.addEventListener('DOMContentLoaded', function() {
     showTab.addEventListener('click', function(e) {
         e.stopPropagation();
         visible = !visible;
-        const lockedTop = showTab.getBoundingClientRect().top;
         sidebar.classList.toggle('hidden-sidebar', !visible);
         document.body.classList.toggle('tree-hidden', !visible);
         showTab.textContent = visible ? '[Hide]' : '[Open]';
         showTab.style.setProperty('color', visible ? '#800080' : '#008000', 'important');
         mainContent.style.marginLeft = '';
-        if (!visible) {
-            showTab.style.setProperty('top', lockedTop + 'px', 'important');
-        }
         requestAnimationFrame(function() {
             positionFloatingWindow();
-            if (visible) positionLeftControls();
+            if (visible) positionMobileSidebar();
         });
     });
 });
@@ -702,6 +839,12 @@ document.addEventListener('DOMContentLoaded', function() {
             snapshot.style.height = window.innerHeight + 'px';
             lens.innerHTML = '';
             lens.appendChild(canvas);
+            const cornerIcon = document.createElement('img');
+            cornerIcon.src = 'assets/magnifier-corner-icon.png';
+            cornerIcon.alt = '';
+            cornerIcon.id = 'magnifierCornerIcon';
+            cornerIcon.setAttribute('aria-hidden', 'true');
+            lens.appendChild(cornerIcon);
             updateSnapshot();
         } catch (err) {
             console.warn('Magnifier capture failed', err);
@@ -853,7 +996,7 @@ document.addEventListener('DOMContentLoaded', function() {
             requestAnimationFrame(function() {
                 placeFloatingWindow();
                 positionFloatingWindow();
-                positionLeftControls();
+                positionMobileSidebar();
                 if (document.body.classList.contains('magnifier-mode')) {
                     refreshMagnifierIfActive();
                 }
@@ -950,38 +1093,17 @@ function positionFloatingWindow() {
     floatingWin.style.top = (parseFloat(toolbar.dataset.originalTop) - boxHeight - infoToolbarGap) + 'px';
 }
 
-function positionLeftControls() {
+function positionMobileSidebar() {
+    // Keep the existing mobile sidebar placement; the Show/Hide control
+    // stays at its fixed CSS coordinates on both desktop and mobile.
+    if (!window.matchMedia('(max-width: 480px)').matches) return;
+
     const sidebar = document.getElementById('sidebar');
-    const showTab = document.getElementById('showTab');
     const tree = document.getElementById('treeDropdownContent');
-    if (!sidebar || !showTab || !tree) return;
-
-    // DESKTOP: anchor the toggle to the actual link-tree position.
-    // If the tree is hidden, keep the toggle at its last position.
-    if (!window.matchMedia('(max-width: 480px)').matches) {
-        if (document.body.classList.contains('tree-hidden')) return;
-
-        const treeRect = tree.getBoundingClientRect();
-        if (!treeRect.width || !treeRect.height) return;
-
-        const layoutSettings = getComputedStyle(document.documentElement);
-        // Use the same desktop offsets on the welcome page and gallery pages.
-        // The previous page-dependent variables were not both defined, so the
-        // button jumped horizontally when the first image was opened.
-        const offsetXRaw = parseFloat(layoutSettings.getPropertyValue('--desktop-toggle-offset-x'));
-        const offsetYRaw = parseFloat(layoutSettings.getPropertyValue('--desktop-toggle-offset-y'));
-        const offsetX = Number.isFinite(offsetXRaw) ? offsetXRaw : 7;
-        const offsetY = Number.isFinite(offsetYRaw) ? offsetYRaw : 2;
-        showTab.style.setProperty('left', (treeRect.left + offsetX) + 'px', 'important');
-        showTab.style.setProperty('top', (treeRect.top - showTab.offsetHeight - offsetY) + 'px', 'important');
-        return;
-    }
-
-    // MOBILE: retain the existing image-relative positioning behaviour.
     const img = document.querySelector('#bookshelfImageArea img');
     const intro = document.getElementById('intro-text');
     const target = img || intro;
-    if (!target) return;
+    if (!sidebar || !tree || !target) return;
 
     const rect = target.getBoundingClientRect();
     const treeStyle = window.getComputedStyle(tree);
@@ -990,23 +1112,13 @@ function positionLeftControls() {
     const sidebarOffsetYRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-sidebar-offset-y'));
     const sidebarOffsetY = Number.isFinite(sidebarOffsetYRaw) ? sidebarOffsetYRaw : 0;
     const groupTop = Math.max(0, rect.top - treePaddingTop + sidebarOffsetY);
-
     sidebar.style.setProperty('top', groupTop + 'px', 'important');
-    if (!document.body.classList.contains('tree-hidden')) {
-        const treeRect = tree.getBoundingClientRect();
-        const offsetXRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-toggle-offset-x'));
-        const offsetYRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-toggle-offset-y'));
-        const offsetX = Number.isFinite(offsetXRaw) ? offsetXRaw : 7;
-        const offsetY = Number.isFinite(offsetYRaw) ? offsetYRaw : 2;
-        showTab.style.setProperty('left', (treeRect.left + offsetX) + 'px', 'important');
-        showTab.style.setProperty('top', (treeRect.top - showTab.offsetHeight - offsetY) + 'px', 'important');
-    }
 }
 
 window.addEventListener('resize', function() {
     if (window.matchMedia('(max-width: 480px)').matches) {
         placeFloatingWindow();
-        positionLeftControls();
+        positionMobileSidebar();
         return;
     }
     desktopStackLeft = null;
@@ -1019,17 +1131,19 @@ window.addEventListener('resize', function() {
     }
     placeFloatingWindow();
     positionFloatingWindow();
-    positionLeftControls();
+    positionMobileSidebar();
 });
 
 window.addEventListener('load', async function() {
     await loadImageMetadata();
     globalImageList = buildGlobalImageList();
+    originalImageList = globalImageList.slice();
     globalCurrentIndex = 0;
 
     buildTreeDropdown();
+    updateSortByButton();
     placeFloatingWindow();
-    requestAnimationFrame(positionLeftControls);
+    requestAnimationFrame(positionMobileSidebar);
 
     const floatingWin = document.getElementById('floating-window');
     if (floatingWin) floatingWin.style.display = 'none';
@@ -1038,7 +1152,7 @@ window.addEventListener('load', async function() {
         if (toolbar) toolbar.style.display = 'none';
     }
 
-    requestAnimationFrame(positionLeftControls);
+    requestAnimationFrame(positionMobileSidebar);
 
     if ('requestIdleCallback' in window) {
         requestIdleCallback(preloadFirstImages);
@@ -1046,55 +1160,6 @@ window.addEventListener('load', async function() {
         setTimeout(preloadFirstImages, 250);
     }
 
-    function returnToGalleryIntro() {
-        const imageArea = document.getElementById('bookshelfImageArea');
-        if (imageArea) {
-            imageArea.innerHTML =
-                '<div id="intro-text">' +
-                    '<div id="intro-title"><span class="big-letter">W</span>elcome!</div>' +
-                    '<div>Select any image and Swipe or Press Arrow keys (\u2190, \u2192) to navigate through entire collection.</div>' +
-                    '<div>' +
-                        '<div>All Rights Reserved Copyright \u00a9 Photographs by George Rump.</div>' +
-                        '<div>email; gcrrump@gmail.com</div>' +
-                    '</div>' +
-                '</div>';
-        }
-        const floatingWin = document.getElementById('floating-window');
-        if (floatingWin) {
-            delete floatingWin.dataset.paths;
-            delete floatingWin.dataset.currentIndex;
-            delete floatingWin.dataset.currentPath;
-            floatingWin.style.display = 'none';
-        }
-        globalCurrentIndex = 0;
-        document.body.classList.remove('image-open');
-        document.body.classList.remove('expand-image');
-        document.body.style.removeProperty('--expand-reserve-right');
-        desktopStackLeft = null;
-        highlightActiveLink(null);
-
-        if (!window.matchMedia('(max-width: 480px)').matches) {
-            const toolbar = document.getElementById('tree-toolbar');
-            if (toolbar) toolbar.style.display = 'none';
-        }
-
-        if (!window.matchMedia('(max-width: 480px)').matches) {
-            const toolbar = document.getElementById('tree-toolbar');
-            const sidebar = document.getElementById('sidebar');
-            if (toolbar && sidebar && toolbar.parentElement !== sidebar) {
-                sidebar.appendChild(toolbar);
-                toolbar.style.position = '';
-                toolbar.style.left = '';
-                toolbar.style.top = '';
-                toolbar.style.width = '';
-                toolbar.style.margin = '';
-                toolbar.style.zIndex = '';
-                delete toolbar.dataset.originalLeft;
-                delete toolbar.dataset.originalTop;
-            }
-        }
-        requestAnimationFrame(positionLeftControls);
-    }
 });
 </script>
 </body>

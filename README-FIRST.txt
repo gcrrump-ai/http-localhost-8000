@@ -1,43 +1,35 @@
-GEORGE RUMP PHOTOGRAPHY — FLAT COLLECTION + IMAGE METADATA UPDATE
+GEORGE RUMP WEBSITE — REPLACEMENT FILES
+Baseline: the saved working per-image Link colour update, with the later confirmed move of toolbar icons to assets/ and the flat Collections path corrections.
 
-WHAT THIS UPDATE DOES
-- Uses one flat gallery folder: WEB.300\collections\
-- Leaves collections\Icons\ and reserved folders untouched.
-- Removes folder grouping from gallery navigation; all images appear as one continuous list.
-- Preserves the existing viewer, navigation keys/swipe, floating window, toolbar, magnifier, dark mode, expand mode, welcome text, and current layout.
-- Moves existing images from collection subfolders into collections\ and records their former folder in Original folder.
-- Preserves existing custom titles and descriptions in image-metadata.json.
-- Adds file details (filename, format, size, modified date, dimensions, and readable JPEG EXIF details).
-- Title, Description, and Original folder can be edited in the floating window and saved to image-metadata.json by the local server. Technical file information is read-only.
-- The existing POST /save configuration endpoint is retained in save-server.js.
+CONTENTS
+- index.html
+- style.css
+- registry.js
+- generateRegistry.js
+- save-server.js
 
-FILES
-- index.html                  Updated flat-list viewer and metadata panel
-- style.css                   Only flat-list and metadata-field styling additions/selector changes
-- generate-registry.js        Rebuilds registry from images directly in collections\
-- migrate-to-flat-collections.js  One-time migration of existing subfolder images
-- save-server.js              Existing server plus GET /metadata and POST /save-metadata
-
-IMPORTANT FIRST RUN
-1. Make a backup copy of your WEB.300 folder before migrating images.
-2. Replace index.html and style.css with the supplied files.
-3. Replace generate-registry.js and save-server.js with the supplied files.
-4. Put migrate-to-flat-collections.js in WEB.300.
-5. From PowerShell, run:
-   cd "C:\Users\user\Desktop\WEB.300"; node .\migrate-to-flat-collections.js
-   This moves eligible image files from subfolders to collections\. It skips Icons, homepage, Thumbs, and imgStrip folders. It verifies each copy before deleting its source.
-6. Start/restart the local metadata save server in a separate PowerShell window:
+INSTALL
+1. Stop the local save server (Ctrl+C in its PowerShell window).
+2. Back up your existing WEB.300 folder.
+3. Extract these five files into WEB.300 and replace the matching files.
+4. KEEP your existing Collections folder, assets folder, and image-metadata.json. Do not replace or move them.
+5. In PowerShell, run:
+   cd "C:\Users\user\Desktop\WEB.300"; node .\generateRegistry.js
+6. Start the metadata save server:
    cd "C:\Users\user\Desktop\WEB.300"; node .\save-server.js
-7. Start your normal website server as you usually do and refresh the page.
+7. Refresh the website.
 
-FUTURE IMAGES
-- Add new gallery images directly into WEB.300\collections\
-- Then run:
-  cd "C:\Users\user\Desktop\WEB.300"; node .\generate-registry.js
-- Refresh the website. The local save server automatically creates metadata records for new files.
+FOLDER EXPECTATIONS
+- All photographs are directly inside WEB.300\Collections\.
+- Existing .txt files may remain directly inside Collections; the generator ignores them.
+- Toolbar icons remain in WEB.300\assets\ with these filenames:
+  magnifier-icon.png, dark-icon.png, light-icon.png
+- Do not create Collections subfolders or restore an Icons folder.
+- image-metadata.json is your local saved editing data; keep it.
 
 NOTES
-- New images have a blank Original folder until you enter one in the floating window.
-- EXIF information appears only when it exists in the image file. Many edited/scanned/exported images may not contain EXIF.
-- Editing metadata never alters the image file itself.
-- Metadata is keyed by the image file's SHA-256 content hash, so renaming/moving a file will not detach its metadata. Reprocessing the image bytes creates a new identity.
+- The index.html, style.css and save-server.js come from the known Link colour baseline.
+- The index's three toolbar icon paths are updated to assets/.
+- The gallery path check and save server now use Collections (capital C).
+- generateRegistry.js scans only image files directly inside Collections and preserves custom title/description entries from registry.js.
+- This package does not include or replace photographs, icons, or your local metadata database.

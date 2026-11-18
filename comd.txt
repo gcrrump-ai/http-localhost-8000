@@ -1,42 +1,27 @@
 # GEORGE RUMP WEBSITE — COMMAND REFERENCE
 
+
+
+## 3. 
+Starts the local website on port 8000.
+
+cd "C:\Users\user\Desktop\WEB.300"; python -m http.server 8000
+
+
+
+
+## 4. Start Metadata Save Server
+
+cd "C:\Users\user\Desktop\WEB.300"; node .\save-server.js
+
+
+
 ## 1. Generate Image Registry
 Updates `registry.js` from the images in `collections`.
 
-```powershell
-cd "C:\Users\user\Desktop\WEB.300"; node .\generate-registry.js
-```
+cd "C:\Users\user\Desktop\WEB.300"
+node .\generateRegistry.js
 
-## 2. Edit Image Descriptions
-1. Open `registry.js`.
-2. Find `IMAGE_DESCRIPTIONS`.
-3. Find the image path.
-4. Edit its description.
-5. Save and refresh the website.
-
-Example:
-```javascript
-"collections/image.jpg": "Sunset over Kalemegdan Fortress",
-```
-
-Use the image's actual current path.
-
-## 3. Start Website Preview
-Starts the local website on port 8000.
-
-```powershell
-cd "C:\Users\user\Desktop\WEB.300"; python -m http.server 8000
-```
-
-Website address:
-http://localhost:8000
-
-## 4. Start Metadata Save Server
-Run in a **separate PowerShell window**. Keep it open while editing image information.
-
-```powershell
-cd "C:\Users\user\Desktop\WEB.300"; node .\save-server.js
-```
 
 ## 5. Deploy Website to Cloudflare Pages
 
@@ -62,3 +47,7 @@ git push origin main --force
 ```
 
 **Warning:** `--force` can overwrite changes on the remote repository.
+
+git add index.html style.css registry.js generateRegistry.js
+git commit -m "Add gallery sorting and search"
+git push origin main
