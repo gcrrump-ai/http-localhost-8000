@@ -13,7 +13,7 @@
     <div id="content-wrapper">
 
         <div id="sidebar">
-            <button type="button" id="sortByToggle" aria-label="Sort links">[Sortby] <span id="sortByState">{:}</span><img id="sortByIcon" alt="" hidden></button>
+            <button type="button" id="sortByToggle" aria-label="Sort links">[Sortby] <span id="sortByState">{:}</span></button>
             <div class="tree-content" id="treeDropdownContent" tabindex="0"></div>
             <div id="floating-window">
                 <div class="dev-tooltip-exact">
@@ -69,7 +69,7 @@ let sortByMode = 0; // 0 = original, 1 = alphabetical, 2 = numerical
 
 let imageMetadataByPath = Object.create(null);
 let metadataServerAvailable = false;
-const METADATA_SERVER_URL = 'http://127.0.0.1:8001';
+const METADATA_SERVER_URL = 'http://localhost:8001';
 
 async function loadImageMetadata() {
     try {
@@ -164,31 +164,10 @@ async function saveImageMetadata(path, id, fields, button) {
         });
         const result = await response.json();
         if (!response.ok || !result.ok) throw new Error(result.error || ('Save failed: ' + response.status));
-
-        const updatedPath = result.image.path;
-        if (!updatedPath) throw new Error('The server did not return the renamed image path.');
-        delete imageMetadataByPath[path];
-        imageMetadataByPath[updatedPath] = result.image;
-
-        // A filename edit replaces the path in the original registry slot.
-        // The active ABC/123 order is then recalculated from those filenames.
-        if (updatedPath !== path) {
-            const originalIndex = originalImageList.indexOf(path);
-            if (originalIndex !== -1) originalImageList[originalIndex] = updatedPath;
-            const image = document.querySelector('#bookshelfImageArea img');
-            if (image) {
-                image.src = updatedPath;
-                image.alt = updatedPath.split('/').pop().replace(/\.[^/.]+$/, '');
-            }
-            const floatingWin = document.getElementById('floating-window');
-            if (floatingWin) floatingWin.dataset.currentPath = updatedPath;
-        }
-
-        applySortByMode();
-        const floatingWin = document.getElementById('floating-window');
-        if (floatingWin && floatingWin.dataset.currentPath === updatedPath) {
-            showFileAtIndex(floatingWin, globalCurrentIndex);
-        }
+        imageMetadataByPath[path] = result.image;
+        const link = Array.from(document.querySelectorAll('#treeDropdownContent a[data-image-path]')).find(function(item) { return item.dataset.imagePath === path; });
+        if (link) link.textContent = result.image.title || path.split('/').pop().replace(/\.[^/.]+$/, '');
+        updateImageLinkColor(path, result.image.linkColor || '');
         button.textContent = 'Saved';
     } catch (error) {
         console.error('Could not save image metadata:', error);
@@ -198,6 +177,14 @@ async function saveImageMetadata(path, id, fields, button) {
     }
 }
 
+function naturalImagePathCompare(a, b) {
+    // Sort the single flat image list naturally by filename.
+    return a.split('/').pop().localeCompare(b.split('/').pop(), undefined, {
+        numeric: true,
+        sensitivity: 'base'
+    });
+}
+
 function isGalleryImagePath(path) {
     const parts = String(path).replace(/\\/g, '/').split('/');
     return parts.length === 2 && parts[0].toLowerCase() === 'collections' &&
@@ -205,87 +192,52 @@ function isGalleryImagePath(path) {
 }
 
 function buildGlobalImageList() {
-    // Preserve the registry's exact sequence for Original mode.
-    const seen = new Set();
-    return MASTER_IMAGE_REGISTRY.filter(function(path) {
-        if (!isGalleryImagePath(path) || seen.has(path)) return false;
-        seen.add(path);
-        return true;
-    });
-}
-
-// Browser-native filename collators: alphabetical and natural numeric order.
-const filenameAlphaCollator = new Intl.Collator(undefined, {
-    numeric: false,
-    sensitivity: 'base'
-});
-const filenameNumericCollator = new Intl.Collator(undefined, {
-    numeric: true,
-    sensitivity: 'base'
-});
-
-function filenameOnly(imagePath) {
-    return String(imagePath).replace(/\\/g, '/').split('/').pop();
-}
-
-function compareFilenamePaths(a, b, collator) {
-    const nameA = filenameOnly(a);
-    const nameB = filenameOnly(b);
-    const compared = collator.compare(nameA, nameB);
-    return compared || (nameA < nameB ? -1 : nameA > nameB ? 1 : 0);
+    return MASTER_IMAGE_REGISTRY
+        .filter(isGalleryImagePath)
+        .slice()
+        .sort(naturalImagePathCompare);
 }
 
 function applySortByMode() {
-    const floatingWin = document.getElementById('floating-window');
-    const treeContent = document.getElementById('treeDropdownContent');
-    const currentPath = floatingWin?.dataset.currentPath || null;
-    const previousScrollTop = treeContent ? treeContent.scrollTop : 0;
-
+    const currentPath = globalImageList[globalCurrentIndex] ||
+        document.getElementById('floating-window')?.dataset.currentPath || null;
     if (sortByMode === 0) {
-        // Original means the exact order in MASTER_IMAGE_REGISTRY.
         globalImageList = originalImageList.slice();
     } else if (sortByMode === 1) {
         globalImageList = originalImageList.slice().sort(function(a, b) {
-            return compareFilenamePaths(a, b, filenameAlphaCollator);
+            return a.split('/').pop().localeCompare(b.split('/').pop(), undefined, {
+                numeric: false, sensitivity: 'base'
+            });
         });
     } else {
-        // Natural numeric filename order, highest-to-lowest.
         globalImageList = originalImageList.slice().sort(function(a, b) {
-            return compareFilenamePaths(b, a, filenameNumericCollator);
+            return a.split('/').pop().localeCompare(b.split('/').pop(), undefined, {
+                numeric: true, sensitivity: 'base'
+            });
         });
     }
-
     globalCurrentIndex = currentPath ? globalImageList.indexOf(currentPath) : 0;
     if (globalCurrentIndex < 0) globalCurrentIndex = 0;
-
-    if (floatingWin) {
+    const floatingWin = document.getElementById('floating-window');
+    if (floatingWin && floatingWin.dataset.currentPath) {
         floatingWin.dataset.paths = JSON.stringify(globalImageList);
-        floatingWin.dataset.currentIndex = String(globalCurrentIndex);
+        floatingWin.dataset.currentIndex = globalCurrentIndex;
     }
-
     buildTreeDropdown();
-    if (treeContent) {
-        treeContent.scrollTop = previousScrollTop;
-        if (currentPath) treeContent.dataset.keyboardPath = currentPath;
-    }
     if (currentPath) highlightActiveLink(currentPath);
     updateSortByButton();
 }
 
 function updateSortByButton() {
     const state = document.getElementById('sortByState');
-    const icon = document.getElementById('sortByIcon');
-    if (!state || !icon) return;
-    if (sortByMode === 0) {
-        state.textContent = '{:}';
-        icon.hidden = true;
-        icon.removeAttribute('src');
+    if (!state) return;
+
+    if (sortByMode === 1) {
+        state.textContent = 'ABC';
+    } else if (sortByMode === 2) {
+        state.textContent = '123';
     } else {
-        state.textContent = '';
-        icon.hidden = false;
-        icon.src = sortByMode === 1
-            ? 'assets/Abc.png'
-            : 'assets/123.png';
+        state.textContent = '{:}';
     }
 }
 
@@ -329,7 +281,7 @@ function loadImageAndUpdateFloating(imagePath, fromNavigation) {
             refreshMagnifierIfActive();
             preloadNearbyImages();
             positionFloatingWindow();
-            positionMobileSidebar();
+            positionLeftControls();
         });
     } else {
         renderToBookshelf(imagePath, true);
@@ -434,7 +386,7 @@ function showFileAtIndex(floatingWin, index) {
     if (!path) return;
 
     const metadata = imageMetadataByPath[path] || {};
-    const title = getImageTitle(path);
+    const title = metadata.title || getImageTitle(path);
     const description = metadata && Object.prototype.hasOwnProperty.call(metadata, 'description')
         ? metadata.description
         : getImageDescription(path);
@@ -521,8 +473,11 @@ function showFileAtIndex(floatingWin, index) {
 }
 
 function getImageTitle(path) {
-    // The filename (without its extension) is the one true image title.
-    return String(path).replace(/\\/g, '/').split('/').pop().replace(/\.[^/.]+$/, '');
+    const key = String(path).replace(/\\/g, '/');
+    const metadata = imageMetadataByPath[key];
+    if (metadata && metadata.title) return metadata.title;
+    if (typeof IMAGE_TITLES !== 'undefined' && IMAGE_TITLES[key]) return IMAGE_TITLES[key];
+    return key.split('/').pop().replace(/\.[^/.]+$/, '');
 }
 
 function getImageDescription(path) {
@@ -560,14 +515,12 @@ function returnToGalleryIntro() {
         const toolbar = document.getElementById('tree-toolbar');
         if (toolbar) toolbar.style.display = 'none';
     }
-    requestAnimationFrame(positionMobileSidebar);
+    requestAnimationFrame(positionLeftControls);
 }
 
 function buildTreeDropdown() {
     const treeContent = document.getElementById('treeDropdownContent');
     if (!treeContent) return;
-    const previousScrollTop = treeContent.scrollTop;
-    const previousKeyboardPath = treeContent.dataset.keyboardPath || '';
     treeContent.replaceChildren();
 
     const linksContainer = document.createElement('span');
@@ -591,8 +544,6 @@ function buildTreeDropdown() {
     });
 
     treeContent.appendChild(linksContainer);
-    treeContent.dataset.keyboardPath = previousKeyboardPath;
-    treeContent.scrollTop = previousScrollTop;
 }
 
 function getVisibleTreeImageLinks() {
@@ -773,14 +724,18 @@ document.addEventListener('DOMContentLoaded', function() {
     showTab.addEventListener('click', function(e) {
         e.stopPropagation();
         visible = !visible;
+        const lockedTop = showTab.getBoundingClientRect().top;
         sidebar.classList.toggle('hidden-sidebar', !visible);
         document.body.classList.toggle('tree-hidden', !visible);
         showTab.textContent = visible ? '[Hide]' : '[Open]';
         showTab.style.setProperty('color', visible ? '#800080' : '#008000', 'important');
         mainContent.style.marginLeft = '';
+        if (!visible) {
+            showTab.style.setProperty('top', lockedTop + 'px', 'important');
+        }
         requestAnimationFrame(function() {
             positionFloatingWindow();
-            if (visible) positionMobileSidebar();
+            if (visible) positionLeftControls();
         });
     });
 });
@@ -996,7 +951,7 @@ document.addEventListener('DOMContentLoaded', function() {
             requestAnimationFrame(function() {
                 placeFloatingWindow();
                 positionFloatingWindow();
-                positionMobileSidebar();
+                positionLeftControls();
                 if (document.body.classList.contains('magnifier-mode')) {
                     refreshMagnifierIfActive();
                 }
@@ -1093,17 +1048,40 @@ function positionFloatingWindow() {
     floatingWin.style.top = (parseFloat(toolbar.dataset.originalTop) - boxHeight - infoToolbarGap) + 'px';
 }
 
-function positionMobileSidebar() {
-    // Keep the existing mobile sidebar placement; the Show/Hide control
-    // stays at its fixed CSS coordinates on both desktop and mobile.
-    if (!window.matchMedia('(max-width: 480px)').matches) return;
-
+function positionLeftControls() {
     const sidebar = document.getElementById('sidebar');
+    const showTab = document.getElementById('showTab');
     const tree = document.getElementById('treeDropdownContent');
+    if (!sidebar || !showTab || !tree) return;
+
+    // DESKTOP: anchor the toggle to the actual link-tree position.
+    // If the tree is hidden, keep the toggle at its last position.
+    if (!window.matchMedia('(max-width: 480px)').matches) {
+        if (document.body.classList.contains('tree-hidden')) return;
+
+        const treeRect = tree.getBoundingClientRect();
+        if (!treeRect.width || !treeRect.height) return;
+
+        const layoutSettings = getComputedStyle(document.documentElement);
+        const isGalleryPage = document.body.classList.contains('image-open');
+        const offsetXRaw = parseFloat(layoutSettings.getPropertyValue(
+            isGalleryPage ? '--desktop-toggle-offset-x' : '--home-toggle-offset-x'
+        ));
+        const offsetYRaw = parseFloat(layoutSettings.getPropertyValue(
+            isGalleryPage ? '--desktop-toggle-offset-y' : '--home-toggle-offset-y'
+        ));
+        const offsetX = Number.isFinite(offsetXRaw) ? offsetXRaw : 7;
+        const offsetY = Number.isFinite(offsetYRaw) ? offsetYRaw : 2;
+        showTab.style.setProperty('left', (treeRect.left + offsetX) + 'px', 'important');
+        showTab.style.setProperty('top', (treeRect.top - showTab.offsetHeight - offsetY) + 'px', 'important');
+        return;
+    }
+
+    // MOBILE: retain the existing image-relative positioning behaviour.
     const img = document.querySelector('#bookshelfImageArea img');
     const intro = document.getElementById('intro-text');
     const target = img || intro;
-    if (!sidebar || !tree || !target) return;
+    if (!target) return;
 
     const rect = target.getBoundingClientRect();
     const treeStyle = window.getComputedStyle(tree);
@@ -1112,13 +1090,23 @@ function positionMobileSidebar() {
     const sidebarOffsetYRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-sidebar-offset-y'));
     const sidebarOffsetY = Number.isFinite(sidebarOffsetYRaw) ? sidebarOffsetYRaw : 0;
     const groupTop = Math.max(0, rect.top - treePaddingTop + sidebarOffsetY);
+
     sidebar.style.setProperty('top', groupTop + 'px', 'important');
+    if (!document.body.classList.contains('tree-hidden')) {
+        const treeRect = tree.getBoundingClientRect();
+        const offsetXRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-toggle-offset-x'));
+        const offsetYRaw = parseFloat(layoutSettings.getPropertyValue('--mobile-toggle-offset-y'));
+        const offsetX = Number.isFinite(offsetXRaw) ? offsetXRaw : 7;
+        const offsetY = Number.isFinite(offsetYRaw) ? offsetYRaw : 2;
+        showTab.style.setProperty('left', (treeRect.left + offsetX) + 'px', 'important');
+        showTab.style.setProperty('top', (treeRect.top - showTab.offsetHeight - offsetY) + 'px', 'important');
+    }
 }
 
 window.addEventListener('resize', function() {
     if (window.matchMedia('(max-width: 480px)').matches) {
         placeFloatingWindow();
-        positionMobileSidebar();
+        positionLeftControls();
         return;
     }
     desktopStackLeft = null;
@@ -1131,7 +1119,7 @@ window.addEventListener('resize', function() {
     }
     placeFloatingWindow();
     positionFloatingWindow();
-    positionMobileSidebar();
+    positionLeftControls();
 });
 
 window.addEventListener('load', async function() {
@@ -1143,7 +1131,7 @@ window.addEventListener('load', async function() {
     buildTreeDropdown();
     updateSortByButton();
     placeFloatingWindow();
-    requestAnimationFrame(positionMobileSidebar);
+    requestAnimationFrame(positionLeftControls);
 
     const floatingWin = document.getElementById('floating-window');
     if (floatingWin) floatingWin.style.display = 'none';
@@ -1152,7 +1140,7 @@ window.addEventListener('load', async function() {
         if (toolbar) toolbar.style.display = 'none';
     }
 
-    requestAnimationFrame(positionMobileSidebar);
+    requestAnimationFrame(positionLeftControls);
 
     if ('requestIdleCallback' in window) {
         requestIdleCallback(preloadFirstImages);

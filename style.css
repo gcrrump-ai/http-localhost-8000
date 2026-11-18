@@ -40,9 +40,11 @@
     --desktop-expand-image-max-height: calc(100vh - 80px);
 
     /* SHOW / HIDE TREE CONTROL */
-    --desktop-toggle-left: 5px;
-    --desktop-toggle-top: 90px;
-    --desktop-toggle-offset-x: 165px;
+    /* Initial position matches positionLeftControls() on the home page,
+       preventing the button from jumping after the link tree is measured. */
+    --desktop-toggle-left: calc(var(--gallery-tree-left) + 7px);
+    --desktop-toggle-top: calc(var(--gallery-tree-top) - 20px);
+    --desktop-toggle-offset-x: 7px;
     --desktop-toggle-offset-y: 2px;
     --desktop-toggle-font-size: 13px;
 
@@ -437,8 +439,8 @@ body.tree-hidden #showTab {
 }
 #sortByToggle:hover { text-decoration: underline; background: transparent; }
 #sortByIcon {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
     object-fit: contain;
     vertical-align: middle;
 }

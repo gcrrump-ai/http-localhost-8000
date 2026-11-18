@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const vm = require('vm');
 
 const FILE = path.join(__dirname, 'index.html');
-const COLLECTIONS = path.join(__dirname, 'Collections');
+const COLLECTIONS = path.join(__dirname, 'collections');
 const METADATA_FILE = path.join(__dirname, 'image-metadata.json');
 const REGISTRY_FILE = path.join(__dirname, 'registry.js');
 const PORT = 8001;
@@ -255,7 +255,7 @@ function scanAndSyncMetadata() {
         }
         images.push(Object.assign({}, record, {
             id: id,
-            path: 'Collections/' + fileName,
+            path: 'collections/' + fileName,
             fileName: fileName,
             format: extension,
             sizeBytes: stat.size,
@@ -352,7 +352,7 @@ const server = http.createServer(function (req, res) {
                 if (collision) throw new Error('Another image already has that filename.');
 
                 const oldPath = current.path;
-                const newPath = 'Collections/' + newFileName;
+                const newPath = 'collections/' + newFileName;
                 if (oldFileName !== newFileName) {
                     renameImageFile(oldFullPath, newFullPath, extension);
                     didRename = true;
