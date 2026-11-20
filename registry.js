@@ -3,51 +3,50 @@ const GALLERY_ASSET_ROOT = "collections";
 const GALLERY_ICON_PATHS = {
     "magnifier": "assets/magnifier-icon.png",
     "dark": "assets/dark-icon.png",
-    "light": "assets/light-icon.png"
+    "light": "assets/light-icon.png",
+    "returnHome": "assets/return-icon.png",
+    "magnifierCorner": "assets/magnifier-corner-icon.png",
+    "magnifierDetail": "assets/red-dot.png"
 };
 const MASTER_IMAGE_REGISTRY = [
-    "collections/floor.jpg",
-    "collections/Unknown.jpg",
-    "collections/Imogen Red 11.jpg",
     "collections/Auckland Central Parish Pitt Street Methodist Church.jpg",
     "collections/Auckland Harbour Bridge (2).jpg",
     "collections/Auckland Harbour Bridge.jpg",
-    "collections/Belgrade_3.jpg",
-    "collections/palata glavne pošte.jpg",
     "collections/Birdseye View of a Cat.jpg",
+    "collections/ChinaBeautifulChina.jpg",
     "collections/Chroma_15.jpg",
+    "collections/Cream jacket.jpg",
+    "collections/Del_this.jpg",
+    "collections/DEL-cat.jpg",
+    "collections/Delete_this.jpg",
+    "collections/deletethis1.jpg",
     "collections/Distinction Hotel facade, Christchurch.jpg",
     "collections/Dog, Christchurch.jpg",
-    "collections/Ferg, Balltip Pen Springs.jpg",
-    "collections/Elmo, Auckland Christmas Parade (2).jpg",
     "collections/Elmo, Auckland Christmas Parade.jpg",
     "collections/European Police Horses.jpg",
+    "collections/Ferg, Balltip Pen Springs.jpg",
+    "collections/floor.jpg",
+    "collections/gand Christmas Parade (2).jpg",
+    "collections/Giant Lotus Xixi Wetland.jpg",
     "collections/Gospoda Marjan Pušika.jpg",
-    "collections/Xixi Wetland giant lotus.jpg",
-    "collections/Hangzhou_2.jpg",
-    "collections/Hangzhou_3.jpg",
-    "collections/Hangzhou_4.jpg",
     "collections/Hangzhou_5.jpg",
-    "collections/Hangzhou_6.jpg",
     "collections/Hangzhou_7.jpg",
     "collections/Hangzhou_8.jpg",
     "collections/Hangzhou_9.jpg",
     "collections/Hangzhou_10.jpg",
-    "collections/Hangzhou_11.jpg",
     "collections/Hangzhou_12.jpg",
-    "collections/Hangzhou_13.jpg",
     "collections/Hangzhou_14.jpg",
     "collections/Hangzhou_15.jpg",
     "collections/Hangzhou_16.jpg",
     "collections/Hangzhou_17.jpg",
-    "collections/Hangzhou_18.jpg",
     "collections/Hangzhou_19.jpg",
     "collections/Hangzhou_20.jpg",
+    "collections/HiVis.jpg",
+    "collections/Huia House.jpg",
     "collections/ilfordfail (2).jpg",
     "collections/ilfordfail (3).jpg",
     "collections/ilfordfail (4).jpg",
     "collections/ilfordfail (5).jpg",
-    "collections/ilfordfail (6).jpg",
     "collections/ilfordfail (11).jpg",
     "collections/ilfordfail (12).jpg",
     "collections/ilfordfail (13).jpg",
@@ -73,12 +72,16 @@ const MASTER_IMAGE_REGISTRY = [
     "collections/IMG_1096(1).JPG",
     "collections/IMG_1097.JPG",
     "collections/IMG_1099.jpg",
+    "collections/Imogen Red 11.jpg",
+    "collections/InterContinental Hangzhou.jpg",
+    "collections/InterContinental Twin Towers.jpg",
     "collections/IV8.jpg",
     "collections/Jacqueline Fraser.jpg",
     "collections/Kalemegdan Basketball Courts (2).jpg",
     "collections/Kalemegdan Basketball Courts.jpg",
     "collections/Kalemegdan Park.jpg",
     "collections/Laundromat.jpg",
+    "collections/McDonald's Restaurant Zeleni Venac.jpg",
     "collections/Mona Lisa.jpg",
     "collections/Music_1.jpg",
     "collections/Music_2.jpg",
@@ -113,69 +116,41 @@ const MASTER_IMAGE_REGISTRY = [
     "collections/oliver_honor (17).jpg",
     "collections/oliver_honor (31).jpg",
     "collections/oliver_honor (70).jpg",
+    "collections/palata glavne pošte.jpg",
     "collections/Parked car, double exposure.jpg",
     "collections/Pigeons, (Deceased).jpg",
     "collections/Pointing Stick, Mount Ruapehu.jpg",
     "collections/Ratcliffe-on-Soar Power Station, Nottinghamshire.jpg",
     "collections/SCAN 2-6-2026-041.jpg",
     "collections/SCAN 2-6-2026-058.jpg",
-    "collections/SCAN 2-6-2026-181 (2).jpg",
     "collections/SCAN 2-6-2026-181.jpg",
-    "collections/SCAN 2-6-2026-183 (2).jpg",
     "collections/SCAN 2-6-2026-183.jpg",
     "collections/SCAN 2-6-2026-186 (2).jpg",
-    "collections/SCAN 2-6-2026-186.jpg",
-    "collections/SCAN 2-6-2026-188 (2).jpg",
     "collections/SCAN 2-6-2026-188.jpg",
-    "collections/SCAN 2-6-2026-189 (2).jpg",
     "collections/SCAN 2-6-2026-189.jpg",
-    "collections/SCAN 2-6-2026-190 (2).jpg",
     "collections/SCAN 2-6-2026-190.jpg",
-    "collections/SCAN 2-6-2026-192 (2).jpg",
     "collections/SCAN 2-6-2026-192.jpg",
-    "collections/SCAN 2-6-2026-193 (2).jpg",
     "collections/SCAN 2-6-2026-193.jpg",
-    "collections/SCAN 2-6-2026-194 (2).jpg",
     "collections/SCAN 2-6-2026-194.jpg",
-    "collections/SCAN 2-6-2026-195 (2).jpg",
     "collections/SCAN 2-6-2026-195.jpg",
-    "collections/SCAN 2-6-2026-196 (2).jpg",
     "collections/SCAN 2-6-2026-196.jpg",
-    "collections/SCAN 2-6-2026-197 (2).jpg",
     "collections/SCAN 2-6-2026-197.jpg",
-    "collections/SCAN 2-6-2026-198 (2).jpg",
     "collections/SCAN 2-6-2026-198.jpg",
-    "collections/SCAN 2-6-2026-199 (2).jpg",
     "collections/SCAN 2-6-2026-199.jpg",
-    "collections/SCAN 2-6-2026-202 (2).jpg",
     "collections/SCAN 2-6-2026-202.jpg",
-    "collections/SCAN 2-6-2026-203 (2).jpg",
     "collections/SCAN 2-6-2026-203.jpg",
-    "collections/SCAN 2-6-2026-204 (2).jpg",
     "collections/SCAN 2-6-2026-204.jpg",
-    "collections/SCAN 2-6-2026-206 (2).jpg",
     "collections/SCAN 2-6-2026-206.jpg",
-    "collections/SCAN 2-6-2026-208 (2).jpg",
     "collections/SCAN 2-6-2026-208.jpg",
-    "collections/SCAN 2-6-2026-210 (2).jpg",
     "collections/SCAN 2-6-2026-210.jpg",
-    "collections/SCAN 2-6-2026-211 (2).jpg",
     "collections/SCAN 2-6-2026-211.jpg",
-    "collections/SCAN 2-6-2026-216 (2).jpg",
     "collections/SCAN 2-6-2026-216.jpg",
-    "collections/SCAN 2-6-2026-217 (2).jpg",
     "collections/SCAN 2-6-2026-217.jpg",
-    "collections/SCAN 2-6-2026-232 (2).jpg",
     "collections/SCAN 2-6-2026-232.jpg",
-    "collections/SCAN 2-6-2026-242 (2).jpg",
     "collections/SCAN 2-6-2026-242.jpg",
-    "collections/SCAN 2-6-2026-246 (2).jpg",
     "collections/SCAN 2-6-2026-246.jpg",
-    "collections/SCAN 2-6-2026-251 (2).jpg",
     "collections/SCAN 2-6-2026-251.jpg",
-    "collections/SCAN 2-6-2026-252 (2).jpg",
     "collections/SCAN 2-6-2026-252.jpg",
-    "collections/SCAN 2-6-2026-262 (2).jpg",
     "collections/SCAN 2-6-2026-262.jpg",
     "collections/Sinkhole.jpg",
     "collections/snowman.jpg",
@@ -207,6 +182,7 @@ const MASTER_IMAGE_REGISTRY = [
     "collections/Taniwha, Whataitai,.jpg",
     "collections/The Danube River (2).jpg",
     "collections/The Danube River.jpg",
+    "collections/Unknown.jpg",
     "collections/Untitled (4) (2).jpg",
     "collections/Untitled (4).jpg",
     "collections/Untitled (5).jpg",
@@ -238,7 +214,6 @@ const MASTER_IMAGE_REGISTRY = [
     "collections/Walking_3.jpg",
     "collections/Walking_4.jpg",
     "collections/Walking_5.jpg",
-    "collections/Walking_6.jpg",
     "collections/Walking_7.jpg",
     "collections/Walking_8.jpg",
     "collections/Walking_9.jpg",
@@ -272,59 +247,2646 @@ const MASTER_IMAGE_REGISTRY = [
     "collections/Zeleni Venac Market.jpg"
 ];
 const IMAGE_TITLES = {
-    "collections/The Danube River.jpg": "The Danube River",
-    "collections/neighborhood.jpg": "neighborhood",
-    "collections/neighborhood cat.jpg": "neighborhood cat",
-    "collections/IV8.jpg": "IV8",
-    "collections/snowman.jpg": "snowman",
-    "collections/untitled IV8 Vuja Rile oda.jpg": "untitled IV8 Vuja Rile oda",
-    "collections/Sinkhole.jpg": "Sinkhole",
-    "collections/Yankee Go Home.jpg": "Yankee Go Home",
-    "collections/Yankee Go Home (2).jpg": "Yankee Go Home",
-    "collections/Gospoda Marjan Pušika.jpg": "Gospoda Marjan Pušika",
-    "collections/Kalemegdan Basketball Courts.jpg": "Kalemegdan Basketball Courts",
-    "collections/Kalemegdan Park.jpg": "Kalemegdan Park",
-    "collections/Parked car, double exposure.jpg": "Parked car, double exposure",
-    "collections/Kalemegdan Basketball Courts (2).jpg": "Kalemegdan Basketball Courts",
-    "collections/Zeleni Venac Market.jpg": "Zeleni Venac Market",
-    "collections/Street.jpg": "Street",
-    "collections/Mona Lisa.jpg": "Mona Lisa",
-    "collections/Wither Hills, Blenheim.jpg": "Wither Hills, Blenheim",
-    "collections/Auckland Harbour Bridge.jpg": "Auckland Harbour Bridge",
     "collections/Auckland Harbour Bridge (2).jpg": "Auckland Harbour Bridge",
-    "collections/Distinction Hotel facade, Christchurch.jpg": "Distinction Hotel facade, Christchurch",
-    "collections/Dog, Christchurch.jpg": "Dog, Christchurch",
-    "collections/Ratcliffe-on-Soar Power Station, Nottinghamshire.jpg": "Ratcliffe-on-Soar Power Station, Nottinghamshire",
-    "collections/Northern Explorer, River.jpg": "Northern Explorer, River",
-    "collections/Northern Explorer.jpg": "Northern Explorer",
-    "collections/Northern Explorer, Grazing Cows.jpg": "Northern Explorer, Grazing Cows",
-    "collections/Pointing Stick, Mount Ruapehu.jpg": "Pointing Stick, Mount Ruapehu",
-    "collections/Birdseye View of a Cat.jpg": "Birdseye View of a Cat",
-    "collections/Jacqueline Fraser.jpg": "Jacqueline Fraser",
-    "collections/European Police Horses.jpg": "European Police Horses",
-    "collections/Laundromat.jpg": "Laundromat",
-    "collections/Taniwha, Whataitai,.jpg": "Taniwha, Whataitai,",
-    "collections/Northern Explorer's, Mount Ruapehu.jpg": "Northern Explorer's, Mount Ruapehu",
-    "collections/Auckland Central Parish Pitt Street Methodist Church.jpg": "Auckland Central Parish Pitt Street Methodist Church",
-    "collections/Elmo, Auckland Christmas Parade.jpg": "Elmo, Auckland Christmas Parade",
-    "collections/Elmo, Auckland Christmas Parade (2).jpg": "Elmo, Auckland Christmas Parade",
-    "collections/Pigeons, (Deceased).jpg": "Pigeons, (Deceased)",
-    "collections/floor.jpg": "floor",
-    "collections/Imogen Red 11.jpg": "Imogen Red 11",
-    "collections/Ferg, Balltip Pen Springs.jpg": "Ferg, Balltip Pen Springs",
-    "collections/palata glavne pošte.jpg": "palata glavne pošte",
-    "collections/Unknown.jpg": "Unknown",
-    "collections/Xixi Wetland giant lotus.jpg": "Xixi Wetland giant lotus"
+    "collections/Chroma_15.jpg": "Chromaffff_15",
+    "collections/ilfordfail (21).jpg": "ilfordfiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiil (2",
+    "collections/Kalemegdan Basketball Courts (2).jpg": "Kalemegdan Basketball Courts",
+    "collections/SCAN 2-6-2026-186 (2).jpg": "SCAN 2-6-2026-186",
+    "collections/Untitled (4) (2).jpg": "Untitled (4)",
+    "collections/Untitled (11) (2).jpg": "Untitled (11)",
+    "collections/Untitled (12) (2).jpg": "Untitled (12)",
+    "collections/Yankee Go Home (2).jpg": "Yankee Go Home"
 };
 const IMAGE_DESCRIPTIONS = {
-    "collections/Belgrade_1.jpg": "The Danube River - froze over 2017, these deep freezes have notably happened in 2012 and 2017 - halting commercial shipping routes.",
-    "collections/Belgrade_3.jpg": "McDonald's Zeleni Venac restaurant located at Zeleni Venac in Belgrade, Serbia",
-    "collections/palata glavne pošte.jpg": "palata glavne pošte headquarters of Pošta Srbije, national postal service of Serbia."
+    "collections/ChinaBeautifulChina.jpg": "Nature",
+    "collections/floor.jpg": "kkk",
+    "collections/Huia House.jpg": "2015",
+    "collections/IMG_1096(1).JPG": "Reuben Winter, aka Totems",
+    "collections/McDonald's Restaurant Zeleni Venac.jpg": "Belgrade, Serbia",
+    "collections/palata glavne pošte.jpg": "palata glavne pošte headquarters of Pošta Srbije, national postal service of Serbia.",
+    "collections/Unknown.jpg": "unknown"
 };
-const IMAGE_FILE_METADATA = {};
+const IMAGE_FILE_METADATA = {
+    "collections/Auckland Central Parish Pitt Street Methodist Church.jpg": {
+        "id": "b4fe42afd5afe6c5f47167e05c2c01df299e81d524a8eb1e609934bf5a32245a",
+        "fileName": "Auckland Central Parish Pitt Street Methodist Church.jpg",
+        "format": "JPG",
+        "sizeBytes": 1717098,
+        "linkColor": "#000000",
+        "linkKeyword": "Bw",
+        "exif": {
+            "dateTaken": "2026:06:02 22:52:19"
+        },
+        "colourLabel": ""
+    },
+    "collections/Auckland Harbour Bridge (2).jpg": {
+        "id": "8aae20222dd48ded968954e42125a25566363593620d4948fd291b65baca95db",
+        "fileName": "Auckland Harbour Bridge (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 1357531,
+        "linkColor": "#0000ee",
+        "linkKeyword": "#0000ee",
+        "exif": {
+            "dateTaken": "2026:06:05 16:10:16"
+        },
+        "colourLabel": ""
+    },
+    "collections/Auckland Harbour Bridge.jpg": {
+        "id": "39f39b9e97c91593f1a0aa73f00613840b81331b60efa22836a7fefb63eae6a3",
+        "fileName": "Auckland Harbour Bridge.jpg",
+        "format": "JPG",
+        "sizeBytes": 1415436,
+        "linkColor": "#32bf28",
+        "linkKeyword": "#32bf28",
+        "exif": {
+            "dateTaken": "2026:06:05 16:09:39"
+        },
+        "colourLabel": ""
+    },
+    "collections/Birdseye View of a Cat.jpg": {
+        "id": "6f096cb5d47d99947bb450aa9eab11b774522b1ad1d9b83d1e8c95ccbd8d1f74",
+        "fileName": "Birdseye View of a Cat.jpg",
+        "format": "JPG",
+        "sizeBytes": 1403976,
+        "linkColor": "#6b6b6b",
+        "linkKeyword": "#6b6b6b",
+        "exif": {
+            "dateTaken": "2026:06:02 22:16:05"
+        },
+        "colourLabel": ""
+    },
+    "collections/ChinaBeautifulChina.jpg": {
+        "id": "40a4eabce379824d891d98ad3fd8c1a9acef1348e73eebdc9a94ea306d465f57",
+        "fileName": "ChinaBeautifulChina.jpg",
+        "format": "JPG",
+        "sizeBytes": 2017475,
+        "linkColor": "#bd0000",
+        "linkKeyword": "#bd0000",
+        "exif": {
+            "dateTaken": "2026:06:05 15:29:37"
+        },
+        "colourLabel": ""
+    },
+    "collections/Chroma_15.jpg": {
+        "id": "4d665991df9925037c47110a79b2afb438de03f14ba6570bc2e92283c0fdf7ef",
+        "fileName": "Chroma_15.jpg",
+        "format": "JPG",
+        "sizeBytes": 922486,
+        "linkColor": "#0000ee",
+        "linkKeyword": "#0000ee",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:35"
+        },
+        "colourLabel": ""
+    },
+    "collections/Cream jacket.jpg": {
+        "id": "b9c99fbad446a0510e925c047a679ccbdb5ca289ca4d4bfa5a49689c5553119a",
+        "fileName": "Cream jacket.jpg",
+        "format": "JPG",
+        "sizeBytes": 1303742,
+        "linkColor": "#05fbff",
+        "linkKeyword": "#05fbff",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        },
+        "colourLabel": ""
+    },
+    "collections/Del_this.jpg": {
+        "id": "ee222a79dbdf4d407d0ef1d9514e4d45f78ad2f8dbd490a737594346523504a9",
+        "fileName": "Del_this.jpg",
+        "format": "JPG",
+        "sizeBytes": 1585816,
+        "linkColor": "#bd0000",
+        "linkKeyword": "#bd0000",
+        "exif": {
+            "dateTaken": "2026:06:05 15:59:39"
+        },
+        "colourLabel": ""
+    },
+    "collections/DEL-cat.jpg": {
+        "id": "534c486851557b60f3b11cff30402e8f43a15abd1a4c5014261f3dbbb4c12d88",
+        "fileName": "DEL-cat.jpg",
+        "format": "JPG",
+        "sizeBytes": 1728688,
+        "linkColor": "#bd0000",
+        "linkKeyword": "#bd0000",
+        "exif": {
+            "dateTaken": "2026:06:05 15:59:49"
+        },
+        "colourLabel": ""
+    },
+    "collections/Delete_this.jpg": {
+        "id": "99a943b661c21c126511c8bedd684aa9ca574b3f1dcb2e6da62fbb2ab7e501c4",
+        "fileName": "Delete_this.jpg",
+        "format": "JPG",
+        "sizeBytes": 1772952,
+        "linkColor": "#bd0000",
+        "linkKeyword": "#bd0000",
+        "exif": {
+            "dateTaken": "2026:06:05 15:51:10"
+        },
+        "colourLabel": ""
+    },
+    "collections/deletethis1.jpg": {
+        "id": "8d909bc30d00ab2ba6fe3efb08bf198c09772087bc29a2341777328b84c640b0",
+        "fileName": "deletethis1.jpg",
+        "format": "JPG",
+        "sizeBytes": 1757244,
+        "linkColor": "#bd0000",
+        "linkKeyword": "#bd0000",
+        "exif": {
+            "dateTaken": "2026:06:05 15:56:57"
+        },
+        "colourLabel": ""
+    },
+    "collections/Distinction Hotel facade, Christchurch.jpg": {
+        "id": "8e96c6d7403aef4219f209a781f48131a6ab4815438df82e10c0ff67592abdc2",
+        "fileName": "Distinction Hotel facade, Christchurch.jpg",
+        "format": "JPG",
+        "sizeBytes": 1536984,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:19:35"
+        }
+    },
+    "collections/Dog, Christchurch.jpg": {
+        "id": "85437481a77a9906a7b8c9c504a0f18e1fae6ca8fda5da31dd99a6627be6962a",
+        "fileName": "Dog, Christchurch.jpg",
+        "format": "JPG",
+        "sizeBytes": 1518478,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:35"
+        }
+    },
+    "collections/Elmo, Auckland Christmas Parade.jpg": {
+        "id": "1ff402c987bbafcf5665445575b1ca053e5fbc2d4cb8253b70dc426bbbcc8fd1",
+        "fileName": "Elmo, Auckland Christmas Parade.jpg",
+        "format": "JPG",
+        "sizeBytes": 1768711,
+        "linkColor": "#32bf28",
+        "linkKeyword": "#32bf28",
+        "exif": {
+            "dateTaken": "2026:06:02 21:14:59"
+        },
+        "colourLabel": ""
+    },
+    "collections/European Police Horses.jpg": {
+        "id": "cafebb695d950d5c1c57417a45f71ca85c96c079fb964544c24dc681c940320e",
+        "fileName": "European Police Horses.jpg",
+        "format": "JPG",
+        "sizeBytes": 2009817,
+        "linkColor": "#8100bd",
+        "linkKeyword": "#8100bd",
+        "exif": {
+            "dateTaken": "2026:06:02 22:09:06"
+        },
+        "colourLabel": ""
+    },
+    "collections/Ferg, Balltip Pen Springs.jpg": {
+        "id": "e9389f79fa311edd1e8a4cddb4c6a7872253b83938fd60db9b8375eab04a1280",
+        "fileName": "Ferg, Balltip Pen Springs.jpg",
+        "format": "JPG",
+        "sizeBytes": 3626699,
+        "linkColor": "#0000ee",
+        "linkKeyword": "#0000ee",
+        "exif": {},
+        "colourLabel": ""
+    },
+    "collections/floor.jpg": {
+        "id": "0cdf915b4cafaa7ff93f5e1c3beb75e1686dc96bfc2174603f36ffe19bc9cef9",
+        "fileName": "floor.jpg",
+        "format": "JPG",
+        "sizeBytes": 1869748,
+        "linkColor": "#530080",
+        "linkKeyword": "#530080",
+        "exif": {
+            "dateTaken": "2014:04:09 13:25:11"
+        },
+        "colourLabel": ""
+    },
+    "collections/gand Christmas Parade (2).jpg": {
+        "id": "f72be9797ff48f56a0e1bd08614c7beb448f348925e71ce3a949b70179626afa",
+        "fileName": "gand Christmas Parade (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 1729330,
+        "linkColor": "#0000ee",
+        "linkKeyword": "#0000ee",
+        "exif": {
+            "dateTaken": "2026:06:02 21:14:43"
+        },
+        "colourLabel": ""
+    },
+    "collections/Giant Lotus Xixi Wetland.jpg": {
+        "id": "a795595dc1cf933317a1f22b6f78450a3b94b3c3f08383df176a8fc158039ff3",
+        "fileName": "Giant Lotus Xixi Wetland.jpg",
+        "format": "JPG",
+        "sizeBytes": 1538308,
+        "linkColor": "#74ac0c",
+        "linkKeyword": "#74ac0c",
+        "exif": {
+            "dateTaken": "2026:06:05 15:28:14"
+        },
+        "colourLabel": ""
+    },
+    "collections/Gospoda Marjan Pušika.jpg": {
+        "id": "2354d20a5810355cf13c78b8323fbd42264474d14d85c4f5dd301249f9632ec1",
+        "fileName": "Gospoda Marjan Pušika.jpg",
+        "format": "JPG",
+        "sizeBytes": 1597810,
+        "linkColor": "#c07b21",
+        "linkKeyword": "#c07b21",
+        "exif": {
+            "dateTaken": "2026:06:01 17:51:13"
+        },
+        "colourLabel": ""
+    },
+    "collections/Hangzhou_5.jpg": {
+        "id": "ef3a359bb5b9f3168c238c6c52fdeb19b62a5e6aa9fd8e8c9a3e2a63d2b34bd1",
+        "fileName": "Hangzhou_5.jpg",
+        "format": "JPG",
+        "sizeBytes": 1919585,
+        "linkColor": "#808e2c",
+        "linkKeyword": "#808e2c",
+        "exif": {
+            "dateTaken": "2026:06:05 15:58:09"
+        },
+        "colourLabel": ""
+    },
+    "collections/Hangzhou_7.jpg": {
+        "id": "21d213c0b0dba4924b075f88f470b65c614e993ad09f75223513298b10220b92",
+        "fileName": "Hangzhou_7.jpg",
+        "format": "JPG",
+        "sizeBytes": 1623291,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 15:56:40"
+        }
+    },
+    "collections/Hangzhou_8.jpg": {
+        "id": "e6869405cfc62daa49df1dfa21457d6407f84675171718af0331d7c4e00a2ed8",
+        "fileName": "Hangzhou_8.jpg",
+        "format": "JPG",
+        "sizeBytes": 1358660,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 15:25:44"
+        }
+    },
+    "collections/Hangzhou_9.jpg": {
+        "id": "3cd073ae52d9bd2cb3e919bf28b878ad6632f05f16c5105f457de7f86cf8bc73",
+        "fileName": "Hangzhou_9.jpg",
+        "format": "JPG",
+        "sizeBytes": 2442678,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 15:20:13"
+        }
+    },
+    "collections/Hangzhou_10.jpg": {
+        "id": "dd3c508bcd547cdae133e7399ca7165994fe0db0d40b45cc9d0e000e8a5d685e",
+        "fileName": "Hangzhou_10.jpg",
+        "format": "JPG",
+        "sizeBytes": 1735334,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 15:59:26"
+        }
+    },
+    "collections/Hangzhou_12.jpg": {
+        "id": "d265e416d046b5bf0a83d91cc5abf1cef65b4ae10ed1e45c0a761ab73d2496b7",
+        "fileName": "Hangzhou_12.jpg",
+        "format": "JPG",
+        "sizeBytes": 1760666,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 15:59:58"
+        }
+    },
+    "collections/Hangzhou_14.jpg": {
+        "id": "adc4b7b16ecfcd71ea441fb70b8984728058409134cb8f01029e429384e9a305",
+        "fileName": "Hangzhou_14.jpg",
+        "format": "JPG",
+        "sizeBytes": 1915700,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 16:00:09"
+        }
+    },
+    "collections/Hangzhou_15.jpg": {
+        "id": "3f7174fcfeef05c8c568b74b41fea04ab82d73d9944e0ad0ba7bea7136d7e8d8",
+        "fileName": "Hangzhou_15.jpg",
+        "format": "JPG",
+        "sizeBytes": 1767282,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 16:00:17"
+        }
+    },
+    "collections/Hangzhou_16.jpg": {
+        "id": "cf7cb59df66bdd623371515ebaa80d6dae14e1425649546719b861a2bfd15b22",
+        "fileName": "Hangzhou_16.jpg",
+        "format": "JPG",
+        "sizeBytes": 2471288,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 15:25:31"
+        }
+    },
+    "collections/Hangzhou_17.jpg": {
+        "id": "779238f45af83f91592729f0bd11a70fbad311ade324fa186c4721f041f954e1",
+        "fileName": "Hangzhou_17.jpg",
+        "format": "JPG",
+        "sizeBytes": 1756064,
+        "linkColor": "#0000ee",
+        "linkKeyword": "#0000ee",
+        "exif": {
+            "dateTaken": "2026:06:05 16:01:45"
+        },
+        "colourLabel": ""
+    },
+    "collections/Hangzhou_19.jpg": {
+        "id": "e84edc9bc67dd01f912f8c943c29f237732277eb6a59d48402c4a7cd3ea21d3d",
+        "fileName": "Hangzhou_19.jpg",
+        "format": "JPG",
+        "sizeBytes": 2764954,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 15:20:35"
+        }
+    },
+    "collections/Hangzhou_20.jpg": {
+        "id": "139988897c0630f83807ac21e1d006ee4a42cdb63475770534b7c192c6c578ea",
+        "fileName": "Hangzhou_20.jpg",
+        "format": "JPG",
+        "sizeBytes": 2515785,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 15:21:34"
+        }
+    },
+    "collections/HiVis.jpg": {
+        "id": "18c84e27ff231b34b25bcff8e96c782b3083d01f6929c4b651cdb2f5a8e55543",
+        "fileName": "HiVis.jpg",
+        "format": "JPG",
+        "sizeBytes": 1234268,
+        "linkColor": "#d8ff85",
+        "linkKeyword": "#d8ff85",
+        "exif": {
+            "dateTaken": "2026:06:02 23:25:24"
+        },
+        "colourLabel": ""
+    },
+    "collections/Huia House.jpg": {
+        "id": "1b3f4bb1bed2cbac065de45a03d8a79386f67a90f8fa5a5e9c87b12546b15807",
+        "fileName": "Huia House.jpg",
+        "format": "JPG",
+        "sizeBytes": 9277417,
+        "linkColor": "#610085",
+        "linkKeyword": "#610085",
+        "exif": {
+            "dateTaken": "2015.07.14 18:01:54"
+        },
+        "colourLabel": ""
+    },
+    "collections/ilfordfail (2).jpg": {
+        "id": "4ad10162d5edc3dcc5e7cb0d6814db6d8463ca699de14c6ff19730b858233763",
+        "fileName": "ilfordfail (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 4321447,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 18:24:38"
+        }
+    },
+    "collections/ilfordfail (3).jpg": {
+        "id": "7db75905b60ba2294bc3a9575598384e6dc8adea5800b87e102c1b7a0b4be10e",
+        "fileName": "ilfordfail (3).jpg",
+        "format": "JPG",
+        "sizeBytes": 9228269,
+        "linkColor": "#055214",
+        "linkKeyword": "#055214",
+        "exif": {
+            "dateTaken": "2015.07.14 17:57:48"
+        },
+        "colourLabel": ""
+    },
+    "collections/ilfordfail (4).jpg": {
+        "id": "717ed2b04e5e5a546c8d83b66bf078b369aa7161d922b3242894bc732e5a11bf",
+        "fileName": "ilfordfail (4).jpg",
+        "format": "JPG",
+        "sizeBytes": 9207015,
+        "linkColor": "#0000ee",
+        "linkKeyword": "#0000ee",
+        "exif": {
+            "dateTaken": "2015.07.14 17:59:13"
+        },
+        "colourLabel": ""
+    },
+    "collections/ilfordfail (5).jpg": {
+        "id": "c4c799157173012eba3f439c51a1be14fc3e98375045fbc5c9074b58b95c653a",
+        "fileName": "ilfordfail (5).jpg",
+        "format": "JPG",
+        "sizeBytes": 9232650,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 18:00:25"
+        }
+    },
+    "collections/ilfordfail (11).jpg": {
+        "id": "8bb99dea8ab68552eeb0d3fb1ff50ab6aa1790bf13ecf712331149912a662cf0",
+        "fileName": "ilfordfail (11).jpg",
+        "format": "JPG",
+        "sizeBytes": 4085193,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 18:41:10"
+        }
+    },
+    "collections/ilfordfail (12).jpg": {
+        "id": "89a706aa0d26d138e5b81fc0aef863f8a51e93ab6dcf7001506e071940a2b5e5",
+        "fileName": "ilfordfail (12).jpg",
+        "format": "JPG",
+        "sizeBytes": 4062157,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 18:42:50"
+        }
+    },
+    "collections/ilfordfail (13).jpg": {
+        "id": "8e06ddeacd78253eab8a43073d27cebc8ea63c0f2df3b144a1bb274e4b03d704",
+        "fileName": "ilfordfail (13).jpg",
+        "format": "JPG",
+        "sizeBytes": 4093171,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 18:53:11"
+        }
+    },
+    "collections/ilfordfail (14).jpg": {
+        "id": "dc37398f1aed100e9809926cdd533b7bcc3b3b7d0502bd9d510169b471ba439d",
+        "fileName": "ilfordfail (14).jpg",
+        "format": "JPG",
+        "sizeBytes": 9686073,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 18:54:38"
+        }
+    },
+    "collections/ilfordfail (15).jpg": {
+        "id": "a333a4be8965338faa080445c07b2e5c1a525e71ca4e5e59ce3b0261b4ef1d4c",
+        "fileName": "ilfordfail (15).jpg",
+        "format": "JPG",
+        "sizeBytes": 9779972,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 18:55:42"
+        }
+    },
+    "collections/ilfordfail (16).jpg": {
+        "id": "1ef5e4df54e7281224df4b7bc774c131fa2e78eba8b81b0de800623f2ba14f5d",
+        "fileName": "ilfordfail (16).jpg",
+        "format": "JPG",
+        "sizeBytes": 4924540,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:03:58"
+        }
+    },
+    "collections/ilfordfail (17).jpg": {
+        "id": "a8b5fec097c77f6e77aa9f2e1e09adfbcd1f0795920c7f7624e7e35623131a5b",
+        "fileName": "ilfordfail (17).jpg",
+        "format": "JPG",
+        "sizeBytes": 4511832,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:08:24"
+        }
+    },
+    "collections/ilfordfail (18).jpg": {
+        "id": "b7fd97a6d9170f297d357eebe87c7f6419206dbb1b8422e4d3ed64d420c68996",
+        "fileName": "ilfordfail (18).jpg",
+        "format": "JPG",
+        "sizeBytes": 4474937,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:09:48"
+        }
+    },
+    "collections/ilfordfail (19).jpg": {
+        "id": "1d2af1f4430e199b549044c6e9c15621a3a52a4a5e1c76d4ef988a5adedad38b",
+        "fileName": "ilfordfail (19).jpg",
+        "format": "JPG",
+        "sizeBytes": 4481474,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:12:57"
+        }
+    },
+    "collections/ilfordfail (20).jpg": {
+        "id": "0391b246ac29a80973209bb256f68b8aebe76af7b18f63ad651f080247e54f44",
+        "fileName": "ilfordfail (20).jpg",
+        "format": "JPG",
+        "sizeBytes": 4043389,
+        "linkColor": "#0000ee",
+        "linkKeyword": "#0000ee",
+        "exif": {
+            "dateTaken": "2015.07.14 19:14:32"
+        },
+        "colourLabel": ""
+    },
+    "collections/ilfordfail (21).jpg": {
+        "id": "b087731874d681ea710ad5c7c8d01124d969db6fcd4901fe07610d98fa47c64a",
+        "fileName": "ilfordfail (21).jpg",
+        "format": "JPG",
+        "sizeBytes": 8831834,
+        "linkColor": "#000000",
+        "linkKeyword": "Bw",
+        "exif": {
+            "dateTaken": "2015.07.14 19:16:11"
+        },
+        "colourLabel": ""
+    },
+    "collections/ilfordfail (22).jpg": {
+        "id": "53d9d9b86b42bb811b9e6dc5f43f3048bd281cc37611d7bb2f38970a646ce953",
+        "fileName": "ilfordfail (22).jpg",
+        "format": "JPG",
+        "sizeBytes": 4399330,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:23:30"
+        }
+    },
+    "collections/ilfordfail (23).jpg": {
+        "id": "d040903975dc5f5b2873b432db67dd7adfa1a34277893becbf8989c312ccc550",
+        "fileName": "ilfordfail (23).jpg",
+        "format": "JPG",
+        "sizeBytes": 4979234,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:25:30"
+        }
+    },
+    "collections/ilfordfail (24).jpg": {
+        "id": "5dfe79d25f279985820c1bfdd7ebcb4f6c3ec33fa75b86f8268e959a79371dfb",
+        "fileName": "ilfordfail (24).jpg",
+        "format": "JPG",
+        "sizeBytes": 4615425,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:26:43"
+        }
+    },
+    "collections/ilfordfail (25).jpg": {
+        "id": "aaf91f6d2e9f36d47f76280976bd3116ff55cc5d94878aa0b47be703013aa0a9",
+        "fileName": "ilfordfail (25).jpg",
+        "format": "JPG",
+        "sizeBytes": 8021256,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {}
+    },
+    "collections/ilfordfail (26).jpg": {
+        "id": "5e05248da8190a2bc5924e9b1c439bc2f81cf70994e9a026313122d52586c3a0",
+        "fileName": "ilfordfail (26).jpg",
+        "format": "JPG",
+        "sizeBytes": 9758299,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:29:02"
+        }
+    },
+    "collections/ilfordfail (27).jpg": {
+        "id": "f3a63bdb6ddd144baffd4576d57a4996bb8c3b920ff8e94179986dc24c1ea294",
+        "fileName": "ilfordfail (27).jpg",
+        "format": "JPG",
+        "sizeBytes": 9546982,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:30:03"
+        }
+    },
+    "collections/ilfordfail (29).jpg": {
+        "id": "dc638d5439ab5b3bdc2d8e7a0d75df198a630ca1f322a240cb760e941ce55ad4",
+        "fileName": "ilfordfail (29).jpg",
+        "format": "JPG",
+        "sizeBytes": 5070929,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:34:30"
+        }
+    },
+    "collections/ilfordfail (30).jpg": {
+        "id": "a04e8cafeae47f5eacc0a28716e69e3495efa3514ff6f98bb77ec3028ac83bc0",
+        "fileName": "ilfordfail (30).jpg",
+        "format": "JPG",
+        "sizeBytes": 4800581,
+        "linkColor": "#0000ee",
+        "linkKeyword": "#0000ee",
+        "exif": {
+            "dateTaken": "2015.07.14 19:35:59"
+        },
+        "colourLabel": ""
+    },
+    "collections/ilfordfail (31).jpg": {
+        "id": "14e957e03a074a199d742dcb350309668f3a751b07cfd327dfb833ec36256397",
+        "fileName": "ilfordfail (31).jpg",
+        "format": "JPG",
+        "sizeBytes": 4950852,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:38:35"
+        }
+    },
+    "collections/ilfordfail (32).jpg": {
+        "id": "54d06bf612d5b5aab92b07ef6deaab975ad4c2bb7b860eb8b5cff70a3a77d03a",
+        "fileName": "ilfordfail (32).jpg",
+        "format": "JPG",
+        "sizeBytes": 9701476,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:39:46"
+        }
+    },
+    "collections/ilfordfail (33).jpg": {
+        "id": "6ae2c4aa8931215aa59dd6732d4308c1295dbceabed8479b668da6a59fe424b3",
+        "fileName": "ilfordfail (33).jpg",
+        "format": "JPG",
+        "sizeBytes": 9520726,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.14 19:45:47"
+        }
+    },
+    "collections/IMG_1096(1).JPG": {
+        "id": "23f40a5e63123372d3312e01038228c37c346dda21f8eb2146d606d4d8a9b4da",
+        "fileName": "IMG_1096(1).JPG",
+        "format": "JPG",
+        "sizeBytes": 1322888,
+        "linkColor": "#b8007d",
+        "linkKeyword": "#b8007d",
+        "exif": {},
+        "colourLabel": ""
+    },
+    "collections/IMG_1097.JPG": {
+        "id": "8f2b1bc5c307f1b79b705ce8643fec8ac745afad9c76e40e1e8df92d95afbdf2",
+        "fileName": "IMG_1097.JPG",
+        "format": "JPG",
+        "sizeBytes": 1116959,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {}
+    },
+    "collections/IMG_1099.jpg": {
+        "id": "7ef6c090abd7df851ef663a803efdb610d7af7bd1d24e7bcc86c5faa2ffa5939",
+        "fileName": "IMG_1099.jpg",
+        "format": "JPG",
+        "sizeBytes": 2425657,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {}
+    },
+    "collections/Imogen Red 11.jpg": {
+        "id": "e87a6137814fbf2b83559e09a9fab48d1f6fe2b8f6dac1dd04fc434bf598a280",
+        "fileName": "Imogen Red 11.jpg",
+        "format": "JPG",
+        "sizeBytes": 264483,
+        "linkColor": "#f4b8de",
+        "linkKeyword": "#f4b8de",
+        "exif": {
+            "dateTaken": "2026:04:19 20:29:10"
+        },
+        "colourLabel": ""
+    },
+    "collections/InterContinental Hangzhou.jpg": {
+        "id": "84d611b0a72ce03254bf61ffb7d95b1c60396b5c45742f4c90770711d9f23ee4",
+        "fileName": "InterContinental Hangzhou.jpg",
+        "format": "JPG",
+        "sizeBytes": 1532603,
+        "linkColor": "#bd0000",
+        "linkKeyword": "#bd0000",
+        "exif": {
+            "dateTaken": "2026:06:05 15:24:03"
+        },
+        "colourLabel": ""
+    },
+    "collections/InterContinental Twin Towers.jpg": {
+        "id": "1c9240b88b6b77da94332dd634eb4f34a03615affd7968e35e2250db63cdced1",
+        "fileName": "InterContinental Twin Towers.jpg",
+        "format": "JPG",
+        "sizeBytes": 1468384,
+        "linkColor": "#bd0000",
+        "linkKeyword": "#bd0000",
+        "exif": {
+            "dateTaken": "2026:06:05 15:22:10"
+        },
+        "colourLabel": ""
+    },
+    "collections/IV8.jpg": {
+        "id": "48ccd0fb9f641d52eaeb851ae300093553c675490fdccd3d90e755a4a23ff3e0",
+        "fileName": "IV8.jpg",
+        "format": "JPG",
+        "sizeBytes": 1680884,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 18:41:56"
+        }
+    },
+    "collections/Jacqueline Fraser.jpg": {
+        "id": "1ba33161e6e71404ab56fd030c8ebc380efc923177ff3d8d1b53cff9699c03a8",
+        "fileName": "Jacqueline Fraser.jpg",
+        "format": "JPG",
+        "sizeBytes": 1274298,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:11:17"
+        }
+    },
+    "collections/Kalemegdan Basketball Courts (2).jpg": {
+        "id": "e53a4d105a5e464441e0c83e658fde906abfd0e6ed2e611a76b5c67c54b7659e",
+        "fileName": "Kalemegdan Basketball Courts (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 1604814,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 17:42:07"
+        }
+    },
+    "collections/Kalemegdan Basketball Courts.jpg": {
+        "id": "0a3512960b42fbfc68251a8cb490d589b34dc6119fcdad7619887c9d57158973",
+        "fileName": "Kalemegdan Basketball Courts.jpg",
+        "format": "JPG",
+        "sizeBytes": 1983859,
+        "linkColor": "#c07b21",
+        "linkKeyword": "#c07b21",
+        "exif": {
+            "dateTaken": "2026:06:01 17:44:43"
+        },
+        "colourLabel": ""
+    },
+    "collections/Kalemegdan Park.jpg": {
+        "id": "86a30fe96c9407cfc8572495ba525d797faa53366ecdeb4a5338f604da807098",
+        "fileName": "Kalemegdan Park.jpg",
+        "format": "JPG",
+        "sizeBytes": 1730538,
+        "linkColor": "#c07b21",
+        "linkKeyword": "#c07b21",
+        "exif": {
+            "dateTaken": "2026:06:01 18:51:27"
+        },
+        "colourLabel": ""
+    },
+    "collections/Laundromat.jpg": {
+        "id": "aa7d437fd2abdbb9bff73cfc324735a92695478895f309e43b14a4d6dc0f98e8",
+        "fileName": "Laundromat.jpg",
+        "format": "JPG",
+        "sizeBytes": 1235387,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:35"
+        }
+    },
+    "collections/McDonald's Restaurant Zeleni Venac.jpg": {
+        "id": "fbd20693033e23adf55e775e03a32b0c75c94c92b8c065dc2ea307ae7d9b0a2a",
+        "fileName": "McDonald's Restaurant Zeleni Venac.jpg",
+        "format": "JPG",
+        "sizeBytes": 1630476,
+        "linkColor": "#c07b21",
+        "linkKeyword": "#c07b21",
+        "exif": {
+            "dateTaken": "2026:06:01 17:33:21"
+        },
+        "colourLabel": ""
+    },
+    "collections/Mona Lisa.jpg": {
+        "id": "afddb541c874bcbe8a32924c90845219620c8a2d7d7694d0adc523784505c935",
+        "fileName": "Mona Lisa.jpg",
+        "format": "JPG",
+        "sizeBytes": 1060573,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:35"
+        }
+    },
+    "collections/Music_1.jpg": {
+        "id": "1d61b4af5609ffa3b65ffcac06588a4deb8b9176894b569292020f533a6a6c41",
+        "fileName": "Music_1.jpg",
+        "format": "JPG",
+        "sizeBytes": 987204,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:05:18 15:45:59"
+        }
+    },
+    "collections/Music_2.jpg": {
+        "id": "e14d2b2393b0a2182c8e789792b0da97b29d8544e34a17394271c23f6725c4e1",
+        "fileName": "Music_2.jpg",
+        "format": "JPG",
+        "sizeBytes": 922010,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:05:18 15:46:20"
+        }
+    },
+    "collections/Music_3.jpg": {
+        "id": "c05b7b88ac44955ca21a8938294a53561b66aae8896d729722ecc01545a6a79b",
+        "fileName": "Music_3.jpg",
+        "format": "JPG",
+        "sizeBytes": 2463382,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2014:10:16 21:15:01"
+        }
+    },
+    "collections/Music_4.jpg": {
+        "id": "02267c39181d175ec1ce7f373388adf40a5cad3cff01534f153b3012a414b5a6",
+        "fileName": "Music_4.jpg",
+        "format": "JPG",
+        "sizeBytes": 1278613,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_5.jpg": {
+        "id": "7633fb2623a22d65e1a7628eb75f2e616b469cf5f584358e7b8158ccefbca058",
+        "fileName": "Music_5.jpg",
+        "format": "JPG",
+        "sizeBytes": 1103075,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_6.jpg": {
+        "id": "7a6ffe5eade1e1f9b925312a68ee2eb85b214b3c5f1839dfee6a9f1532bac8d5",
+        "fileName": "Music_6.jpg",
+        "format": "JPG",
+        "sizeBytes": 1281791,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_7.jpg": {
+        "id": "a91c36ef3c137b4095f1eb5b5032b223161c1c057d8fec9447e8c4d5521c8047",
+        "fileName": "Music_7.jpg",
+        "format": "JPG",
+        "sizeBytes": 714362,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_10.jpg": {
+        "id": "f17cc258afab95c987a345363dcd46364c61cea0876c22c930fa94f5f85772a6",
+        "fileName": "Music_10.jpg",
+        "format": "JPG",
+        "sizeBytes": 1126292,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:04:23 00:23:17"
+        }
+    },
+    "collections/Music_11.jpg": {
+        "id": "b4960134f69679eb1a4cd8aec3ff4ebd704b23dfb323537022bad37c3418a328",
+        "fileName": "Music_11.jpg",
+        "format": "JPG",
+        "sizeBytes": 1698846,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_12.jpg": {
+        "id": "e1ca8c5475e86416b0200da6cf43774ca03cce4ddb36568b3caeb3b3de5d1f0d",
+        "fileName": "Music_12.jpg",
+        "format": "JPG",
+        "sizeBytes": 841230,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_13.jpg": {
+        "id": "92e15272526dd3bf3d70ff4359803e5ed425ed3b6cff1fa81bf737c185d3506c",
+        "fileName": "Music_13.jpg",
+        "format": "JPG",
+        "sizeBytes": 673894,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:02:26 22:33:23"
+        }
+    },
+    "collections/Music_14.jpg": {
+        "id": "7084631a20f145e74ece821886968f47579894dcd0a123e995e1e4273d71562b",
+        "fileName": "Music_14.jpg",
+        "format": "JPG",
+        "sizeBytes": 961807,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_15.jpg": {
+        "id": "49784da06d1d0b9ee476fef1f17318d8e446b465522e74639b2fd1638f0e0166",
+        "fileName": "Music_15.jpg",
+        "format": "JPG",
+        "sizeBytes": 3178300,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_17.jpg": {
+        "id": "cd1ed1dba4c438e07027de2b68d0fc1af01c7eaba8aeccd3a72f5d577627a009",
+        "fileName": "Music_17.jpg",
+        "format": "JPG",
+        "sizeBytes": 1312636,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_18.jpg": {
+        "id": "5eba40cb5994d745dcc8aee94799415ba1bfff82dded022ee535b3596e816fe8",
+        "fileName": "Music_18.jpg",
+        "format": "JPG",
+        "sizeBytes": 1943236,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_19.jpg": {
+        "id": "9e644a3ec13134d2a63216ae26d9736ab4eaea7c75274f46655773c106c88692",
+        "fileName": "Music_19.jpg",
+        "format": "JPG",
+        "sizeBytes": 1805699,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_20.jpg": {
+        "id": "683b75fdd3fe92a56debe7ff454305aaf35dfc6c4da786071cd73a4cf55ac656",
+        "fileName": "Music_20.jpg",
+        "format": "JPG",
+        "sizeBytes": 1331183,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_21.jpg": {
+        "id": "4e3b428c38bcc7b362b712f627daeb54073558d5dac10da714d3667e094947b0",
+        "fileName": "Music_21.jpg",
+        "format": "JPG",
+        "sizeBytes": 1220776,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:11:04 19:03:33"
+        }
+    },
+    "collections/Music_22.jpg": {
+        "id": "cb62bb161143189310075ec8ba7f5b4687f37596db5be12096594a8a4a9fbcb3",
+        "fileName": "Music_22.jpg",
+        "format": "JPG",
+        "sizeBytes": 626797,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Music_23.jpg": {
+        "id": "ff07cd98a41fe09acd97697e5445f86c1477aa77220fc707a37561f63d8ac1c5",
+        "fileName": "Music_23.jpg",
+        "format": "JPG",
+        "sizeBytes": 1723134,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 20:57:39"
+        }
+    },
+    "collections/Music_24.jpg": {
+        "id": "3e0fa0583f75056cf3b71d4def848947e7b1df7db893b9092e2b4cc9a91d8a16",
+        "fileName": "Music_24.jpg",
+        "format": "JPG",
+        "sizeBytes": 1607067,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 20:57:57"
+        }
+    },
+    "collections/Music_25.jpg": {
+        "id": "d63a6a496418c52e9e3d54e71fccbb427f710eaacf345656e98e333eb6a6661c",
+        "fileName": "Music_25.jpg",
+        "format": "JPG",
+        "sizeBytes": 1463945,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:55:18"
+        }
+    },
+    "collections/neighborhood cat.jpg": {
+        "id": "5d08840cc54ab045deccb97badcbb1cc7ef7010b197bb68bfcd963c9aa342c65",
+        "fileName": "neighborhood cat.jpg",
+        "format": "JPG",
+        "sizeBytes": 1777357,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 16:50:42"
+        }
+    },
+    "collections/neighborhood.jpg": {
+        "id": "9cbece7ff180bde29e98edbd24af668643d4e2a860aaba57b1af757de6a876ea",
+        "fileName": "neighborhood.jpg",
+        "format": "JPG",
+        "sizeBytes": 1785677,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 16:48:40"
+        }
+    },
+    "collections/Northern Explorer, Grazing Cows.jpg": {
+        "id": "13e3d03518d826ae5d173766a812ce869ab5285786053eac7dd8595f9e7c0de4",
+        "fileName": "Northern Explorer, Grazing Cows.jpg",
+        "format": "JPG",
+        "sizeBytes": 1695946,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:26:34"
+        }
+    },
+    "collections/Northern Explorer, River.jpg": {
+        "id": "824d0fdf74beee8768cb8d0c20d5f49031ca4103ee0134afbc586ad897066390",
+        "fileName": "Northern Explorer, River.jpg",
+        "format": "JPG",
+        "sizeBytes": 1825311,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:26:46"
+        }
+    },
+    "collections/Northern Explorer.jpg": {
+        "id": "d54200e4bb09896d4a80cf1c9218053f98c0bd1d510dcc09f08dd937906ebf4f",
+        "fileName": "Northern Explorer.jpg",
+        "format": "JPG",
+        "sizeBytes": 1735500,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:23:12"
+        }
+    },
+    "collections/Northern Explorer's, Mount Ruapehu.jpg": {
+        "id": "38cdb87b3cbcd1c9305bd7fd5ea4bf69aabf8ff252f96ff575333370b765c96c",
+        "fileName": "Northern Explorer's, Mount Ruapehu.jpg",
+        "format": "JPG",
+        "sizeBytes": 1341588,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:11 22:47:16"
+        }
+    },
+    "collections/oliver_honor (13).jpg": {
+        "id": "0c58d54aa333ca1c161f2f1f2614554bf4945b5a45b6d108dd0a2c7acc6f16e0",
+        "fileName": "oliver_honor (13).jpg",
+        "format": "JPG",
+        "sizeBytes": 5912976,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.27 21:51:08"
+        }
+    },
+    "collections/oliver_honor (14).jpg": {
+        "id": "b0cccf07155ee8133e90df97ccd0d99ef32b0616b4db1ec6bacecba625afbdf5",
+        "fileName": "oliver_honor (14).jpg",
+        "format": "JPG",
+        "sizeBytes": 11469710,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.27 21:56:04"
+        }
+    },
+    "collections/oliver_honor (17).jpg": {
+        "id": "e4dd445499af07ec17d108ea33f563b9125c9931f4b56079c719f5b987f13665",
+        "fileName": "oliver_honor (17).jpg",
+        "format": "JPG",
+        "sizeBytes": 10064088,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.27 22:10:46"
+        }
+    },
+    "collections/oliver_honor (31).jpg": {
+        "id": "3a55b220bcbcf8913a74853236b257e72e7fd78ee28204b5284eb394b356fa52",
+        "fileName": "oliver_honor (31).jpg",
+        "format": "JPG",
+        "sizeBytes": 13764894,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.28 21:56:47"
+        }
+    },
+    "collections/oliver_honor (70).jpg": {
+        "id": "5cd901256cdc7c9eb0dd4e4cd0336f145f37f14fc951f9c3f503e0c69d50db70",
+        "fileName": "oliver_honor (70).jpg",
+        "format": "JPG",
+        "sizeBytes": 12383046,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.07.31 22:00:56"
+        }
+    },
+    "collections/palata glavne pošte.jpg": {
+        "id": "6a23744b06bc8984def9eb3a279209d45762c1a9a3084dc93a0a9e28e753980b",
+        "fileName": "palata glavne pošte.jpg",
+        "format": "JPG",
+        "sizeBytes": 1994517,
+        "linkColor": "#c07b21",
+        "linkKeyword": "#c07b21",
+        "exif": {
+            "dateTaken": "2026:06:01 18:43:11"
+        },
+        "colourLabel": ""
+    },
+    "collections/Parked car, double exposure.jpg": {
+        "id": "1d6517dcc05097b5b5d04f12b58b56beee5aa3a19a035b4cc2a947203ad5bac5",
+        "fileName": "Parked car, double exposure.jpg",
+        "format": "JPG",
+        "sizeBytes": 1787092,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 18:39:59"
+        }
+    },
+    "collections/Pigeons, (Deceased).jpg": {
+        "id": "281cb23ec85614c26bf1397758bdc8f1a898f9e4cf071762fa85ad5b78b22a80",
+        "fileName": "Pigeons, (Deceased).jpg",
+        "format": "JPG",
+        "sizeBytes": 1869934,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:37:42"
+        }
+    },
+    "collections/Pointing Stick, Mount Ruapehu.jpg": {
+        "id": "609fbe7e0d791944299acf66c645bb0d808b8d0eefdb02d428b79c6039fefa60",
+        "fileName": "Pointing Stick, Mount Ruapehu.jpg",
+        "format": "JPG",
+        "sizeBytes": 1318729,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:05 16:03:58"
+        }
+    },
+    "collections/Ratcliffe-on-Soar Power Station, Nottinghamshire.jpg": {
+        "id": "bb8b303cdadf7f61a667c6f12e62577fd79faf404e78538c96c2156194b350ba",
+        "fileName": "Ratcliffe-on-Soar Power Station, Nottinghamshire.jpg",
+        "format": "JPG",
+        "sizeBytes": 1520192,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:35"
+        }
+    },
+    "collections/SCAN 2-6-2026-041.jpg": {
+        "id": "59f068f548a7cfda6aa023c246ad2c673ff9d536d58ddb516d02fdf21ca94455",
+        "fileName": "SCAN 2-6-2026-041.jpg",
+        "format": "JPG",
+        "sizeBytes": 1149645,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 21:11:58"
+        }
+    },
+    "collections/SCAN 2-6-2026-058.jpg": {
+        "id": "eaa6e5f52b1287f12d2306fc809101a0f128a39a604b2c7b81a9f522bc6ac78d",
+        "fileName": "SCAN 2-6-2026-058.jpg",
+        "format": "JPG",
+        "sizeBytes": 6325308,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:11:45"
+        }
+    },
+    "collections/SCAN 2-6-2026-181.jpg": {
+        "id": "b9c6b84f3ad3a9233433ee582b7ec11023a50812d13273c93dfebed8d77f1937",
+        "fileName": "SCAN 2-6-2026-181.jpg",
+        "format": "JPG",
+        "sizeBytes": 1090494,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:24:30"
+        }
+    },
+    "collections/SCAN 2-6-2026-183.jpg": {
+        "id": "2d1418dd6bdb3cc0931f5f14a01af2c3ede52a55deaacf25a667decfd3562f7d",
+        "fileName": "SCAN 2-6-2026-183.jpg",
+        "format": "JPG",
+        "sizeBytes": 426579,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:24:52"
+        }
+    },
+    "collections/SCAN 2-6-2026-186 (2).jpg": {
+        "id": "18c84e27ff231b34b25bcff8e96c782b3083d01f6929c4b651cdb2f5a8e55543",
+        "fileName": "SCAN 2-6-2026-186 (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 1234268,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:25:24"
+        }
+    },
+    "collections/SCAN 2-6-2026-188.jpg": {
+        "id": "9a7bb384e00074215c9ee02ada8c920e6915c84250f73b63a907f0abe11fde14",
+        "fileName": "SCAN 2-6-2026-188.jpg",
+        "format": "JPG",
+        "sizeBytes": 1430813,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:26:35"
+        }
+    },
+    "collections/SCAN 2-6-2026-189.jpg": {
+        "id": "03e6137e8ea3de4aca6ac458efa6a6712020ad3174581059238fe03e54aaf6c2",
+        "fileName": "SCAN 2-6-2026-189.jpg",
+        "format": "JPG",
+        "sizeBytes": 1398491,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:26:48"
+        }
+    },
+    "collections/SCAN 2-6-2026-190.jpg": {
+        "id": "ab99be9267e4b174bc06c2f1a0171244839cd115e696fcf73f4f2a668b82f416",
+        "fileName": "SCAN 2-6-2026-190.jpg",
+        "format": "JPG",
+        "sizeBytes": 1462184,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:27:07"
+        }
+    },
+    "collections/SCAN 2-6-2026-192.jpg": {
+        "id": "66df971b9409514d71dadea8e053676de730fc47ff4990b35d3c27571bb7887b",
+        "fileName": "SCAN 2-6-2026-192.jpg",
+        "format": "JPG",
+        "sizeBytes": 1811975,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:27:30"
+        }
+    },
+    "collections/SCAN 2-6-2026-193.jpg": {
+        "id": "e0050d70af787e90247f6ec0cee7f98c228ab686e16339ce5609643203f50938",
+        "fileName": "SCAN 2-6-2026-193.jpg",
+        "format": "JPG",
+        "sizeBytes": 1248942,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:27:37"
+        }
+    },
+    "collections/SCAN 2-6-2026-194.jpg": {
+        "id": "844214171bc7b04af22fa8bac90bab9374abc53832712fc3fb2ee87f81f4a5a4",
+        "fileName": "SCAN 2-6-2026-194.jpg",
+        "format": "JPG",
+        "sizeBytes": 1479594,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:27:57"
+        }
+    },
+    "collections/SCAN 2-6-2026-195.jpg": {
+        "id": "73d8d26301b9ebae05d6477b2aea73447f53628dcc1acb48313f02e5a56b45a0",
+        "fileName": "SCAN 2-6-2026-195.jpg",
+        "format": "JPG",
+        "sizeBytes": 1257820,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:28:41"
+        }
+    },
+    "collections/SCAN 2-6-2026-196.jpg": {
+        "id": "3ac2627bbd5b511a44ba8ec598cfb7b18c1103411a36f73524d9306a2b0c1308",
+        "fileName": "SCAN 2-6-2026-196.jpg",
+        "format": "JPG",
+        "sizeBytes": 1099009,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:28:47"
+        }
+    },
+    "collections/SCAN 2-6-2026-197.jpg": {
+        "id": "c8a0475f9b33b0bdefef2a5497159b6dfab67607abe6c4d78eb608342762f35d",
+        "fileName": "SCAN 2-6-2026-197.jpg",
+        "format": "JPG",
+        "sizeBytes": 1202292,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:28:56"
+        }
+    },
+    "collections/SCAN 2-6-2026-198.jpg": {
+        "id": "8015a1387ccd277d277344248ef4fd67b9ea551405b46ebab635fa3982e03316",
+        "fileName": "SCAN 2-6-2026-198.jpg",
+        "format": "JPG",
+        "sizeBytes": 1137269,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:29:03"
+        }
+    },
+    "collections/SCAN 2-6-2026-199.jpg": {
+        "id": "ed89dea52a91415bee32833c8a200876c3789106db62c777fe8f42c6151146ff",
+        "fileName": "SCAN 2-6-2026-199.jpg",
+        "format": "JPG",
+        "sizeBytes": 895331,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:29:47"
+        }
+    },
+    "collections/SCAN 2-6-2026-202.jpg": {
+        "id": "713f7ce7fc6564553baedbb05166601204152d2a316eb76c8a1b2af8cb260152",
+        "fileName": "SCAN 2-6-2026-202.jpg",
+        "format": "JPG",
+        "sizeBytes": 1317838,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:30:18"
+        }
+    },
+    "collections/SCAN 2-6-2026-203.jpg": {
+        "id": "3cdd14ca6553fedbcfe05d9d7bdbe35e2f521cf1a980aaa169b2fac3128581dd",
+        "fileName": "SCAN 2-6-2026-203.jpg",
+        "format": "JPG",
+        "sizeBytes": 1411608,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:32:33"
+        }
+    },
+    "collections/SCAN 2-6-2026-204.jpg": {
+        "id": "876572348133c205ff7ee9594fcb706ba184c65fff0930808b345aea1f786a78",
+        "fileName": "SCAN 2-6-2026-204.jpg",
+        "format": "JPG",
+        "sizeBytes": 1552969,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:32:46"
+        }
+    },
+    "collections/SCAN 2-6-2026-206.jpg": {
+        "id": "1e603396a085e3a82023221864acc37c30fbb8312c556ed8ee4bfce3aa4e6b75",
+        "fileName": "SCAN 2-6-2026-206.jpg",
+        "format": "JPG",
+        "sizeBytes": 1540625,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:33:27"
+        }
+    },
+    "collections/SCAN 2-6-2026-208.jpg": {
+        "id": "fdc5a68fa025ab1cd2dbf459456ae86bed1af0a9f900ff4f28c934f6f8d568b9",
+        "fileName": "SCAN 2-6-2026-208.jpg",
+        "format": "JPG",
+        "sizeBytes": 1470060,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:33:45"
+        }
+    },
+    "collections/SCAN 2-6-2026-210.jpg": {
+        "id": "30125be68d2ae981b95333a9125d866a0de094773e0ac501d7299eaef4841503",
+        "fileName": "SCAN 2-6-2026-210.jpg",
+        "format": "JPG",
+        "sizeBytes": 1377354,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:37:04"
+        }
+    },
+    "collections/SCAN 2-6-2026-211.jpg": {
+        "id": "d66326ddb9a927ff331b3c8ea6b2ab2fe7215b6d174797b54e2b2b784611521a",
+        "fileName": "SCAN 2-6-2026-211.jpg",
+        "format": "JPG",
+        "sizeBytes": 1655369,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:37:10"
+        }
+    },
+    "collections/SCAN 2-6-2026-216.jpg": {
+        "id": "b7599080de3bb8aa9340858f9320d5ea14a9535c5fd247f3131fb38364032a69",
+        "fileName": "SCAN 2-6-2026-216.jpg",
+        "format": "JPG",
+        "sizeBytes": 1399127,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:38:26"
+        }
+    },
+    "collections/SCAN 2-6-2026-217.jpg": {
+        "id": "ee90a7fd2f4cac4309c1d869f48f276a537abe119dfc3b6fd84173ae2bde0d7c",
+        "fileName": "SCAN 2-6-2026-217.jpg",
+        "format": "JPG",
+        "sizeBytes": 2132246,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:38:34"
+        }
+    },
+    "collections/SCAN 2-6-2026-232.jpg": {
+        "id": "8d9ae91582ec3414359cc87c95c1590cb75dd8236905d4042030ee1c8932c3c5",
+        "fileName": "SCAN 2-6-2026-232.jpg",
+        "format": "JPG",
+        "sizeBytes": 1008417,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:46:50"
+        }
+    },
+    "collections/SCAN 2-6-2026-242.jpg": {
+        "id": "4dc80af74111f2144e6b51d8263ce4aab663983ea0b12dcda7243c61eceb7aca",
+        "fileName": "SCAN 2-6-2026-242.jpg",
+        "format": "JPG",
+        "sizeBytes": 1401350,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:51:19"
+        }
+    },
+    "collections/SCAN 2-6-2026-246.jpg": {
+        "id": "ef3ce1655ff5e58c376251ad6275405b165980c7cff3d9cce84742a080cfdf8e",
+        "fileName": "SCAN 2-6-2026-246.jpg",
+        "format": "JPG",
+        "sizeBytes": 1366212,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:52:44"
+        }
+    },
+    "collections/SCAN 2-6-2026-251.jpg": {
+        "id": "c385e99277792d3b4d8435eb93fe6f5618128c891d00ccea06b919ab03b09f89",
+        "fileName": "SCAN 2-6-2026-251.jpg",
+        "format": "JPG",
+        "sizeBytes": 1374350,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:54:09"
+        }
+    },
+    "collections/SCAN 2-6-2026-252.jpg": {
+        "id": "0dcaa9a8d3634570b123a5c78cb35edbe00320cd4e468284787447ac6e668987",
+        "fileName": "SCAN 2-6-2026-252.jpg",
+        "format": "JPG",
+        "sizeBytes": 1110285,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 23:54:16"
+        }
+    },
+    "collections/SCAN 2-6-2026-262.jpg": {
+        "id": "5446f53bc663d577e30f05578a58bccaaf5d74802bf6311f75ee80e2058ab5d0",
+        "fileName": "SCAN 2-6-2026-262.jpg",
+        "format": "JPG",
+        "sizeBytes": 406595,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:05:36"
+        }
+    },
+    "collections/Sinkhole.jpg": {
+        "id": "090506917a4844f7aa0c1fd16513493fe91d9e2b6e10900245bf8fe416940b5d",
+        "fileName": "Sinkhole.jpg",
+        "format": "JPG",
+        "sizeBytes": 2358627,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 18:42:56"
+        }
+    },
+    "collections/snowman.jpg": {
+        "id": "7d66a29e3a7abc147aa29c78ee68a1408958fda9ea3c17192584be24dfc56488",
+        "fileName": "snowman.jpg",
+        "format": "JPG",
+        "sizeBytes": 1560106,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 17:45:02"
+        }
+    },
+    "collections/South Island_1.jpg": {
+        "id": "9de139a8d687c5f50510bfde0f51403766a04b174c24d75b86fb7f4c65498491",
+        "fileName": "South Island_1.jpg",
+        "format": "JPG",
+        "sizeBytes": 1727888,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:07:33"
+        }
+    },
+    "collections/South Island_2.jpg": {
+        "id": "9075cb39845dc95343cb224c90d925dc417009f414541a6b49313d47bfb64410",
+        "fileName": "South Island_2.jpg",
+        "format": "JPG",
+        "sizeBytes": 990050,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:02:26 19:47:58"
+        }
+    },
+    "collections/South Island_3.jpg": {
+        "id": "ed45ceb4af37353c52007077e38cd37828778ab09b7507db8fba0db5a6db9431",
+        "fileName": "South Island_3.jpg",
+        "format": "JPG",
+        "sizeBytes": 1802573,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:24:58"
+        }
+    },
+    "collections/South Island_4.jpg": {
+        "id": "53383caf30cd1b45fd176699492e854ace9f6f643c7673e1667d05716f2b75b0",
+        "fileName": "South Island_4.jpg",
+        "format": "JPG",
+        "sizeBytes": 1739748,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:23:03"
+        }
+    },
+    "collections/South Island_5.jpg": {
+        "id": "25c8b5daf46195d18c29d5678f81b0e224fc4a0f6833258042bb0d8e72561dbd",
+        "fileName": "South Island_5.jpg",
+        "format": "JPG",
+        "sizeBytes": 1859806,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:27:17"
+        }
+    },
+    "collections/South Island_6.jpg": {
+        "id": "10462ee192c795151b321ce2c1b42cca35880697c0b963b2859abcc6c2423296",
+        "fileName": "South Island_6.jpg",
+        "format": "JPG",
+        "sizeBytes": 1844022,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:22:48"
+        }
+    },
+    "collections/South Island_7.jpg": {
+        "id": "a77eda4e43cd3f92e2f976a3185f14484afd09546321fd49a55812719e437796",
+        "fileName": "South Island_7.jpg",
+        "format": "JPG",
+        "sizeBytes": 1869262,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:27:29"
+        }
+    },
+    "collections/South Island_8.jpg": {
+        "id": "243a54ee3856d8002e15c66c3bb559df918f2ee754f4f5ce74dd91afe9204735",
+        "fileName": "South Island_8.jpg",
+        "format": "JPG",
+        "sizeBytes": 1751855,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:38:08"
+        }
+    },
+    "collections/South Island_9.jpg": {
+        "id": "b56eddf5fe453302d18d44b10195212796e9067ef43494388d1cb32d4e0b3163",
+        "fileName": "South Island_9.jpg",
+        "format": "JPG",
+        "sizeBytes": 1976720,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:37:11"
+        }
+    },
+    "collections/South Island_10.jpg": {
+        "id": "d7fccd175f9289ac51980d19bb03acf6b53ed506b8b4195c20969987ac25ee39",
+        "fileName": "South Island_10.jpg",
+        "format": "JPG",
+        "sizeBytes": 1816677,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:42:19"
+        }
+    },
+    "collections/South Island_11.jpg": {
+        "id": "ecfa9aa45d9801d2d1cf1875309f55eef7f8f0d232dd78e14c1bdd4af56e0351",
+        "fileName": "South Island_11.jpg",
+        "format": "JPG",
+        "sizeBytes": 1845914,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:42:08"
+        }
+    },
+    "collections/South Island_12.jpg": {
+        "id": "64042a496d0986c6e172e8a9f6ecb09ac74014e4a80979ffdd8f57e684e7c397",
+        "fileName": "South Island_12.jpg",
+        "format": "JPG",
+        "sizeBytes": 1701258,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:45:46"
+        }
+    },
+    "collections/South Island_13.jpg": {
+        "id": "5f35726ff4758e91a378906641c1f0c9ffa39453521c79e04a13e9d9e68d8f57",
+        "fileName": "South Island_13.jpg",
+        "format": "JPG",
+        "sizeBytes": 909509,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:02:26 19:29:35"
+        }
+    },
+    "collections/South Island_14.jpg": {
+        "id": "a0626b5190c3cd79d61ec8ff334a44854a92fe10d844bce556639e5ae28ff4aa",
+        "fileName": "South Island_14.jpg",
+        "format": "JPG",
+        "sizeBytes": 1847771,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:46:10"
+        }
+    },
+    "collections/South Island_15.jpg": {
+        "id": "d27376c18c3be5755de17bbaa0efd917b3fe28d9d2cf3cf6f1faa8d80aa2109d",
+        "fileName": "South Island_15.jpg",
+        "format": "JPG",
+        "sizeBytes": 1804501,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:45:58"
+        }
+    },
+    "collections/South Island_16.jpg": {
+        "id": "d3475ff751386fec5d59fe927a8f0bb3ea8aeb29686cd688a8df39d9ed8af865",
+        "fileName": "South Island_16.jpg",
+        "format": "JPG",
+        "sizeBytes": 2094974,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:45:31"
+        }
+    },
+    "collections/South Island_17.jpg": {
+        "id": "da83eaa32bdd38ab64fe14cb28a0f289d5e3fe44904a61eb4d2b8aa52ac382e7",
+        "fileName": "South Island_17.jpg",
+        "format": "JPG",
+        "sizeBytes": 1999525,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:45:18"
+        }
+    },
+    "collections/South Island_18.jpg": {
+        "id": "3d13d0eabc0b50d61c4037d151c42ece96697db36efaf7efe085de8d6c9df32c",
+        "fileName": "South Island_18.jpg",
+        "format": "JPG",
+        "sizeBytes": 1066987,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:02:26 19:23:38"
+        }
+    },
+    "collections/South Island_19.jpg": {
+        "id": "22bacdbeb4d6acdbc83325399a75b6766e414cc281bf56c0fb278054fd69e7c3",
+        "fileName": "South Island_19.jpg",
+        "format": "JPG",
+        "sizeBytes": 1537193,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/South Island_20.jpg": {
+        "id": "bfe346bbc31d9bb617df5eaca15378f1d6c2b75573cbc690c564fd13c75cb3ed",
+        "fileName": "South Island_20.jpg",
+        "format": "JPG",
+        "sizeBytes": 1514500,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/South Island_21.jpg": {
+        "id": "842668342a73e1cb022445bcde635d0b089051ab891d0f61ac6cbf7df82ca0c7",
+        "fileName": "South Island_21.jpg",
+        "format": "JPG",
+        "sizeBytes": 1101024,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:02:26 19:38:27"
+        }
+    },
+    "collections/South Island_22.jpg": {
+        "id": "d250552f35ed104ec4765376cb9468b8163000ae766dd2231d602b06783b681e",
+        "fileName": "South Island_22.jpg",
+        "format": "JPG",
+        "sizeBytes": 1837568,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:21:27"
+        }
+    },
+    "collections/South Island_23.jpg": {
+        "id": "2a25c19814f21e723025f98e95386a29ca4434a26d590cbefff8d209afae31be",
+        "fileName": "South Island_23.jpg",
+        "format": "JPG",
+        "sizeBytes": 864331,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:02:26 19:51:51"
+        }
+    },
+    "collections/South Island_24.jpg": {
+        "id": "d5575c005fd11f7daafd2581cbe435a0f750f3ad86c558e793c258d6bd4400ee",
+        "fileName": "South Island_24.jpg",
+        "format": "JPG",
+        "sizeBytes": 855082,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:02:26 21:05:09"
+        }
+    },
+    "collections/Street.jpg": {
+        "id": "c1ed805a212d7ede757b0ad0e822066c655792ea4f64e13a683073599b620a65",
+        "fileName": "Street.jpg",
+        "format": "JPG",
+        "sizeBytes": 1576914,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 16:56:20"
+        }
+    },
+    "collections/Taniwha, Whataitai,.jpg": {
+        "id": "1b862fe1d50c9ffc776f5f33768333237873396726135311b2d2b15cd42654b6",
+        "fileName": "Taniwha, Whataitai,.jpg",
+        "format": "JPG",
+        "sizeBytes": 1864789,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:40:22"
+        }
+    },
+    "collections/The Danube River (2).jpg": {
+        "id": "2cd0d20d1a4c358bdfa673dd216fcda2009d3c9c62a68f8a3869e12465549eaa",
+        "fileName": "The Danube River (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 1722549,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 18:54:53"
+        }
+    },
+    "collections/The Danube River.jpg": {
+        "id": "70569c4ec179044bc9bb82e53f936a8dbe4fcec72588e757d4fec2d929f51a62",
+        "fileName": "The Danube River.jpg",
+        "format": "JPG",
+        "sizeBytes": 1636950,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 18:55:23"
+        }
+    },
+    "collections/Unknown.jpg": {
+        "id": "ffed343c9ce35582063cbe71b218b7d84e9aa4e19809d765fab7cefc517bb89c",
+        "fileName": "Unknown.jpg",
+        "format": "JPG",
+        "sizeBytes": 244235,
+        "linkColor": "#66007a",
+        "linkKeyword": "#66007a",
+        "exif": {
+            "dateTaken": "2026:07:31 18:41:40"
+        },
+        "colourLabel": ""
+    },
+    "collections/Untitled (4) (2).jpg": {
+        "id": "fbc531249da48b7c4666331c3231437c962e11f2aed9592d2ea5ae3edb72c809",
+        "fileName": "Untitled (4) (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 1087789,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.10.20 10:46:09"
+        }
+    },
+    "collections/Untitled (4).jpg": {
+        "id": "4b2813d9c99c0743c758827dfee9a4d6ac47c6140742726d380d3b722360f4f4",
+        "fileName": "Untitled (4).jpg",
+        "format": "JPG",
+        "sizeBytes": 732278,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.29 22:37:38"
+        }
+    },
+    "collections/Untitled (5).jpg": {
+        "id": "8fba1dbd4dc0d5a0ed67996903a604eb6b1af646676f4ac8d34c494e54ff83d6",
+        "fileName": "Untitled (5).jpg",
+        "format": "JPG",
+        "sizeBytes": 880082,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.10.20 10:50:13"
+        }
+    },
+    "collections/Untitled (6).jpg": {
+        "id": "49383c6ec2d761979b72e9eb0c9b19e09aa6d7af6cdd93002198fc896bdb9046",
+        "fileName": "Untitled (6).jpg",
+        "format": "JPG",
+        "sizeBytes": 1184712,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.10.20 10:52:30"
+        }
+    },
+    "collections/Untitled (7).jpg": {
+        "id": "17c393095c6c3d84e6a636f773ff54f8cbd481f6f90cf5d96d7cc8ade16224f3",
+        "fileName": "Untitled (7).jpg",
+        "format": "JPG",
+        "sizeBytes": 1003084,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.10.20 10:55:09"
+        }
+    },
+    "collections/Untitled (8).jpg": {
+        "id": "6b562e1d9a251a733c8865a6f4f113fd5565129056b9ee713f85a94f87f1b5f2",
+        "fileName": "Untitled (8).jpg",
+        "format": "JPG",
+        "sizeBytes": 944137,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.10.20 10:57:21"
+        }
+    },
+    "collections/Untitled (11) (2).jpg": {
+        "id": "9a4c9688bbaf9a16b162c88e42e34d4bafb3403051e28c28698654407e14867d",
+        "fileName": "Untitled (11) (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 11169143,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {}
+    },
+    "collections/Untitled (11).jpg": {
+        "id": "a8aa743c7905fd2fa1188df1e691d39b9e4a026ed86237bacd46f59f1223732e",
+        "fileName": "Untitled (11).jpg",
+        "format": "JPG",
+        "sizeBytes": 904586,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.29 23:03:59"
+        }
+    },
+    "collections/Untitled (12) (2).jpg": {
+        "id": "4e440774f3f231391c42ad0816b880e1af5a42e43af2413adc10277a61d4ef07",
+        "fileName": "Untitled (12) (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 954400,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.10.20 11:04:26"
+        }
+    },
+    "collections/Untitled (12).jpg": {
+        "id": "8ea52a1ee0d1c0550c422692c76e816eea8dbb7382292ae4cb5a99437961c5d4",
+        "fileName": "Untitled (12).jpg",
+        "format": "JPG",
+        "sizeBytes": 963103,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.29 23:04:59"
+        }
+    },
+    "collections/Untitled (29).jpg": {
+        "id": "0ea9df64a0fdd963cfcb8f0c24968b0294e78b8fd93fd7d77b4922ac223e9fdc",
+        "fileName": "Untitled (29).jpg",
+        "format": "JPG",
+        "sizeBytes": 942952,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.29 23:40:11"
+        }
+    },
+    "collections/Untitled (36).jpg": {
+        "id": "535acfa91847a1081f268c14c101dfd123e5370ac5b2c53102e52a8150c4d30c",
+        "fileName": "Untitled (36).jpg",
+        "format": "JPG",
+        "sizeBytes": 966272,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.30 11:36:26"
+        }
+    },
+    "collections/Untitled (38).jpg": {
+        "id": "2fc111ce05d37326d4bce413f7dd7a0b85dfd29b6a0aadf704511f676a2fd5a8",
+        "fileName": "Untitled (38).jpg",
+        "format": "JPG",
+        "sizeBytes": 1027590,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.30 11:41:08"
+        }
+    },
+    "collections/Untitled (41).jpg": {
+        "id": "5d57d0c6ee4a87b2b18b57508e69910074af1471a36589c3795c96d60ada3c4f",
+        "fileName": "Untitled (41).jpg",
+        "format": "JPG",
+        "sizeBytes": 1011760,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.30 11:47:44"
+        }
+    },
+    "collections/Untitled (44).jpg": {
+        "id": "4ca986e749a035afb942a3b8e37063c8df769d3c458b669941627adcc214e102",
+        "fileName": "Untitled (44).jpg",
+        "format": "JPG",
+        "sizeBytes": 822472,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.30 11:58:33"
+        }
+    },
+    "collections/Untitled (45).jpg": {
+        "id": "ec3de5d2ffa42adc81330f6faf7b242a310810f098d676a35aa33e029a5e5bf5",
+        "fileName": "Untitled (45).jpg",
+        "format": "JPG",
+        "sizeBytes": 981927,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.30 12:00:30"
+        }
+    },
+    "collections/Untitled (48).jpg": {
+        "id": "85c754096aef67889bbe824b8aa85a10da40d6df5801a0024352618f66be6855",
+        "fileName": "Untitled (48).jpg",
+        "format": "JPG",
+        "sizeBytes": 1033577,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.30 12:06:06"
+        }
+    },
+    "collections/Untitled (50).jpg": {
+        "id": "4fab7f155361554b6778122e182fe2d6299a4823b8e7d57bb08aa669d2d444a1",
+        "fileName": "Untitled (50).jpg",
+        "format": "JPG",
+        "sizeBytes": 1010833,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.30 12:09:57"
+        }
+    },
+    "collections/Untitled (61).jpg": {
+        "id": "9d12524f04366bfce2d89163584d78d6c601080a72b1e9126f3228a28a34ebc3",
+        "fileName": "Untitled (61).jpg",
+        "format": "JPG",
+        "sizeBytes": 743738,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.08.30 12:46:18"
+        }
+    },
+    "collections/Untitled (65).jpg": {
+        "id": "199521cb25c1c7a0ed5a7c4bf715874fdbb357cc2865021340880f3dde792de3",
+        "fileName": "Untitled (65).jpg",
+        "format": "JPG",
+        "sizeBytes": 5327248,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.03.31 20:09:51"
+        }
+    },
+    "collections/Untitled (66).jpg": {
+        "id": "96135522a6a34ffb5af8728dce30fe15d328f4b6d97e77bbb58379a847157322",
+        "fileName": "Untitled (66).jpg",
+        "format": "JPG",
+        "sizeBytes": 4961747,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.03.31 20:12:25"
+        }
+    },
+    "collections/Untitled (67).jpg": {
+        "id": "c9a511fe72a626eb727dc8e8c73d9b37a13ac5a44f773e4cd4a059a226b2509c",
+        "fileName": "Untitled (67).jpg",
+        "format": "JPG",
+        "sizeBytes": 5057431,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015.03.31 20:13:29"
+        }
+    },
+    "collections/Untitled (93).jpg": {
+        "id": "5f83d96f0dd9f70230df2e87355cb6b5ec231ac135f339a0b0149b4bf82350f2",
+        "fileName": "Untitled (93).jpg",
+        "format": "JPG",
+        "sizeBytes": 6150916,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {}
+    },
+    "collections/Untitled (104).jpg": {
+        "id": "73016fbebf35487f3d0158a122fe5cb92babc16faf7e7150706993e3145fcba4",
+        "fileName": "Untitled (104).jpg",
+        "format": "JPG",
+        "sizeBytes": 9791431,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {}
+    },
+    "collections/untitled IV8 Vuja Rile oda.jpg": {
+        "id": "3e75230cb48b96390a5a1fc04d9d3ce11f99624192487cf723b5d43f55251585",
+        "fileName": "untitled IV8 Vuja Rile oda.jpg",
+        "format": "JPG",
+        "sizeBytes": 1979454,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:01 17:37:50"
+        }
+    },
+    "collections/Untitled_Artwork(1).JPEG": {
+        "id": "b71ddc2aab8f5aa807aa221aaf17d7e41c07eb40fa2426cc6eb4ace6e5f7a281",
+        "fileName": "Untitled_Artwork(1).JPEG",
+        "format": "JPEG",
+        "sizeBytes": 1700450,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {}
+    },
+    "collections/Walking_1.jpg": {
+        "id": "6dd056c735a3991e3bbaaa0792179b29deee87ef49bf7cb34d72a57052746f89",
+        "fileName": "Walking_1.jpg",
+        "format": "JPG",
+        "sizeBytes": 1454564,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:04:23 00:20:48"
+        }
+    },
+    "collections/Walking_2.jpg": {
+        "id": "8abe67e32efd7fa9a21b14a14be81dc33a320addf87d7ff4a4ac75f13a9cd945",
+        "fileName": "Walking_2.jpg",
+        "format": "JPG",
+        "sizeBytes": 1048374,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/Walking_3.jpg": {
+        "id": "9bdae41cb17d5f631f86c0a1a3ff14e112541d388d1e15393741fba5a881734c",
+        "fileName": "Walking_3.jpg",
+        "format": "JPG",
+        "sizeBytes": 1713261,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/Walking_4.jpg": {
+        "id": "c76c24ba002932e0140f5b6b4e3194bfd731d27ac6aa27eeb18b50d08928662c",
+        "fileName": "Walking_4.jpg",
+        "format": "JPG",
+        "sizeBytes": 2445458,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/Walking_5.jpg": {
+        "id": "052f03a02b37b33f9f4554e4843c6651961f002dc79bf8274c0226ad6db89cbb",
+        "fileName": "Walking_5.jpg",
+        "format": "JPG",
+        "sizeBytes": 2105576,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/Walking_7.jpg": {
+        "id": "ea65a9a80479ed32add912505dea020f6482fb200296b73a812761248902cb52",
+        "fileName": "Walking_7.jpg",
+        "format": "JPG",
+        "sizeBytes": 1237493,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/Walking_8.jpg": {
+        "id": "325c660b776d2b7a3b8a480ab63f6b109a7d7a694516749aafce4453cf2d8887",
+        "fileName": "Walking_8.jpg",
+        "format": "JPG",
+        "sizeBytes": 582336,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:48:12"
+        }
+    },
+    "collections/Walking_9.jpg": {
+        "id": "35f88d609874eccb410ba1a4918da4f54f67dede0c55a5a0753a23f8f9af5f41",
+        "fileName": "Walking_9.jpg",
+        "format": "JPG",
+        "sizeBytes": 1031557,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/Walking_10.jpg": {
+        "id": "26416fba74b0f97e565e4d9d431234eff18e29857998c79a113686f9a2314ddb",
+        "fileName": "Walking_10.jpg",
+        "format": "JPG",
+        "sizeBytes": 1126446,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2015:02:26 20:14:15"
+        }
+    },
+    "collections/Walking_11.jpg": {
+        "id": "ab0ff96bdb5e2515f3f684c2172be8e3e767b5bad00302d922ad5dfd3d528ec4",
+        "fileName": "Walking_11.jpg",
+        "format": "JPG",
+        "sizeBytes": 1589942,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:18:04"
+        }
+    },
+    "collections/Walking_12.jpg": {
+        "id": "b7f2598109f54b6edf8b09bd4e9501996880cc48147280a88bc601a20c7b6760",
+        "fileName": "Walking_12.jpg",
+        "format": "JPG",
+        "sizeBytes": 1598024,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Walking_13.jpg": {
+        "id": "fbb519e2f7e6b5e251f91db898fa7c1ed14c62c2a7f7ecde78a645c7dbe4f848",
+        "fileName": "Walking_13.jpg",
+        "format": "JPG",
+        "sizeBytes": 1126404,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Walking_14.jpg": {
+        "id": "0657dd88359b2e0ef05d05df311a585b3c3dbd1eb7baeb51511b1fa70dcb3381",
+        "fileName": "Walking_14.jpg",
+        "format": "JPG",
+        "sizeBytes": 1814093,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Walking_15.jpg": {
+        "id": "a3ab032ab553eeaa200b894db678de41a8bc0f22190e3413c38ffdb33ed6c57f",
+        "fileName": "Walking_15.jpg",
+        "format": "JPG",
+        "sizeBytes": 1352013,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:36"
+        }
+    },
+    "collections/Walking_16.jpg": {
+        "id": "2449100fe641ca4d65cde51f3555d44a14dd2d92522de5a7247cba64f1d3e711",
+        "fileName": "Walking_16.jpg",
+        "format": "JPG",
+        "sizeBytes": 1845894,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:20:03"
+        }
+    },
+    "collections/Walking_17.jpg": {
+        "id": "635db06a961478e18edcd1850a8d659f81e92233b0dd334994a663041633da45",
+        "fileName": "Walking_17.jpg",
+        "format": "JPG",
+        "sizeBytes": 2121545,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:15:08"
+        }
+    },
+    "collections/Walking_18.jpg": {
+        "id": "3d7c4b7da7135478b9e7902890809555b0a4cf28495296b56eda009477a8bf18",
+        "fileName": "Walking_18.jpg",
+        "format": "JPG",
+        "sizeBytes": 1331252,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:17:49"
+        }
+    },
+    "collections/Walking_19.jpg": {
+        "id": "45d12431c2910c5c1799bfa94e2415b0b068ad78e7bee84c188287b0d77c33a6",
+        "fileName": "Walking_19.jpg",
+        "format": "JPG",
+        "sizeBytes": 1816339,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:29:00"
+        }
+    },
+    "collections/Walking_20.jpg": {
+        "id": "5e8826296f6fa8113be362d0cec52db81bf1146dab7ffe0d8c693f0de3b879aa",
+        "fileName": "Walking_20.jpg",
+        "format": "JPG",
+        "sizeBytes": 1673222,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:17:36"
+        }
+    },
+    "collections/Walking_21.jpg": {
+        "id": "c9075e482adb025d603bc9f03cc601acaa8e37fac77330440b19571770197539",
+        "fileName": "Walking_21.jpg",
+        "format": "JPG",
+        "sizeBytes": 1738624,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:17:27"
+        }
+    },
+    "collections/Walking_22.jpg": {
+        "id": "1b7f797e2830376a7031c6be5047662b1c4dfe69c04fb7f096b9ac5c76092cc4",
+        "fileName": "Walking_22.jpg",
+        "format": "JPG",
+        "sizeBytes": 1704544,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:17:17"
+        }
+    },
+    "collections/Walking_23.jpg": {
+        "id": "2c2de379fd023953fc233415b22b05c03cedb74d83188b29712bc8b67cbe0146",
+        "fileName": "Walking_23.jpg",
+        "format": "JPG",
+        "sizeBytes": 1868972,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:17:07"
+        }
+    },
+    "collections/Walking_24.jpg": {
+        "id": "f2c4c68086f35cb1be829e14d1a51aa1ed5682a30f8633535a4f9be8dd0008a0",
+        "fileName": "Walking_24.jpg",
+        "format": "JPG",
+        "sizeBytes": 1775944,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:39:37"
+        }
+    },
+    "collections/Walking_25.jpg": {
+        "id": "a2781c7a3d1e2e65bd6ccfb3843beddd8fe1587cb217d7eb03466ce9350d7b3e",
+        "fileName": "Walking_25.jpg",
+        "format": "JPG",
+        "sizeBytes": 1586696,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:16:16"
+        }
+    },
+    "collections/Walking_26.jpg": {
+        "id": "5cca888aad57b7656621d5849daeebb207037d001ff3b8231fc36c3402e470ff",
+        "fileName": "Walking_26.jpg",
+        "format": "JPG",
+        "sizeBytes": 1642451,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:19:48"
+        }
+    },
+    "collections/Walking_27.jpg": {
+        "id": "a04f7f2c906ae56ec6598b5293b75e8d2e3e6308ee1c8eaff978ffda3361af6d",
+        "fileName": "Walking_27.jpg",
+        "format": "JPG",
+        "sizeBytes": 1359504,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:03 00:19:15"
+        }
+    },
+    "collections/Walking_28.jpg": {
+        "id": "40bd9071914ff717396f4d32b30a892019a94eedfcb30615529bb70730769302",
+        "fileName": "Walking_28.jpg",
+        "format": "JPG",
+        "sizeBytes": 1848306,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:29:20"
+        }
+    },
+    "collections/Walking_29.jpg": {
+        "id": "ebf528f78c7032a50fe0f924de46d634063ea4302f385183ab5f29f444310fe4",
+        "fileName": "Walking_29.jpg",
+        "format": "JPG",
+        "sizeBytes": 1858065,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:31:32"
+        }
+    },
+    "collections/Walking_30.jpg": {
+        "id": "220a18eb3f7fdb831276412eeacdec29e59c00640bada8cc0b3a872450560db3",
+        "fileName": "Walking_30.jpg",
+        "format": "JPG",
+        "sizeBytes": 1647449,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:32:01"
+        }
+    },
+    "collections/Walking_31.jpg": {
+        "id": "d0866c43e1d3c0e8ccc8650d3ee8b5bafe4772ef8551786895b004edf57955cf",
+        "fileName": "Walking_31.jpg",
+        "format": "JPG",
+        "sizeBytes": 1535575,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:07:21 15:44:37"
+        }
+    },
+    "collections/Walking_32.jpg": {
+        "id": "0b84fef1b40c20705aeee9424b2559457dca69e46ab9ffde8095cc743b2f0a9b",
+        "fileName": "Walking_32.jpg",
+        "format": "JPG",
+        "sizeBytes": 1538565,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:51:56"
+        }
+    },
+    "collections/Walking_33.jpg": {
+        "id": "ac553a8d1234a77ba798d9bab5f1ec12fd25ae011afee3ee49229e2b929db2ba",
+        "fileName": "Walking_33.jpg",
+        "format": "JPG",
+        "sizeBytes": 1602380,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:22:01"
+        }
+    },
+    "collections/Wither Hills, Blenheim.jpg": {
+        "id": "3abfb9bbb1c6d5b593319c546787e8c14025284d25cbc014637de48cefead87c",
+        "fileName": "Wither Hills, Blenheim.jpg",
+        "format": "JPG",
+        "sizeBytes": 1523656,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 22:23:46"
+        }
+    },
+    "collections/Yankee Go Home (2).jpg": {
+        "id": "ac0e8be18a67ae0efa51fe4d113e5ce24998ab6b2ff5eac6fb3b8043aebc54f6",
+        "fileName": "Yankee Go Home (2).jpg",
+        "format": "JPG",
+        "sizeBytes": 1746101,
+        "linkColor": "",
+        "linkKeyword": "",
+        "exif": {
+            "dateTaken": "2026:06:02 21:05:15"
+        }
+    },
+    "collections/Yankee Go Home.jpg": {
+        "id": "a441ed7e37ce1a0d1422b043d44ccd78ce43139442eeb7ed47032d89f5708618",
+        "fileName": "Yankee Go Home.jpg",
+        "format": "JPG",
+        "sizeBytes": 1900386,
+        "linkColor": "#c07b21",
+        "linkKeyword": "#c07b21",
+        "exif": {
+            "dateTaken": "2026:06:02 21:05:09"
+        },
+        "colourLabel": ""
+    },
+    "collections/Zeleni Venac Market.jpg": {
+        "id": "39a504c270eae8496723b0c18d582d62e182d3a0fc7717f048e9cdfad8bed23b",
+        "fileName": "Zeleni Venac Market.jpg",
+        "format": "JPG",
+        "sizeBytes": 1119185,
+        "linkColor": "#c07b21",
+        "linkKeyword": "#c07b21",
+        "exif": {
+            "dateTaken": "2026:06:01 17:28:09"
+        },
+        "colourLabel": ""
+    }
+};
 function getImageTitle(path) {
     const key = String(path).replace(/\\/g, '/');
-    return key.split('/').pop().replace(/\.[^/.]+$/, '');
+    return IMAGE_TITLES[key] || key.split('/').pop().replace(/\.[^/.]+$/, '');
 }
 function getImageDescription(path) {
     const key = String(path).replace(/\\/g, '/');

@@ -1,35 +1,45 @@
-GEORGE RUMP WEBSITE — REPLACEMENT FILES
-Baseline: the saved working per-image Link colour update, with the later confirmed move of toolbar icons to assets/ and the flat Collections path corrections.
+GEORGE RUMP SITE - HOW IT WORKS NOW
+(comd.txt and your git / Cloudflare steps are NOT changed.)
 
-CONTENTS
-- index.html
-- style.css
-- registry.js
-- generateRegistry.js
-- save-server.js
+ONE DATA SOURCE: the XnView .xmp files beside your photos in  collections\
+  Both XnView and the floating window can read and write them.
+  No image-metadata.json. No other copy of the data.
 
-INSTALL
-1. Stop the local save server (Ctrl+C in its PowerShell window).
-2. Back up your existing WEB.300 folder.
-3. Extract these five files into WEB.300 and replace the matching files.
-4. KEEP your existing Collections folder, assets folder, and image-metadata.json. Do not replace or move them.
-5. In PowerShell, run:
-   cd "C:\Users\user\Desktop\WEB.300"; node .\generateRegistry.js
-6. Start the metadata save server:
-   cd "C:\Users\user\Desktop\WEB.300"; node .\save-server.js
-7. Refresh the website.
+FILES (all go in WEB.300)
+  index.html            the website
+  registry.js           made by generateRegistry.js (do not edit by hand)
+  generateRegistry.js   reads photos + .xmp -> registry.js     (comd.txt step 1)
+  save-server.js        local helper for the floating window   (comd.txt step 4)
+  xmp-tools.js          the only code that reads/writes .xmp (needed by both)
+  import-old-data-to-xmp.js   run ONCE to keep your old titles/colours
+  palette.json          your named colours (made by the window; edit there)
 
-FOLDER EXPECTATIONS
-- All photographs are directly inside WEB.300\Collections\.
-- Existing .txt files may remain directly inside Collections; the generator ignores them.
-- Toolbar icons remain in WEB.300\assets\ with these filenames:
-  magnifier-icon.png, dark-icon.png, light-icon.png
-- Do not create Collections subfolders or restore an Icons folder.
-- image-metadata.json is your local saved editing data; keep it.
+FLOATING WINDOW (only on http://localhost:8000 with the save server running)
+  Filename     renaming also renames the .xmp
+  Title, Description
+  Link colour  pick a named colour from your palette, or Custom colour.
+               Saved as a keyword:  link:Sunset  (a name)  or  link:#c07b21
+               Choose "No colour" to remove it (then the XnView label is used)
+  Colour palette (open it under the Save button):
+               add a colour = pick a shade + type a name
+               change a shade = every photo with that name follows at once
+               rename = every photo is moved to the new name
+               "Name it" = turn an exact #colour already on photos into a name
+               You cannot delete a colour that photos still use.
+  The window reads the .xmp fresh when you open a photo and when you click back
+  into the page. It never overwrites unsaved typing. If XnView changed the SAME
+  field since you opened it, the save is refused and the new value is shown.
+  After a rename the page reloads (registry.js is rebuilt automatically).
 
-NOTES
-- The index.html, style.css and save-server.js come from the known Link colour baseline.
-- The index's three toolbar icon paths are updated to assets/.
-- The gallery path check and save server now use Collections (capital C).
-- generateRegistry.js scans only image files directly inside Collections and preserves custom title/description entries from registry.js.
-- This package does not include or replace photographs, icons, or your local metadata database.
+COLOUR RULE
+  The link: keyword wins (a palette name or a #rrggbb). If there is none,
+  the XnView colour label is used. In XnView the Categories panel lists the
+  link: keywords with a count, so you can click one to see those photos.
+  Edit the 9 label shades at the top of xmp-tools.js.
+
+PUBLIC SITE: read-only. It never contacts the save server.
+
+KEEP IN MIND
+  .xmp files are published with git push. Keep XnView contact/creator fields empty.
+  Keep backups OUTSIDE WEB.300 (git add -A includes everything).
+  Folder must be named  collections  (all lowercase).

@@ -16,6 +16,8 @@ cd "C:\Users\user\Desktop\WEB.300"; node .\save-server.js
 
 
 
+
+
 ## 1. Generate Image Registry
 Updates `registry.js` from the images in `collections`.
 
@@ -51,3 +53,34 @@ git push origin main --force
 git add index.html style.css registry.js generateRegistry.js
 git commit -m "Add gallery sorting and search"
 git push origin main
+
+
+
+# Website Publishing Commands
+
+**1. Open website folder**
+```powershell
+cd "C:\Users\user\Desktop\WEB.300"
+```
+
+**2. Test website locally**
+```powershell
+python -m http.server 8000
+```
+
+**3. Start metadata save server**
+```powershell
+node .\save-server.js
+```
+
+**4. Push changes to GitHub**
+```powershell
+git add -A
+git commit -m "Update website"
+git push origin main --force
+```
+
+**5. Publish website live on Cloudflare Pages**
+```powershell
+npx wrangler pages deploy .
+```
