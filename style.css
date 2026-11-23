@@ -9,69 +9,7 @@
    00. DESKTOP CONTROL PANEL
    ===================================================================== */
 :root {
-    /* LINK TREE */
-    --gallery-tree-left: 4px;
-    --gallery-tree-top: 140px;
-    --gallery-tree-bottom: 20px;
-    --gallery-tree-width: 222px;
-    --gallery-tree-max-height: 800px;
-    --gallery-tree-overflow-y: auto;
-    --gallery-tree-padding-x: 0px;
-    --gallery-tree-padding-y: 0px;
-    --gallery-tree-background: var(--desktop-tree-light-background);
-    --gallery-tree-backdrop-blur: 0px;
-    --gallery-tree-border-radius: 0px;
-    --gallery-tree-scrollbar-width: 0px;
-    --gallery-file-font-size: 7px;
-    --gallery-file-line-height: 1.5;
-    --gallery-file-word-spacing: 4px;
-
-    /* RETURN HOME / SORT BY / SHOW HIDE */
-    --desktop-return-home-left: var(--gallery-tree-left);
-    --desktop-return-home-top: 18px;
-    --desktop-return-home-icon-size: 80px;
-    --desktop-sortby-left: var(--gallery-tree-left);
-    --desktop-sortby-top: calc(var(--gallery-tree-top) - 22px);
-    --desktop-showhide-left: 180px;
-    --desktop-showhide-top: 119px;
-
-    /* MAIN IMAGE / WELCOME */
-    --desktop-intro-width: min(760px, 80vw);
-    --desktop-intro-font-size: 14px;
-    --desktop-intro-title-size: 40px;
-    --desktop-intro-letter-size: 80px;
-    --desktop-intro-title-gap: 8px;
-    --desktop-image-max-height: 76vh;
-    --desktop-gallery-image-top-gap: 80px;
-    --desktop-expand-image-top-padding: 30px;
-    --desktop-expand-image-max-height: calc(100dvh - 80px);
-
-    /* FLOATING INFORMATION WINDOW */
-    --desktop-info-left: auto;
-    --desktop-info-top: auto;
-    --desktop-info-right: 24px;
-    --desktop-info-width: 210px;
-    --desktop-info-bottom-gap: 15px;
-    --desktop-info-padding: 10px 10px 4px 8px;
-    --desktop-info-text-size: 12px;
-    --desktop-info-icon-size: 14px;
-    --desktop-info-row-gap: 5px;
-    --desktop-info-height: min(240px, calc(100dvh - 130px));
-
-    /* IMAGE TOOLBAR — fixed at the bottom-right; information sits above it */
-    --desktop-toolbar-right: 24px;
-    --desktop-toolbar-bottom: 16px;
-    --desktop-toolbar-width: 76px;
-    --desktop-toolbar-height: 28px;
-    --desktop-toolbar-icon-size: 17px;
-    --desktop-toolbar-gap: 8px;
-    --desktop-toolbar-padding-y: 4px;
-    --desktop-toolbar-background: rgba(255, 255, 255, 0.85);
-
-    /* MAGNIFIER */
-    --desktop-magnifier-size: 200px;
-
-    /* PAGE / GLOBAL APPEARANCE */
+    /* ---- PAGE / GLOBAL ---- */
     --desktop-page-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     --desktop-page-font-size: 9px;
     --desktop-page-text: #202122;
@@ -79,6 +17,13 @@
     --desktop-page-background: #ffffff;
     --desktop-page-background-dark: #000000;
     --desktop-page-line-height: 1;
+
+    /* ---- WELCOME / INTRO TEXT ---- */
+    --desktop-intro-width: min(760px, 80vw);
+    --desktop-intro-font-size: 14px;
+    --desktop-intro-title-size: 28px;
+    --desktop-intro-letter-size: 46px;
+    --desktop-intro-title-gap: 8px;
     --desktop-intro-text-colour: #202122;
     --desktop-intro-text-colour-dark: #e0e0e0;
     --desktop-intro-line-height: 1.5;
@@ -90,32 +35,27 @@
     --desktop-intro-letter-light-gradient: linear-gradient(180deg, #00FF00, #007D09);
     --desktop-intro-letter-dark-gradient: linear-gradient(180deg, #66FF66, #00A307);
 
-    /* LINK TREE COLOURS / TYPE */
-    --desktop-tree-light-background: transparent;
-    --desktop-tree-dark-background: rgba(0, 0, 0, 0.75);
-    --desktop-tree-link-light: rgb(0, 0, 238);
-    --desktop-tree-link-dark: #99ccff;
-    --desktop-tree-link-hover-light: rgb(0, 0, 238);
-    --desktop-tree-link-hover-dark: #ffffff;
-    --desktop-tree-hover-background-light: rgba(0, 0, 238, 0.1);
-    --desktop-tree-hover-background-dark: rgba(153, 204, 255, 0.15);
-    --desktop-tree-active-light: #00AA00;
-    --desktop-tree-active-dark: #00AA00;
-    --desktop-tree-scroll-thumb-light: #c8ccd1;
-    --desktop-tree-scroll-thumb-hover-light: #a2a9b1;
-    --desktop-tree-scroll-thumb-dark: #444444;
-    --desktop-tree-scroll-thumb-hover-dark: #555555;
-    --desktop-tree-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --desktop-tree-font-weight: 400;
-    --desktop-tree-hover-radius: 2px;
-    --desktop-tree-border: none;
-    --desktop-tree-scrollbar-radius: 0px;
+    /* ---- MAIN IMAGE AREA ---- */
+    --desktop-image-max-height: 76vh;
+    --desktop-gallery-image-top-gap: 80px;
+    --desktop-expand-image-top-padding: 30px;
+    --desktop-expand-image-max-height: calc(100dvh - 80px);
+    --desktop-expand-content-height: calc(100dvh - 80px);
+    --desktop-expand-content-background: transparent;
+    --desktop-main-background: transparent;
+    --desktop-main-background-dark: #000000;
+    --desktop-image-object-fit: contain;
 
-    /* RETURN HOME */
+    /* ---- RETURN HOME ICON ---- */
+    --desktop-return-home-left: 0px;
+    --desktop-return-home-top: 18px;
+    --desktop-return-home-icon-size: 100px;
     --desktop-return-home-opacity: 1;
     --desktop-return-home-background: transparent;
 
-    /* SORT BY — INDEPENDENT */
+    /* ---- SORT BY ---- */
+    --desktop-sortby-left: 110px;
+    --desktop-sortby-top: 100px;
     --desktop-sortby-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     --desktop-sortby-font-size: 14px;
     --desktop-sortby-font-weight: 400;
@@ -133,7 +73,9 @@
     --desktop-sortby-line-height: 1;
     --desktop-sortby-gap: 3px;
 
-    /* SHOW / HIDE — INDEPENDENT */
+    /* ---- SHOW / HIDE ---- */
+    --desktop-showhide-left: 110px;
+    --desktop-showhide-top: 80px;
     --desktop-showhide-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     --desktop-showhide-font-size: 14px;
     --desktop-showhide-font-weight: 400;
@@ -152,12 +94,58 @@
     --desktop-showhide-padding: 0px;
     --desktop-showhide-line-height: 1;
 
-    /* INFORMATION WINDOW — LIGHT / DARK APPEARANCE */
+    /* ---- LINK TREE ---- */
+    --gallery-tree-left: 8px;
+    --gallery-tree-top: 180px;
+    --gallery-tree-bottom: 20px;
+    --gallery-tree-width: 222px;
+    --gallery-tree-max-height: 800px;
+    --gallery-tree-overflow-y: auto;
+    --gallery-tree-padding-x: 0px;
+    --gallery-tree-padding-y: 0px;
+    --gallery-tree-border-radius: 0px;
+    --gallery-tree-scrollbar-width: 0px;
+    --gallery-file-font-size: 7px;
+    --gallery-file-line-height: 1.5;
+    --gallery-file-word-spacing: 4px;
+    --desktop-tree-light-background: transparent;
+    --desktop-tree-dark-background: transparent;
+    --desktop-tree-link-light: rgb(0, 0, 238);
+    --desktop-tree-link-dark: #99ccff;
+    --desktop-tree-link-hover-light: rgb(0, 0, 238);
+    --desktop-tree-link-hover-dark: #ffffff;
+    --desktop-tree-hover-background-light: rgba(0, 0, 238, 0.1);
+    --desktop-tree-hover-background-dark: rgba(153, 204, 255, 0.15);
+    --desktop-tree-active-light: #00AA00;
+    --desktop-tree-active-dark: #00AA00;
+    --desktop-tree-scroll-thumb-light: #c8ccd1;
+    --desktop-tree-scroll-thumb-hover-light: #a2a9b1;
+    --desktop-tree-scroll-thumb-dark: #444444;
+    --desktop-tree-scroll-thumb-hover-dark: #555555;
+    --desktop-tree-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --desktop-tree-font-weight: 400;
+    --desktop-tree-hover-radius: 2px;
+    --desktop-tree-border: none;
+    --desktop-tree-scrollbar-radius: 0px;
+
+    --gallery-tree-backdrop-blur: 0px;
+
+    /* ---- FLOATING INFORMATION WINDOW ---- */
+    --desktop-info-left: auto;
+    --desktop-info-top: auto;
+    --desktop-info-right: 24px;
+    --desktop-info-width: 210px;
+    --desktop-info-bottom-gap: 15px;
+    --desktop-info-padding: 10px 10px 4px 8px;
+    --desktop-info-text-size: 12px;
+    --desktop-info-icon-size: 14px;
+    --desktop-info-row-gap: 5px;
+    --desktop-info-height: min(240px, calc(100dvh - 130px));
     --desktop-info-border: none;
-    --desktop-info-background-light: #ffffff;
-    --desktop-info-background-dark: #1e1e2e;
+    --desktop-info-background-light: transparent;
+    --desktop-info-background-dark: transparent;
     --desktop-info-shadow-light: none;
-    --desktop-info-shadow-dark: 0 2px 6px rgba(0, 0, 0, 0.4);
+    --desktop-info-shadow-dark: none;
     --desktop-info-font-family: "Segoe UI", -apple-system, sans-serif;
     --desktop-info-label-width: 82px;
     --desktop-info-label-colour-light: #777777;
@@ -185,10 +173,19 @@
     --desktop-info-edit-padding: 1px 0 2px;
     --desktop-info-save-margin-top: 7px;
     --desktop-info-save-padding: 2px 0;
+    --desktop-info-position: fixed;
 
-    /* TOOLBAR / ICONS — LIGHT / DARK APPEARANCE */
+    /* ---- TOOLBAR (magnifier, dark mode, expand) ---- */
+    --desktop-toolbar-right: 24px;
+    --desktop-toolbar-bottom: 16px;
+    --desktop-toolbar-width: 76px;
+    --desktop-toolbar-height: 28px;
+    --desktop-toolbar-icon-size: 17px;
+    --desktop-toolbar-gap: 8px;
+    --desktop-toolbar-padding-y: 4px;
+    --desktop-toolbar-background: transparent;
     --desktop-toolbar-border: none;
-    --desktop-toolbar-background-dark: rgba(0, 0, 0, 0.85);
+    --desktop-toolbar-background-dark: transparent;
     --desktop-toolbar-text-light: #000000;
     --desktop-toolbar-text-dark: #ffffff;
     --desktop-toolbar-hover-light: #000000;
@@ -199,7 +196,6 @@
     --desktop-toolbar-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     --desktop-toolbar-font-size: 10px;
     --desktop-toolbar-font-weight: 400;
-    --desktop-darkmode-icon-size: 14px;
     --desktop-darkmode-control-width: 20px;
     --desktop-darkmode-control-height: 20px;
     --desktop-magnifier-toolbar-icon-size: 17px;
@@ -208,21 +204,13 @@
     --desktop-expand-icon-font-size: 17px;
     --desktop-expand-icon-line-height: 20px;
 
-    /* MAGNIFIER */
+    /* ---- MAGNIFIER LENS ---- */
+    --desktop-magnifier-size: 200px;
     --desktop-magnifier-corner-size: 20px;
     --desktop-magnifier-corner-right: 0px;
     --desktop-magnifier-corner-bottom: 0px;
     --desktop-magnifier-background-light: transparent;
     --desktop-magnifier-background-dark: #000000;
-
-    /* EXPANDED IMAGE / SPECIAL STATES */
-    --desktop-expand-content-height: calc(100dvh - 80px);
-    --desktop-expand-content-background: transparent;
-    --desktop-main-background: transparent;
-    --desktop-main-background-dark: #000000;
-    --desktop-image-object-fit: contain;
-    --desktop-info-position: fixed;
-
 }
 
 /* =====================================================================
@@ -230,93 +218,119 @@
    ===================================================================== */
 @media (max-width: 480px) {
     :root {
-        /* LINK TREE */
-        --mobile-sidebar-left: 0px;
-        --mobile-sidebar-top: 146px;
-        --mobile-sidebar-bottom: calc(var(--mobile-info-height) + var(--mobile-dock-bottom) + var(--mobile-dock-separation));
-        --mobile-sidebar-width: clamp(100px, 25vw, 160px);
-        --mobile-sidebar-min-width: 80px;
-        --mobile-sidebar-max-width: 180px;
-        --mobile-tree-padding-top: 0px;
-        --mobile-tree-padding-bottom: 45px;
-        --mobile-tree-background: var(--mobile-tree-light-background);
-        --mobile-tree-backdrop-blur: 4px;
-        --mobile-tree-border-radius: 0px;
-        --mobile-tree-scrollbar-width: 3px;
-        --mobile-file-font-size: clamp(5px, 1.6vw, 7px);
-        --mobile-file-word-spacing: 4px;
-        --mobile-file-line-height: 1.2;
+        /* ---- PAGE / GLOBAL ---- */
+        --mobile-page-font-size: clamp(7px, 2vw, 9px);
+        --mobile-page-line-height: 1;
 
-        /* RETURN HOME / SORT BY / SHOW HIDE */
-        --mobile-return-home-left: 4px;
-        --mobile-return-home-top: 18px;
-        --mobile-return-home-icon-size: 64px;
-        --mobile-sortby-left: 4px;
-        --mobile-sortby-top: 118px;
-        --mobile-showhide-left: 6px;
-        --mobile-showhide-top: 90px;
+        --mobile-page-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --mobile-page-text-light: #202122;
+        --mobile-page-text-dark: #ffffff;
+        --mobile-page-background-light: #ffffff;
+        --mobile-page-background-dark: #000000;
 
-        /* MAIN IMAGE / WELCOME */
-        --mobile-main-sidebar-reserve: clamp(100px, 25vw, 160px);
-        --mobile-main-padding-top: clamp(110px, 16vh, 170px);
+        /* ---- WELCOME / INTRO TEXT ---- */
         --mobile-intro-width: 80%;
         --mobile-intro-top: 0px;
         --mobile-intro-font-size: 9.6px;
         --mobile-intro-title-size: 14px;
         --mobile-intro-letter-size: 22px;
         --mobile-intro-title-gap: 6px;
-        --mobile-image-max-height: min(60vh, calc(100dvh - var(--mobile-main-padding-top) - var(--mobile-info-height) - 30px));
-        --mobile-image-max-height-tree-hidden: 72vh;
-        --mobile-image-max-width-tree-hidden: 92vw;
+        --mobile-intro-line-height: 1.5;
+        --mobile-intro-title-line-height: 1.2;
 
-        /* FIXED MOBILE CONTROLS DOCK */
-        --mobile-dock-left: 10px;
-        --mobile-dock-right: 10px;
-        --mobile-dock-bottom: 10px;
-        --mobile-dock-separation: 14px;
-        --mobile-dock-gap: 10px;
-        --mobile-toolbar-width: 136px;
-        --mobile-toolbar-gap: 16px;
-        --mobile-toolbar-padding: 4px 7px;
-        --mobile-toolbar-icon-size: 14px;
-        --mobile-toolbar-background: rgba(255, 255, 255, 0.85);
-        --mobile-toolbar-backdrop-blur: 4px;
-
-        /* FLOATING INFORMATION WINDOW — its content scrolls inside this limit */
-        --mobile-info-position: relative;
-        --mobile-info-left: auto;
-        --mobile-info-top: auto;
-        --mobile-info-width: min(150px, calc(100vw - var(--mobile-toolbar-width) - 42px));
-        --mobile-info-max-width: 150px;
-        --mobile-info-height: min(34dvh, 230px);
-        --mobile-info-padding: 4px;
-        --mobile-info-font-size: 8px;
-        --mobile-info-row-gap: 5px;
-
-        /* PAGE / GLOBAL APPEARANCE — INDEPENDENT FROM DESKTOP */
-        --mobile-page-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --mobile-page-font-size: clamp(7px, 2vw, 9px);
-        --mobile-page-text-light: #202122;
-        --mobile-page-text-dark: #ffffff;
-        --mobile-main-background-light: transparent;
-        --mobile-main-background-dark: #000000;
-        --mobile-page-background-light: #ffffff;
-        --mobile-page-background-dark: #000000;
-        --mobile-page-line-height: 1;
         --mobile-intro-text-light: #202122;
         --mobile-intro-text-dark: #e0e0e0;
-        --mobile-intro-line-height: 1.5;
         --mobile-intro-title-font: monospace, monospace;
         --mobile-intro-title-weight: 700;
-        --mobile-intro-title-line-height: 1.2;
         --mobile-intro-title-colour-light: #202122;
         --mobile-intro-title-colour-dark: #ffffff;
         --mobile-intro-letter-light-gradient: linear-gradient(180deg, #00FF00, #007D09);
         --mobile-intro-letter-dark-gradient: linear-gradient(180deg, #66FF66, #00A307);
 
-        /* LINK TREE COLOURS / TYPE */
-        --mobile-tree-light-background: rgba(255, 255, 255, 0.85);
-        --mobile-tree-dark-background: rgba(0, 0, 0, 0.75);
+        /* ---- MAIN IMAGE AREA ---- */
+        --mobile-main-sidebar-reserve: clamp(100px, 25vw, 160px);
+        --mobile-main-padding-top: clamp(110px, 16vh, 170px);
+        --mobile-image-max-height: min(60vh, calc(100dvh - var(--mobile-main-padding-top) - var(--mobile-info-height) - var(--mobile-toolbar-height) - 30px));
+        --mobile-expand-padding-top: 10px;
+        --mobile-image-max-height-expanded: calc(100dvh - var(--mobile-dock-total) - var(--mobile-expand-padding-top) - 10px);
+        --mobile-image-max-height-tree-hidden: 72vh;
+        --mobile-image-max-width-tree-hidden: 92vw;
+        --mobile-image-object-fit: contain;
+        --mobile-image-pointer-events: none;
+
+        --mobile-main-background-light: transparent;
+        --mobile-main-background-dark: #000000;
+
+        /* ---- RETURN HOME ICON ---- */
+        --mobile-return-home-left: 0px;
+        --mobile-return-home-top: 18px;
+        --mobile-return-home-icon-size: 80px;
+
+        --mobile-return-home-opacity: 1;
+        --mobile-return-home-background: transparent;
+
+        /* ---- SORT BY ---- */
+        --mobile-sortby-left: 3px;
+        --mobile-sortby-top: 126px;
+        --mobile-sortby-font-size: 12px;
+        --mobile-sortby-border-radius: 0px;
+        --mobile-sortby-width: auto;
+        --mobile-sortby-height: 18px;
+        --mobile-sortby-padding: 0 0px;
+        --mobile-sortby-line-height: 1.4;
+        --mobile-sortby-gap: 3px;
+
+        --mobile-sortby-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --mobile-sortby-font-weight: 400;
+        --mobile-sortby-colour-light: #202122;
+        --mobile-sortby-colour-dark: #e0e0e0;
+        --mobile-sortby-hover-colour-light: #000000;
+        --mobile-sortby-hover-colour-dark: #ffffff;
+        --mobile-sortby-border: 0;
+        --mobile-sortby-background: transparent;
+        --mobile-sortby-hover-background: transparent;
+
+        /* ---- SHOW / HIDE ---- */
+        --mobile-showhide-left: 3px;
+        --mobile-showhide-top: 110px;
+        --mobile-showhide-font-size: 12px;
+        --mobile-showhide-border-radius: 0px;
+        --mobile-showhide-width: auto;
+        --mobile-showhide-height: auto;
+        --mobile-showhide-min-height: 18px;
+        --mobile-showhide-padding: 0 0px;
+        --mobile-showhide-line-height: 1.4;
+
+        --mobile-showhide-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --mobile-showhide-font-weight: 400;
+        --mobile-showhide-colour-light: #202122;
+        --mobile-showhide-colour-dark: #e0e0e0;
+        --mobile-showhide-hidden-colour: green;
+        --mobile-showhide-hover-colour-light: #000000;
+        --mobile-showhide-hover-colour-dark: #ffffff;
+        --mobile-showhide-border: none;
+        --mobile-showhide-background: transparent;
+        --mobile-showhide-hover-background: transparent;
+
+        /* ---- LINK TREE ---- */
+        --mobile-sidebar-left: 0px;
+        --mobile-sidebar-top: 146px;
+        --mobile-sidebar-bottom-reserve: 10px;
+        --mobile-sidebar-width: clamp(100px, 25vw, 160px);
+        --mobile-sidebar-min-width: 80px;
+        --mobile-sidebar-max-width: 180px;
+        --mobile-tree-padding-top: 0px;
+        --mobile-tree-padding-bottom: 0px;
+        --mobile-tree-border-radius: 0px;
+        --mobile-tree-scrollbar-width: 3px;
+        --mobile-file-font-size: clamp(5px, 1.6vw, 7px);
+        --mobile-file-word-spacing: 4px;
+        --mobile-file-line-height: 1.2;
+        --mobile-tree-hover-radius: 2px;
+
+        --mobile-tree-backdrop-blur: 0px;
+        --mobile-tree-light-background: transparent;
+        --mobile-tree-dark-background: transparent;
         --mobile-tree-link-light: rgb(0, 0, 238);
         --mobile-tree-link-dark: #99ccff;
         --mobile-tree-link-hover-light: rgb(0, 0, 238);
@@ -331,58 +345,34 @@
         --mobile-tree-scroll-thumb-hover-dark: #555555;
         --mobile-tree-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         --mobile-tree-font-weight: 400;
-        --mobile-tree-hover-radius: 2px;
         --mobile-tree-border: none;
 
-        /* RETURN HOME */
-        --mobile-return-home-opacity: 1;
-        --mobile-return-home-background: transparent;
-
-        /* SORT BY — INDEPENDENT */
-        --mobile-sortby-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --mobile-sortby-font-size: 12px;
-        --mobile-sortby-font-weight: 400;
-        --mobile-sortby-colour-light: #202122;
-        --mobile-sortby-colour-dark: #e0e0e0;
-        --mobile-sortby-hover-colour-light: #000000;
-        --mobile-sortby-hover-colour-dark: #ffffff;
-        --mobile-sortby-border: 0;
-        --mobile-sortby-border-radius: 0px;
-        --mobile-sortby-background: transparent;
-        --mobile-sortby-hover-background: transparent;
-        --mobile-sortby-width: auto;
-        --mobile-sortby-height: 18px;
-        --mobile-sortby-padding: 0 4px;
-        --mobile-sortby-line-height: 1.4;
-        --mobile-sortby-gap: 3px;
-
-        /* SHOW / HIDE — INDEPENDENT */
-        --mobile-showhide-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --mobile-showhide-font-size: 12px;
-        --mobile-showhide-font-weight: 400;
-        --mobile-showhide-colour-light: #202122;
-        --mobile-showhide-colour-dark: #e0e0e0;
-        --mobile-showhide-hidden-colour: green;
-        --mobile-showhide-hover-colour-light: #000000;
-        --mobile-showhide-hover-colour-dark: #ffffff;
-        --mobile-showhide-border: none;
-        --mobile-showhide-border-radius: 0px;
-        --mobile-showhide-background: transparent;
-        --mobile-showhide-hover-background: transparent;
-        --mobile-showhide-width: auto;
-        --mobile-showhide-height: auto;
-        --mobile-showhide-min-height: 18px;
-        --mobile-showhide-padding: 0 4px;
-        --mobile-showhide-line-height: 1.4;
-
-        /* INFORMATION WINDOW — LIGHT / DARK APPEARANCE */
-        --mobile-info-border: none;
-        --mobile-info-background-light: #ffffff;
-        --mobile-info-background-dark: #1e1e2e;
-        --mobile-info-shadow-light: none;
-        --mobile-info-shadow-dark: 0 2px 6px rgba(0, 0, 0, 0.4);
-        --mobile-info-font-family: "Segoe UI", -apple-system, sans-serif;
+        /* ---- FLOATING INFORMATION WINDOW ---- */
+        --mobile-info-position: relative;
+        --mobile-info-left: auto;
+        --mobile-info-top: auto;
+        --mobile-info-width: min(150px, calc(100vw - var(--mobile-dock-left) - var(--mobile-dock-right)));
+        --mobile-info-max-width: 150px;
+        --mobile-info-height: min(34dvh, 230px);
+        --mobile-info-padding: 4px;
+        --mobile-info-font-size: 8px;
+        --mobile-info-row-gap: 5px;
         --mobile-info-label-width: 62px;
+        --mobile-info-label-line-height: 1.45;
+        --mobile-info-value-line-height: 1.45;
+        --mobile-info-body-line-height: 1.5;
+        --mobile-info-tag-letter-spacing: -0.5px;
+        --mobile-info-edit-padding: 1px 0 2px;
+        --mobile-info-save-margin-top: 7px;
+        --mobile-info-save-padding: 2px 0;
+        --mobile-info-label-font-size: 8px;
+
+        --mobile-info-border: none;
+        --mobile-info-background-light: transparent;
+        --mobile-info-background-dark: transparent;
+        --mobile-info-shadow-light: none;
+        --mobile-info-shadow-dark: none;
+        --mobile-info-font-family: "Segoe UI", -apple-system, sans-serif;
         --mobile-info-label-colour-light: #777777;
         --mobile-info-label-colour-dark: #aaaaaa;
         --mobile-info-value-colour-light: #202124;
@@ -399,29 +389,17 @@
         --mobile-info-save-colour-dark: #c586c0;
         --mobile-info-disabled-colour: #888888;
         --mobile-info-icon-opacity: 0.8;
-        --mobile-info-label-line-height: 1.45;
-        --mobile-info-value-line-height: 1.45;
-        --mobile-info-body-line-height: 1.5;
         --mobile-info-tag-font-weight: 700;
-        --mobile-info-tag-letter-spacing: -0.5px;
-        --mobile-info-edit-padding: 1px 0 2px;
-        --mobile-info-save-margin-top: 7px;
-        --mobile-info-save-padding: 2px 0;
 
-        /* TOOLBAR / ICONS — LIGHT / DARK APPEARANCE */
-        --mobile-toolbar-background-dark: rgba(0, 0, 0, 0.85);
-        --mobile-toolbar-link-border: none;
-        --mobile-toolbar-text-light: #000000;
-        --mobile-toolbar-text-dark: #ffffff;
-        --mobile-toolbar-hover-light: #000000;
-        --mobile-toolbar-hover-dark: #88ccff;
+        /* ---- TOOLBAR (magnifier, dark mode, expand) ---- */
+        --mobile-toolbar-height: 28px;
+        --mobile-toolbar-gap: 16px;
+        --mobile-toolbar-padding: 4px 7px;
+        --mobile-toolbar-icon-size: 14px;
         --mobile-toolbar-link-width: 20px;
         --mobile-toolbar-link-height: 20px;
         --mobile-toolbar-link-gap: 4px;
-        --mobile-toolbar-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         --mobile-toolbar-font-size: 10px;
-        --mobile-toolbar-font-weight: 400;
-        --mobile-darkmode-icon-size: 14px;
         --mobile-darkmode-control-width: 20px;
         --mobile-darkmode-control-height: 20px;
         --mobile-magnifier-toolbar-icon-size: 14px;
@@ -430,23 +408,37 @@
         --mobile-expand-icon-font-size: 17px;
         --mobile-expand-icon-line-height: 20px;
 
-        /* MAGNIFIER */
+        --mobile-toolbar-background: transparent;
+        --mobile-toolbar-backdrop-blur: 0px;
+        --mobile-toolbar-background-dark: transparent;
+        --mobile-toolbar-link-border: none;
+        --mobile-toolbar-text-light: #000000;
+        --mobile-toolbar-text-dark: #ffffff;
+        --mobile-toolbar-hover-light: #000000;
+        --mobile-toolbar-hover-dark: #88ccff;
+        --mobile-toolbar-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --mobile-toolbar-font-weight: 400;
+        --mobile-toolbar-border: 1px solid rgba(0, 0, 0, 0.05);
+
+        /* ---- MAGNIFIER LENS ---- */
         --mobile-magnifier-size: 200px;
         --mobile-magnifier-corner-size: 20px;
         --mobile-magnifier-corner-right: 0px;
         --mobile-magnifier-corner-bottom: 0px;
+
         --mobile-magnifier-background-light: transparent;
         --mobile-magnifier-background-dark: #000000;
 
-        /* MOBILE DOCK / VIEWER */
+        /* ---- MOBILE CONTROLS DOCK (toolbar + info window stack) ---- */
+        --mobile-dock-total: calc(var(--mobile-info-height) + var(--mobile-toolbar-height) + var(--mobile-dock-bottom) + var(--mobile-dock-separation));
+        --mobile-dock-left: 10px;
+        --mobile-dock-right: 10px;
+        --mobile-dock-bottom: 10px;
+        --mobile-dock-separation: 14px;
+        --mobile-dock-gap: 10px;
+
         --mobile-dock-background: transparent;
         --mobile-dock-opacity: 1;
-        --mobile-toolbar-border: 1px solid rgba(0, 0, 0, 0.05);
-        --mobile-main-background: transparent;
-        --mobile-image-object-fit: contain;
-        --mobile-image-pointer-events: none;
-        --mobile-info-label-font-size: 8px;
-
     }
 }
 
@@ -612,9 +604,10 @@ img {
     overflow-y: var(--gallery-tree-overflow-y);
     overscroll-behavior: contain;
     scrollbar-width: thin;
+    scrollbar-color: var(--desktop-tree-scroll-thumb-light) transparent;
     white-space: normal;
     word-wrap: break-word;
-    background: var(--gallery-tree-background);
+    background: var(--desktop-tree-light-background);
     backdrop-filter: blur(var(--gallery-tree-backdrop-blur));
     border: var(--desktop-tree-border) !important;
     border-radius: var(--gallery-tree-border-radius);
@@ -624,7 +617,8 @@ img {
 .tree-content::-webkit-scrollbar {
     width: var(--gallery-tree-scrollbar-width);
 }
-.tree-content::-webkit-scrollbar-track {
+.tree-content::-webkit-scrollbar-track,
+.dev-tooltip-exact::-webkit-scrollbar-track {
     background: transparent;
 }
 .tree-content::-webkit-scrollbar-thumb {
@@ -759,7 +753,8 @@ body.tree-hidden #showTab {
 }
 @media (min-width: 481px) {
     body.expand-image #sidebar,
-    body.expand-image #showTab {
+    body.expand-image #showTab,
+    body.expand-image #returnHomeControl {
         display: none !important;
     }
 }
@@ -794,6 +789,7 @@ body.tree-hidden #showTab {
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
+    scrollbar-color: var(--desktop-tree-scroll-thumb-light) transparent;
     box-sizing: border-box;
     background: var(--desktop-info-background-light);
     border: var(--desktop-info-border);
@@ -1000,11 +996,6 @@ body.tree-hidden #showTab {
     object-fit: contain;
     vertical-align: middle;
 }
-#darkModeIconLight,
-#darkModeIconDark {
-    width: var(--desktop-darkmode-icon-size);
-    height: var(--desktop-darkmode-icon-size);
-}
 #darkModeToggle {
     position: relative;
     width: var(--desktop-darkmode-control-width);
@@ -1086,7 +1077,7 @@ body.dark-mode {
     color: var(--desktop-page-text-dark) !important;
 }
 body.dark-mode #intro-text {
-    color: var(--desktop-intro-text-colour-dark);
+    color: #ffffff;
 }
 body.dark-mode #intro-title .big-letter {
     background: var(--desktop-intro-letter-dark-gradient);
@@ -1101,6 +1092,10 @@ body.dark-mode #bookshelfImageArea {
 }
 body.dark-mode .tree-content {
     background: var(--desktop-tree-dark-background) !important;
+}
+body.dark-mode .tree-content,
+body.dark-mode .dev-tooltip-exact {
+    scrollbar-color: var(--desktop-tree-scroll-thumb-dark) transparent;
 }
 body.dark-mode .tree-content::-webkit-scrollbar-thumb {
     background: var(--desktop-tree-scroll-thumb-dark);
@@ -1266,7 +1261,7 @@ body.dark-mode #magnifierLens {
     #sidebar {
         position: fixed !important;
         top: var(--mobile-sidebar-top) !important;
-        bottom: var(--mobile-sidebar-bottom) !important;
+        bottom: auto !important;
         left: var(--mobile-sidebar-left) !important;
         display: flex !important;
         flex-direction: column !important;
@@ -1276,7 +1271,7 @@ body.dark-mode #magnifierLens {
         max-width: var(--mobile-sidebar-max-width) !important;
         height: auto !important;
         min-height: 0 !important;
-        max-height: none !important;
+        max-height: calc(100dvh - var(--mobile-sidebar-top) - var(--mobile-sidebar-bottom-reserve)) !important;
         padding: 0 !important;
         overflow: hidden !important;
         background: transparent !important;
@@ -1284,10 +1279,13 @@ body.dark-mode #magnifierLens {
         transform: none !important;
         z-index: 9998 !important;
     }
+    body.image-open #sidebar {
+        max-height: calc(100dvh - var(--mobile-sidebar-top) - var(--mobile-dock-total)) !important;
+    }
     #sidebar .tree-content {
-        flex: 1 1 auto !important;
+        flex: 0 1 auto !important;
         width: 100% !important;
-        height: 100% !important;
+        height: auto !important;
         min-height: 0 !important;
         max-height: none !important;
         padding: var(--mobile-tree-padding-top) 0 var(--mobile-tree-padding-bottom) !important;
@@ -1303,6 +1301,14 @@ body.dark-mode #magnifierLens {
     }
     .tree-content::-webkit-scrollbar {
         width: var(--mobile-tree-scrollbar-width) !important;
+    }
+    .tree-content,
+    .dev-tooltip-exact {
+        scrollbar-color: var(--mobile-tree-scroll-thumb-light) transparent !important;
+    }
+    body.dark-mode .tree-content,
+    body.dark-mode .dev-tooltip-exact {
+        scrollbar-color: var(--mobile-tree-scroll-thumb-dark) transparent !important;
     }
     .image-links a {
         font-family: var(--mobile-tree-font-family) !important;
@@ -1339,7 +1345,6 @@ body.dark-mode #magnifierLens {
         z-index: 100001 !important;
     }
     #sortByToggle:hover {
-        background: none !important;
         color: var(--mobile-sortby-hover-colour-light) !important;
         background: var(--mobile-sortby-hover-background) !important;
         text-decoration: underline !important;
@@ -1400,7 +1405,7 @@ body.dark-mode #magnifierLens {
         position: absolute !important;
         top: 0 !important;
         right: 0 !important;
-        bottom: calc(var(--mobile-info-height) + var(--mobile-dock-bottom) + var(--mobile-dock-separation)) !important;
+        bottom: var(--mobile-dock-total) !important;
         left: var(--mobile-main-sidebar-reserve) !important;
         display: flex !important;
         flex-direction: column !important;
@@ -1452,12 +1457,30 @@ body.dark-mode #magnifierLens {
         max-width: var(--mobile-image-max-width-tree-hidden) !important;
         max-height: var(--mobile-image-max-height-tree-hidden) !important;
     }
+
+    /* Expand: the photo grows to fill the page. The tree and everything on the
+       left are hidden; the information window and toolbar stay where they are. */
+    body.expand-image #sidebar,
+    body.expand-image #showTab,
+    body.expand-image #returnHomeControl {
+        display: none !important;
+    }
+    body.expand-image #mainContent {
+        left: 0 !important;
+        padding-top: var(--mobile-expand-padding-top) !important;
+    }
+    body.expand-image #bookshelfImageArea {
+        max-height: var(--mobile-image-max-height-expanded) !important;
+    }
+    body.expand-image #bookshelfImageArea img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+    }
     #intro-title {
         color: var(--mobile-intro-title-colour-light) !important;
         font-family: var(--mobile-intro-title-font) !important;
         font-weight: var(--mobile-intro-title-weight) !important;
         line-height: var(--mobile-intro-title-line-height) !important;
-        color: var(--mobile-intro-title-colour-light) !important;
         font-size: var(--mobile-intro-title-size) !important;
         margin-bottom: var(--mobile-intro-title-gap) !important;
     }
@@ -1487,10 +1510,10 @@ body.dark-mode #magnifierLens {
         bottom: var(--mobile-dock-bottom) !important;
         left: var(--mobile-dock-left) !important;
         display: none;
-        flex-direction: row !important;
+        flex-direction: column !important;
         align-items: flex-end !important;
-        justify-content: space-between !important;
-        gap: var(--mobile-dock-gap) !important;
+        justify-content: flex-end !important;
+        gap: 0 !important;
         width: auto !important;
         max-width: none !important;
         height: auto !important;
@@ -1513,15 +1536,15 @@ body.dark-mode #magnifierLens {
         bottom: auto !important;
         left: auto !important;
         display: flex !important;
-        flex: 0 0 var(--mobile-toolbar-width) !important;
+        flex: 0 0 auto !important;
         flex-direction: row !important;
         align-items: center !important;
         justify-content: flex-start !important;
         gap: var(--mobile-toolbar-gap) !important;
-        width: var(--mobile-toolbar-width) !important;
-        min-width: var(--mobile-toolbar-width) !important;
-        max-width: var(--mobile-toolbar-width) !important;
-        height: auto !important;
+        width: var(--mobile-info-width) !important;
+        min-width: 0 !important;
+        max-width: var(--mobile-info-max-width) !important;
+        height: var(--mobile-toolbar-height) !important;
         margin: 0 !important;
         padding: var(--mobile-toolbar-padding) !important;
         background: var(--mobile-toolbar-background) !important;
@@ -1557,7 +1580,7 @@ body.dark-mode #magnifierLens {
         bottom: auto !important;
         left: var(--mobile-info-left) !important;
         display: none;
-        flex: 0 1 var(--mobile-info-width) !important;
+        flex: 0 0 auto !important;
         width: var(--mobile-info-width) !important;
         min-width: 0 !important;
         max-width: var(--mobile-info-max-width) !important;
@@ -1585,7 +1608,6 @@ body.dark-mode #magnifierLens {
         box-sizing: border-box !important;
     }
     .metadata-label {
-        flex-basis: 62px !important;
         font-family: var(--mobile-info-font-family) !important;
         font-size: var(--mobile-info-label-font-size) !important;
     }
@@ -1717,11 +1739,6 @@ body.dark-mode #magnifierLens {
         width: var(--mobile-expand-control-width) !important;
         height: var(--mobile-expand-control-height) !important;
     }
-    #darkModeIconLight,
-    #darkModeIconDark {
-        width: var(--mobile-darkmode-icon-size) !important;
-        height: var(--mobile-darkmode-icon-size) !important;
-    }
     #expandImageToggle {
         font-size: var(--mobile-expand-icon-font-size) !important;
         line-height: var(--mobile-expand-icon-line-height) !important;
@@ -1785,7 +1802,6 @@ body.dark-mode #magnifierLens {
         font-family: var(--mobile-toolbar-font-family) !important;
         font-size: var(--mobile-toolbar-font-size) !important;
         font-weight: var(--mobile-toolbar-font-weight) !important;
-        background: var(--mobile-toolbar-background) !important;
     }
 
 }
@@ -1831,5 +1847,4 @@ body.dark-mode #magnifierLens {
         repeat-x,
         repeat-y,
         repeat-y;
-}
 }

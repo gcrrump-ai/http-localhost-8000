@@ -8,6 +8,9 @@ const GALLERY_ICON_PATHS = {
     "magnifierCorner": "assets/magnifier-corner-icon.png",
     "magnifierDetail": "assets/red-dot.png"
 };
+const HOME_ICON_PATHS = [
+    "assets/home-converted/return-icon.ani.png"
+];
 const MASTER_IMAGE_REGISTRY = [
     "collections/Auckland Central Parish Pitt Street Methodist Church.jpg",
     "collections/Auckland Harbour Bridge (2).jpg",

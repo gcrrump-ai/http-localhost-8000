@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>George Rump</title>
     <link rel="stylesheet" href="style.css?v=layout-lock-2">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>document.write('<script src="registry.js?v=' + Date.now() + '"><\/script>');</script>
 </head>
 <body>
@@ -74,6 +73,25 @@ function refreshReplaceableAssets() {
     const dotUrl = 'url("' + assetUrl('assets/red-dot.png') + '")';
     document.documentElement.style.setProperty('--magnifier-dot-asset', dotUrl);
 }
+
+// Return-home picture: assets/home/return-icon1.png, return-icon2.png ... one per page load, in order.
+(function chooseHomeIcon() {
+    const img = document.querySelector('#returnHomeControl img');
+    if (!img || typeof HOME_ICON_PATHS === 'undefined' || !HOME_ICON_PATHS.length) return;
+    let next = 0;
+    try { next = parseInt(localStorage.getItem('homeIconNext'), 10) || 0; } catch (_) {}
+    const count = HOME_ICON_PATHS.length;
+    const index = ((next % count) + count) % count;
+    try { localStorage.setItem('homeIconNext', String(index + 1)); } catch (_) {}
+    const fallback = img.getAttribute('src');
+    img.addEventListener('error', function() {
+        if (img.dataset.homeFallback === '1') return;
+        img.dataset.homeFallback = '1';
+        img.setAttribute('src', fallback);
+    });
+    img.setAttribute('src', HOME_ICON_PATHS[index]);
+})();
+
 refreshReplaceableAssets();
 
 let globalImageList = [];
@@ -155,10 +173,6 @@ function showImageInfoPlaceholder() {
     const content = document.querySelector('#floating-window .file-content');
     if (!content) return;
     content.replaceChildren();
-    const message = document.createElement('div');
-    message.className = 'value-exact';
-    message.textContent = 'Select an image to view its information.';
-    content.appendChild(message);
 }
 
 function addMetadataEditRow(container, label, fieldName, value, multiline, inputType) {
@@ -511,45 +525,78 @@ function refreshMagnifierIfActive() {
     }
 }
 
+// One address for a photo, used by the main view, the preloader and the hover preview,
+// so a photo downloaded once is reused from the browser cache everywhere.
+function photoUrl(path) {
+    const encoded = String(path).split('/').map(encodeURIComponent).join('/');
+    return IS_LOCAL_EDITOR ? assetUrl(encoded) : encoded;
+}
+
+const nearbyPreloads = new Map();
 function preloadNearbyImages() {
-    const preloadIndexes = [globalCurrentIndex - 1, globalCurrentIndex + 1, globalCurrentIndex + 2];
-    preloadIndexes.forEach(function(index) {
-        if (index >= 0 && index < globalImageList.length) {
-            const preload = new Image();
-            preload.src = globalImageList[index];
-        }
+    // Next photo first, then the previous one, then the one after next.
+    // On a slow or data-saving connection only the next photo is fetched.
+    const connection = navigator.connection || {};
+    const slow = connection.saveData || /(^|-)(2g|3g)$/.test(connection.effectiveType || '');
+    const offsets = slow ? [1] : [1, -1, 2];
+    const wanted = new Set();
+    offsets.forEach(function(offset) {
+        const path = globalImageList[globalCurrentIndex + offset];
+        if (path) wanted.add(path);
+    });
+    // Stop fetching photos that are no longer close by and not finished yet.
+    nearbyPreloads.forEach(function(image, path) {
+        if (wanted.has(path)) return;
+        if (!image.complete) { image.src = ''; }
+        nearbyPreloads.delete(path);
+    });
+    wanted.forEach(function(path) {
+        if (nearbyPreloads.has(path)) return;
+        const preload = new Image();
+        preload.decoding = 'async';
+        preload.fetchPriority = 'low';
+        preload.src = photoUrl(path);
+        nearbyPreloads.set(path, preload);
     });
 }
 
-function preloadFirstImages() {
-    globalImageList.slice(0, 2).forEach(function(path) {
-        const preload = new Image();
-        preload.src = path;
-    });
+let imageLoadToken = 0;
+let pendingLoader = null;
+function cancelPendingImage() {
+    imageLoadToken++;
+    if (pendingLoader) {
+        pendingLoader.onload = null;
+        pendingLoader.onerror = null;
+        pendingLoader.src = '';
+        pendingLoader = null;
+    }
 }
 
 function renderSingleImage(url, name, callback) {
     const area = document.getElementById('bookshelfImageArea');
     if (!area) return;
-    area.innerHTML = '';
+    // Only the newest request counts. An older photo still downloading is stopped,
+    // and the photo on screen stays until the new one is ready to show.
+    cancelPendingImage();
+    const token = imageLoadToken;
     const img = document.createElement('img');
-    let settled = false;
-    function finish() {
-        if (settled) return;
-        settled = true;
-        if (callback) callback();
-    }
+    pendingLoader = img;
     img.alt = name;
-    img.onload = finish;
+    img.decoding = 'async';
+    img.fetchPriority = 'high';
+    img.onload = function() {
+        if (token !== imageLoadToken) return;
+        pendingLoader = null;
+        area.replaceChildren(img);
+        refreshMagnifierIfActive();
+        if (callback) callback();
+    };
     img.onerror = function() {
-        if (settled) return;
-        settled = true;
+        if (token !== imageLoadToken) return;
+        pendingLoader = null;
         area.innerHTML = '<p class="image-load-error">Image could not be loaded: ' + name.replace(/[&<>"']/g, '') + '</p>';
     };
-    area.appendChild(img);
-    img.src = IS_LOCAL_EDITOR ? assetUrl(url) : url;
-    if (img.complete && img.naturalWidth > 0) setTimeout(finish, 0);
-    refreshMagnifierIfActive();
+    img.src = photoUrl(url);
 }
 
 function renderToBookshelf(content, single, title, callback) {
@@ -557,7 +604,6 @@ function renderToBookshelf(content, single, title, callback) {
     if (title === undefined) title = '';
     const area = document.getElementById('bookshelfImageArea');
     if (!area) return;
-    area.innerHTML = '';
     if (single && typeof content === 'string') {
         const f = content.split('/').pop();
         const n = f.replace(/\.[^/.]+$/, '');
@@ -571,6 +617,7 @@ function renderToBookshelf(content, single, title, callback) {
         renderSingleImage(first, n, callback);
         return;
     }
+    cancelPendingImage();
     area.innerHTML = '<p style="padding:40px;color:#666;">' + (title || 'No images') + '</p>';
     refreshMagnifierIfActive();
     if (callback) callback();
@@ -869,11 +916,10 @@ function showFileAtIndex(floatingWin, index, skipDiskRefresh) {
     } else {
         addMetadataReadOnlyRow(content, 'Title', title);
         addMetadataReadOnlyRow(content, 'Description', description);
-        addMetadataReadOnlyRow(content, 'Filename', metadata.fileName || path.split('/').pop());
     }
 
     addMetadataReadOnlyRow(content, 'Format', metadata.format || path.split('.').pop().toUpperCase());
-    addMetadataReadOnlyRow(content, 'File size', formatFileSize(metadata.sizeBytes));
+    if (IS_LOCAL_EDITOR) addMetadataReadOnlyRow(content, 'File size', formatFileSize(metadata.sizeBytes));
 
     const exif = metadata.exif || {};
     // Kept fields are limited to the useful capture date and orientation.
@@ -908,6 +954,9 @@ function getImageDescription(path) {
 }
 
 function returnToGalleryIntro() {
+    cancelPendingImage();
+    const expandToggle = document.getElementById('expandImageToggle');
+    if (expandToggle) expandToggle.textContent = 'E';
     const imageArea = document.getElementById('bookshelfImageArea');
     if (imageArea) {
         imageArea.innerHTML =
@@ -1151,8 +1200,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// html2canvas is only needed by the magnifier, so it is fetched on first use, not at page load.
+let html2canvasPromise = null;
+function loadHtml2Canvas() {
+    if (window.html2canvas) return Promise.resolve();
+    if (!html2canvasPromise) {
+        html2canvasPromise = new Promise(function(resolve, reject) {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            script.onload = resolve;
+            script.onerror = function() {
+                html2canvasPromise = null;
+                reject(new Error('html2canvas could not be loaded'));
+            };
+            document.head.appendChild(script);
+        });
+    }
+    return html2canvasPromise;
+}
+
 (function() {
     const toggle = document.getElementById('magnifierToggle');
+    if (toggle) {
+        toggle.addEventListener('pointerenter', function() { loadHtml2Canvas().catch(function() {}); }, { once: true });
+        toggle.addEventListener('touchstart', function() { loadHtml2Canvas().catch(function() {}); }, { once: true, passive: true });
+    }
     const lens = document.getElementById('magnifierLens');
     const body = document.body;
     let snapshot = null;
@@ -1183,6 +1255,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (captureInProgress) { captureQueued = true; return; }
         captureInProgress = true;
         try {
+            await loadHtml2Canvas();
             const canvas = await html2canvas(document.body, {
                 useCORS: true,
                 scale: CAPTURE_SCALE,
@@ -1474,13 +1547,103 @@ window.addEventListener('load', async function() {
         }
     } catch (_) {}
 
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(preloadFirstImages);
-    } else {
-        setTimeout(preloadFirstImages, 250);
+});
+/* ============================================================
+   HOVER PREVIEW
+   Rest the mouse on a link-tree link for 1 second and a small
+   thumbnail of that photo floats beside the cursor. Mouse only.
+   ============================================================ */
+(function() {
+    const HOVER_DELAY_MS = 1000;
+    const MAX_SIDE = 220;      // longest side of the thumbnail, in px
+    const OFFSET = 18;         // gap between cursor and thumbnail
+    let timer = null;
+    let activeLink = null;
+    let lastX = 0, lastY = 0;
+    let box = null, img = null;
+
+    function ensureBox() {
+        if (box) return;
+        box = document.createElement('div');
+        box.id = 'hover-preview';
+        box.setAttribute('aria-hidden', 'true');
+        box.style.cssText = 'position:fixed;left:0;top:0;display:none;z-index:2147483000;' +
+            'pointer-events:none;background:#fff;padding:3px;border:1px solid #888;' +
+            'box-shadow:0 4px 14px rgba(0,0,0,0.35);line-height:0;';
+        img = document.createElement('img');
+        img.alt = '';
+        img.style.cssText = 'display:block;max-width:' + MAX_SIDE + 'px;max-height:' + MAX_SIDE + 'px;' +
+            'width:auto;height:auto;object-fit:contain;';
+        img.addEventListener('error', hidePreview);
+        img.addEventListener('load', placeBox);
+        box.appendChild(img);
+        document.body.appendChild(box);
     }
 
-});
+    function placeBox() {
+        if (!box || box.style.display === 'none') return;
+        const w = box.offsetWidth, h = box.offsetHeight;
+        let x = lastX + OFFSET;
+        let y = lastY + OFFSET;
+        if (x + w > window.innerWidth - 4) x = lastX - OFFSET - w;
+        if (y + h > window.innerHeight - 4) y = lastY - OFFSET - h;
+        box.style.left = Math.max(4, x) + 'px';
+        box.style.top = Math.max(4, y) + 'px';
+    }
+
+    function hidePreview() {
+        clearTimeout(timer);
+        timer = null;
+        if (box) {
+            box.style.display = 'none';
+            if (img) img.removeAttribute('src');
+        }
+    }
+
+    function showPreview(link) {
+        if (!link || !link.isConnected || link !== activeLink) return;
+        const path = link.dataset.imagePath;
+        if (!path) return;
+        ensureBox();
+        img.src = photoUrl(path);
+        box.style.display = 'block';
+        placeBox();
+    }
+
+    function linkFrom(target) {
+        return target && target.closest ? target.closest('.image-links a[data-image-path]') : null;
+    }
+
+    document.addEventListener('pointerover', function(e) {
+        if (e.pointerType !== 'mouse') return;
+        const link = linkFrom(e.target);
+        if (link === activeLink) return;
+        hidePreview();
+        activeLink = link;
+        if (!link) return;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        timer = setTimeout(function() { showPreview(link); }, HOVER_DELAY_MS);
+    });
+
+    document.addEventListener('pointermove', function(e) {
+        if (e.pointerType !== 'mouse' || !activeLink) return;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        placeBox();
+    });
+
+    document.addEventListener('pointerout', function(e) {
+        if (e.pointerType !== 'mouse') return;
+        if (linkFrom(e.relatedTarget) === activeLink && activeLink) return;
+        if (linkFrom(e.target)) { activeLink = null; hidePreview(); }
+    });
+
+    document.addEventListener('pointerdown', function() { activeLink = null; hidePreview(); }, true);
+    document.addEventListener('scroll', function() { activeLink = null; hidePreview(); }, true);
+    document.addEventListener('wheel', function() { activeLink = null; hidePreview(); }, { passive: true, capture: true });
+    window.addEventListener('blur', function() { activeLink = null; hidePreview(); });
+})();
 </script>
 </body>
 </html>

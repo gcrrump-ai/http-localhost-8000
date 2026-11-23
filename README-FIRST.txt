@@ -37,7 +37,19 @@ COLOUR RULE
   link: keywords with a count, so you can click one to see those photos.
   Edit the 9 label shades at the top of xmp-tools.js.
 
-PUBLIC SITE: read-only. It never contacts the save server.
+RETURN HOME PICTURES
+  Put pictures in  assets\home  (any file names). Each page load shows the next one
+  in name order (return-icon2 comes before return-icon10), then starts again.
+  Types that work: png apng jpg jpeg gif (animated) webp (animated) avif svg ico cur bmp
+  Windows animated cursors (.ani) work too: generateRegistry.js makes an animated PNG
+  copy in  assets\home-converted  (the original .ani is never changed; leave that
+  folder alone - it is rebuilt automatically and is published with the site).
+  Not possible in a web page: .tif .heic .xpm .rle  (convert to .gif .png or .webp)
+  After adding or removing pictures run:  node .\generateRegistry.js
+  If assets\home is empty the site keeps using assets\return-icon.png.
+
+PUBLIC SITE: read-only. It never contacts the save server. It does not show
+  the Filename or File size lines (the local editor on port 8000 does).
 
 KEEP IN MIND
   .xmp files are published with git push. Keep XnView contact/creator fields empty.
