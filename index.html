@@ -1164,6 +1164,63 @@ document.addEventListener('touchend', function(e) {
     }
 }, { passive: true });
 
+/* ============================================================
+   BELL SOUND (made inside the page, no sound file needed)
+   ============================================================ */
+const BELL_CLICK_MIN_MS = 500;    // a quicker second click is a normal double-click
+const BELL_CLICK_MAX_MS = 2000;   // a slower second click starts over
+const BELL_BASE_HZ = 520;
+// [pitch ratio, loudness, seconds to fade] for the parts that make up a bell's tone
+const BELL_PARTS = [[0.56, 1.0, 3.6], [0.92, 0.6, 3.0], [1.19, 0.8, 2.5], [1.71, 0.5, 1.9],
+                    [2.0, 0.5, 1.6], [2.74, 0.35, 1.2], [3.0, 0.3, 1.0], [4.07, 0.2, 0.7]];
+function playBell(ctx, when) {
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, when);
+    master.gain.exponentialRampToValueAtTime(0.5, when + 0.004);
+    master.connect(ctx.destination);
+    BELL_PARTS.forEach(function(part) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = BELL_BASE_HZ * part[0];
+        gain.gain.setValueAtTime(part[1] * 0.2, when);
+        gain.gain.exponentialRampToValueAtTime(0.0001, when + part[2]);
+        osc.connect(gain);
+        gain.connect(master);
+        osc.start(when);
+        osc.stop(when + part[2] + 0.05);
+    });
+}
+let bellContext = null;
+// Make the sound engine ready as early as possible (browsers only allow it after a click or touch).
+function prepareBell() {
+    try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+        if (!bellContext) bellContext = new AudioCtx();
+        if (bellContext.state !== 'running') {
+            const resumed = bellContext.resume();
+            if (resumed && resumed.catch) resumed.catch(function() {});
+        }
+        return bellContext;
+    } catch (error) {
+        console.warn('Could not prepare the bell sound:', error);
+        return null;
+    }
+}
+function ringBell() {
+    const ctx = prepareBell();
+    if (!ctx) return;
+    function play() {
+        try { playBell(ctx, ctx.currentTime + 0.02); }
+        catch (error) { console.warn('Could not play the bell sound:', error); }
+    }
+    if (ctx.state === 'running') { play(); return; }
+    const resumed = ctx.resume();
+    if (resumed && resumed.then) resumed.then(play, function() { play(); });
+    else play();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const showTab = document.getElementById('showTab');
@@ -1180,8 +1237,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (homeButton) {
+        // Click, pause, click again (the same rhythm as renaming a file in Windows) rings the bell.
+        // A fast double-click, or a second click after a long wait, does not.
+        let lastHomeClick = 0;
+        homeButton.addEventListener('pointerdown', prepareBell);
         homeButton.addEventListener('click', function(e) {
             e.preventDefault();
+            prepareBell();
+            const now = performance.now();
+            const gap = now - lastHomeClick;
+            if (lastHomeClick && gap >= BELL_CLICK_MIN_MS && gap <= BELL_CLICK_MAX_MS) {
+                ringBell();
+                lastHomeClick = 0;
+            } else {
+                lastHomeClick = now;
+            }
             returnToGalleryIntro();
         });
     }

@@ -6,98 +6,281 @@
    ===================================================================== */
 
 /* =====================================================================
-   00. DESKTOP CONTROL PANEL
+   00. CONTROL PANEL — ONE SECTION PER ELEMENT
+   Each section shows the DESKTOP controls first, then the MOBILE controls
+   (phones, max-width 480px) right below them. Every number you can change
+   lives here; the rules further down only read these controls.
+   ===================================================================== */
+
+/* =====================================================================
+   PAGE / GLOBAL
    ===================================================================== */
 :root {
-    /* ---- PAGE / GLOBAL ---- */
+    /* Text */
     --desktop-page-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     --desktop-page-font-size: 9px;
-    --desktop-page-text: #202122;
-    --desktop-page-text-dark: #ffffff;
-    --desktop-page-background: #ffffff;
-    --desktop-page-background-dark: #000000;
     --desktop-page-line-height: 1;
+    /* Colours and look (light) */
+    --desktop-page-text: #202122;
+    --desktop-page-background: #ffffff;
+    /* Colours (dark mode) */
+    --desktop-page-text-dark: #ffffff;
+    --desktop-page-background-dark: #000000;
+}
+@media (max-width: 480px) {
+    :root {
+        /* Text */
+        --mobile-page-font-size: clamp(7px, 2vw, 9px);
+        --mobile-page-line-height: 1;
+        --mobile-page-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        /* Colours and look (light) */
+        --mobile-page-text-light: #202122;
+        --mobile-page-background-light: #ffffff;
+        /* Colours (dark mode) */
+        --mobile-page-text-dark: #ffffff;
+        --mobile-page-background-dark: #000000;
+    }
+}
 
-    /* ---- WELCOME / INTRO TEXT ---- */
+/* =====================================================================
+   WELCOME / INTRO TEXT
+   ===================================================================== */
+:root {
+    /* Size and spacing */
     --desktop-intro-width: min(760px, 80vw);
+    --desktop-intro-title-gap: 8px;
+    /* Text */
     --desktop-intro-font-size: 14px;
     --desktop-intro-title-size: 28px;
     --desktop-intro-letter-size: 46px;
-    --desktop-intro-title-gap: 8px;
-    --desktop-intro-text-colour: #202122;
-    --desktop-intro-text-colour-dark: #e0e0e0;
     --desktop-intro-line-height: 1.5;
     --desktop-intro-title-font: monospace, monospace;
     --desktop-intro-title-weight: 700;
     --desktop-intro-title-line-height: 1.2;
+    /* Colours and look (light) */
+    --desktop-intro-text-colour: #202122;
     --desktop-intro-title-colour: #202122;
-    --desktop-intro-title-colour-dark: #ffffff;
     --desktop-intro-letter-light-gradient: linear-gradient(180deg, #00FF00, #007D09);
+    /* Colours (dark mode) */
+    --desktop-intro-text-colour-dark: #e0e0e0;
+    --desktop-intro-title-colour-dark: #ffffff;
     --desktop-intro-letter-dark-gradient: linear-gradient(180deg, #66FF66, #00A307);
+}
+@media (max-width: 480px) {
+    :root {
+        /* Position */
+        --mobile-intro-top: 0px;
+        /* Size and spacing */
+        --mobile-intro-width: 80%;
+        --mobile-intro-title-gap: 6px;
+        /* Text */
+        --mobile-intro-font-size: 9.6px;
+        --mobile-intro-title-size: 14px;
+        --mobile-intro-letter-size: 22px;
+        --mobile-intro-line-height: 1.5;
+        --mobile-intro-title-line-height: 1.2;
+        --mobile-intro-title-font: monospace, monospace;
+        --mobile-intro-title-weight: 700;
+        /* Colours and look (light) */
+        --mobile-intro-text-light: #202122;
+        --mobile-intro-title-colour-light: #202122;
+        --mobile-intro-letter-light-gradient: linear-gradient(180deg, #00FF00, #007D09);
+        /* Colours (dark mode) */
+        --mobile-intro-text-dark: #e0e0e0;
+        --mobile-intro-title-colour-dark: #ffffff;
+        --mobile-intro-letter-dark-gradient: linear-gradient(180deg, #66FF66, #00A307);
+    }
+}
 
-    /* ---- MAIN IMAGE AREA ---- */
-    --desktop-image-max-height: 76vh;
-    --desktop-gallery-image-top-gap: 80px;
+/* =====================================================================
+   MAIN IMAGE AREA
+   ===================================================================== */
+:root {
+    /* Position */
+    --desktop-gallery-image-top-gap: 120px;
     --desktop-expand-image-top-padding: 30px;
+    /* Size and spacing */
+    --desktop-image-max-height: 76vh;
     --desktop-expand-image-max-height: calc(100dvh - 80px);
     --desktop-expand-content-height: calc(100dvh - 80px);
+    --desktop-image-object-fit: contain;
+    /* Colours and look (light) */
     --desktop-expand-content-background: transparent;
     --desktop-main-background: transparent;
+    /* Colours (dark mode) */
     --desktop-main-background-dark: #000000;
-    --desktop-image-object-fit: contain;
+}
+@media (max-width: 480px) {
+    :root {
+        /* Position */
+        --mobile-main-sidebar-reserve: clamp(100px, 25vw, 160px);
+        --mobile-main-padding-top: 20px;
+        --mobile-image-bottom-reserve: 61dvh;
+        --mobile-image-vertical-align: flex-end;
+        --mobile-expand-padding-top: 10px;
+        /* Size and spacing */
+        --mobile-image-max-height: min(60vh, calc(100dvh - var(--mobile-main-padding-top) - var(--mobile-info-height) - var(--mobile-toolbar-height) - 30px));
+        --mobile-image-max-height-expanded: calc(100dvh - var(--mobile-dock-total) - var(--mobile-expand-padding-top) - 10px);
+        --mobile-image-max-height-tree-hidden: 100%;
+        --mobile-image-max-width-tree-hidden: 92vw;
+        --mobile-image-object-fit: contain;
+        --mobile-image-pointer-events: none;
+        /* Colours and look (light) */
+        --mobile-main-background-light: transparent;
+        /* Colours (dark mode) */
+        --mobile-main-background-dark: #000000;
+    }
+}
 
-    /* ---- RETURN HOME ICON ---- */
+/* =====================================================================
+   RETURN HOME ICON
+   ===================================================================== */
+:root {
+    /* Position */
     --desktop-return-home-left: 0px;
     --desktop-return-home-top: 18px;
+    /* Size and spacing */
     --desktop-return-home-icon-size: 100px;
+    /* Colours and look (light) */
     --desktop-return-home-opacity: 1;
     --desktop-return-home-background: transparent;
+}
+@media (max-width: 480px) {
+    :root {
+        /* Position */
+        --mobile-return-home-left: 0px;
+        --mobile-return-home-top: 18px;
+        /* Size and spacing */
+        --mobile-return-home-icon-size: 80px;
+        /* Colours and look (light) */
+        --mobile-return-home-opacity: 1;
+        --mobile-return-home-background: transparent;
+    }
+}
 
-    /* ---- SORT BY ---- */
+/* =====================================================================
+   SORT BY
+   ===================================================================== */
+:root {
+    /* Position */
     --desktop-sortby-left: 110px;
     --desktop-sortby-top: 100px;
-    --desktop-sortby-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --desktop-sortby-font-size: 14px;
-    --desktop-sortby-font-weight: 400;
-    --desktop-sortby-colour-light: #800080;
-    --desktop-sortby-colour-dark: #e0e0e0;
-    --desktop-sortby-hover-colour-light: #800080;
-    --desktop-sortby-hover-colour-dark: #ffffff;
-    --desktop-sortby-border: 0;
+    /* Size and spacing */
     --desktop-sortby-border-radius: 0px;
-    --desktop-sortby-background: transparent;
-    --desktop-sortby-hover-background: transparent;
     --desktop-sortby-width: auto;
     --desktop-sortby-height: 18px;
     --desktop-sortby-padding: 0px;
-    --desktop-sortby-line-height: 1;
     --desktop-sortby-gap: 3px;
+    /* Text */
+    --desktop-sortby-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --desktop-sortby-font-size: 14px;
+    --desktop-sortby-font-weight: 400;
+    --desktop-sortby-line-height: 1;
+    /* Colours and look (light) */
+    --desktop-sortby-colour-light: #800080;
+    --desktop-sortby-hover-colour-light: #800080;
+    --desktop-sortby-border: 0;
+    --desktop-sortby-background: transparent;
+    --desktop-sortby-hover-background: transparent;
+    /* Colours (dark mode) */
+    --desktop-sortby-colour-dark: #e0e0e0;
+    --desktop-sortby-hover-colour-dark: #ffffff;
+}
+@media (max-width: 480px) {
+    :root {
+        /* Position */
+        --mobile-sortby-left: 3px;
+        --mobile-sortby-top: 126px;
+        /* Size and spacing */
+        --mobile-sortby-border-radius: 0px;
+        --mobile-sortby-width: auto;
+        --mobile-sortby-height: 18px;
+        --mobile-sortby-padding: 0 0px;
+        --mobile-sortby-gap: 3px;
+        /* Text */
+        --mobile-sortby-font-size: 12px;
+        --mobile-sortby-line-height: 1.4;
+        --mobile-sortby-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --mobile-sortby-font-weight: 400;
+        /* Colours and look (light) */
+        --mobile-sortby-colour-light: #202122;
+        --mobile-sortby-hover-colour-light: #000000;
+        --mobile-sortby-border: 0;
+        --mobile-sortby-background: transparent;
+        --mobile-sortby-hover-background: transparent;
+        /* Colours (dark mode) */
+        --mobile-sortby-colour-dark: #e0e0e0;
+        --mobile-sortby-hover-colour-dark: #ffffff;
+    }
+}
 
-    /* ---- SHOW / HIDE ---- */
+/* =====================================================================
+   SHOW / HIDE
+   ===================================================================== */
+:root {
+    /* Position */
     --desktop-showhide-left: 110px;
     --desktop-showhide-top: 80px;
-    --desktop-showhide-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --desktop-showhide-font-size: 14px;
-    --desktop-showhide-font-weight: 400;
-    --desktop-showhide-colour-light: #800080;
-    --desktop-showhide-colour-dark: #e0e0e0;
-    --desktop-showhide-hidden-colour: green;
-    --desktop-showhide-hover-colour-light: #800080;
-    --desktop-showhide-hover-colour-dark: #ffffff;
-    --desktop-showhide-border: 0;
+    /* Size and spacing */
     --desktop-showhide-border-radius: 0px;
-    --desktop-showhide-background: transparent;
-    --desktop-showhide-hover-background: transparent;
     --desktop-showhide-width: auto;
     --desktop-showhide-height: auto;
     --desktop-showhide-min-height: 18px;
     --desktop-showhide-padding: 0px;
+    /* Text */
+    --desktop-showhide-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --desktop-showhide-font-size: 14px;
+    --desktop-showhide-font-weight: 400;
     --desktop-showhide-line-height: 1;
+    /* Colours and look (light) */
+    --desktop-showhide-colour-light: #800080;
+    --desktop-showhide-hidden-colour: green;
+    --desktop-showhide-hover-colour-light: #800080;
+    --desktop-showhide-border: 0;
+    --desktop-showhide-background: transparent;
+    --desktop-showhide-hover-background: transparent;
+    /* Colours (dark mode) */
+    --desktop-showhide-colour-dark: #e0e0e0;
+    --desktop-showhide-hover-colour-dark: #ffffff;
+}
+@media (max-width: 480px) {
+    :root {
+        /* Position */
+        --mobile-showhide-left: 3px;
+        --mobile-showhide-top: 110px;
+        /* Size and spacing */
+        --mobile-showhide-border-radius: 0px;
+        --mobile-showhide-width: auto;
+        --mobile-showhide-height: auto;
+        --mobile-showhide-min-height: 18px;
+        --mobile-showhide-padding: 0 0px;
+        /* Text */
+        --mobile-showhide-font-size: 12px;
+        --mobile-showhide-line-height: 1.4;
+        --mobile-showhide-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --mobile-showhide-font-weight: 400;
+        /* Colours and look (light) */
+        --mobile-showhide-colour-light: #202122;
+        --mobile-showhide-hidden-colour: green;
+        --mobile-showhide-hover-colour-light: #000000;
+        --mobile-showhide-border: none;
+        --mobile-showhide-background: transparent;
+        --mobile-showhide-hover-background: transparent;
+        /* Colours (dark mode) */
+        --mobile-showhide-colour-dark: #e0e0e0;
+        --mobile-showhide-hover-colour-dark: #ffffff;
+    }
+}
 
-    /* ---- LINK TREE ---- */
-    --gallery-tree-left: 8px;
+/* =====================================================================
+   LINK TREE
+   ===================================================================== */
+:root {
+    /* Position */
+    --gallery-tree-left: 3px;
     --gallery-tree-top: 180px;
     --gallery-tree-bottom: 20px;
+    /* Size and spacing */
     --gallery-tree-width: 222px;
     --gallery-tree-max-height: 800px;
     --gallery-tree-overflow-y: auto;
@@ -105,293 +288,220 @@
     --gallery-tree-padding-y: 0px;
     --gallery-tree-border-radius: 0px;
     --gallery-tree-scrollbar-width: 0px;
+    --desktop-tree-hover-radius: 2px;
+    --desktop-tree-scrollbar-radius: 0px;
+    /* Text */
     --gallery-file-font-size: 7px;
     --gallery-file-line-height: 1.5;
     --gallery-file-word-spacing: 4px;
-    --desktop-tree-light-background: transparent;
-    --desktop-tree-dark-background: transparent;
-    --desktop-tree-link-light: rgb(0, 0, 238);
-    --desktop-tree-link-dark: #99ccff;
-    --desktop-tree-link-hover-light: rgb(0, 0, 238);
-    --desktop-tree-link-hover-dark: #ffffff;
-    --desktop-tree-hover-background-light: rgba(0, 0, 238, 0.1);
-    --desktop-tree-hover-background-dark: rgba(153, 204, 255, 0.15);
-    --desktop-tree-active-light: #00AA00;
-    --desktop-tree-active-dark: #00AA00;
-    --desktop-tree-scroll-thumb-light: #c8ccd1;
-    --desktop-tree-scroll-thumb-hover-light: #a2a9b1;
-    --desktop-tree-scroll-thumb-dark: #444444;
-    --desktop-tree-scroll-thumb-hover-dark: #555555;
     --desktop-tree-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     --desktop-tree-font-weight: 400;
-    --desktop-tree-hover-radius: 2px;
+    /* Colours and look (light) */
+    --desktop-tree-light-background: transparent;
+    --desktop-tree-link-light: rgb(0, 0, 238);
+    --desktop-tree-link-hover-light: rgb(0, 0, 238);
+    --desktop-tree-hover-background-light: rgba(0, 0, 238, 0.1);
+    --desktop-tree-active-light: #00AA00;
+    --desktop-tree-scroll-thumb-light: #c8ccd1;
+    --desktop-tree-scroll-thumb-hover-light: #a2a9b1;
     --desktop-tree-border: none;
-    --desktop-tree-scrollbar-radius: 0px;
-
     --gallery-tree-backdrop-blur: 0px;
+    /* Colours (dark mode) */
+    --desktop-tree-dark-background: transparent;
+    --desktop-tree-link-dark: #99ccff;
+    --desktop-tree-link-hover-dark: #ffffff;
+    --desktop-tree-hover-background-dark: rgba(153, 204, 255, 0.15);
+    --desktop-tree-active-dark: #00AA00;
+    --desktop-tree-scroll-thumb-dark: #444444;
+    --desktop-tree-scroll-thumb-hover-dark: #555555;
+}
+@media (max-width: 480px) {
+    :root {
+        /* Position */
+        --mobile-sidebar-left: 0px;
+        --mobile-sidebar-top: 146px;
+        --mobile-sidebar-bottom-reserve: 0px;
+        --mobile-sidebar-bottom-reserve-image-open: 0px;
+        --mobile-tree-padding-top: 0px;
+        --mobile-tree-padding-bottom: 0px;
+        /* Size and spacing */
+        --mobile-sidebar-width: clamp(100px, 25vw, 160px);
+        --mobile-sidebar-min-width: 80px;
+        --mobile-sidebar-max-width: 180px;
+        --mobile-tree-border-radius: 0px;
+        --mobile-tree-scrollbar-width: 3px;
+        --mobile-tree-hover-radius: 2px;
+        /* Text */
+        --mobile-file-font-size: clamp(5px, 1.6vw, 7px);
+        --mobile-file-word-spacing: 4px;
+        --mobile-file-line-height: 1.2;
+        --mobile-tree-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --mobile-tree-font-weight: 400;
+        /* Colours and look (light) */
+        --mobile-tree-backdrop-blur: 0px;
+        --mobile-tree-light-background: transparent;
+        --mobile-tree-link-light: rgb(0, 0, 238);
+        --mobile-tree-link-hover-light: rgb(0, 0, 238);
+        --mobile-tree-hover-background-light: rgba(0, 0, 238, 0.1);
+        --mobile-tree-active-light: #00AA00;
+        --mobile-tree-scroll-thumb-light: #c8ccd1;
+        --mobile-tree-scroll-thumb-hover-light: #a2a9b1;
+        --mobile-tree-border: none;
+        /* Colours (dark mode) */
+        --mobile-tree-dark-background: transparent;
+        --mobile-tree-link-dark: #99ccff;
+        --mobile-tree-link-hover-dark: #ffffff;
+        --mobile-tree-hover-background-dark: rgba(153, 204, 255, 0.15);
+        --mobile-tree-active-dark: #00AA00;
+        --mobile-tree-scroll-thumb-dark: #444444;
+        --mobile-tree-scroll-thumb-hover-dark: #555555;
+    }
+}
 
-    /* ---- FLOATING INFORMATION WINDOW ---- */
+/* =====================================================================
+   FLOATING INFORMATION WINDOW
+   ===================================================================== */
+:root {
+    /* Position */
     --desktop-info-left: auto;
     --desktop-info-top: auto;
     --desktop-info-right: 24px;
-    --desktop-info-width: 210px;
     --desktop-info-bottom-gap: 15px;
+    --desktop-info-save-margin-top: 7px;
+    --desktop-info-position: fixed;
+    /* Size and spacing */
+    --desktop-info-width: 210px;
     --desktop-info-padding: 10px 10px 4px 8px;
-    --desktop-info-text-size: 12px;
     --desktop-info-icon-size: 14px;
     --desktop-info-row-gap: 5px;
     --desktop-info-height: min(240px, calc(100dvh - 130px));
-    --desktop-info-border: none;
-    --desktop-info-background-light: transparent;
-    --desktop-info-background-dark: transparent;
-    --desktop-info-shadow-light: none;
-    --desktop-info-shadow-dark: none;
-    --desktop-info-font-family: "Segoe UI", -apple-system, sans-serif;
     --desktop-info-label-width: 82px;
-    --desktop-info-label-colour-light: #777777;
-    --desktop-info-label-colour-dark: #aaaaaa;
-    --desktop-info-value-colour-light: #202124;
-    --desktop-info-value-colour-dark: #e0e0e0;
-    --desktop-info-icon-colour-light: #5f6368;
-    --desktop-info-icon-colour-dark: #000000;
-    --desktop-info-tag-colour-light: #9c1180;
-    --desktop-info-tag-colour-dark: #c586c0;
-    --desktop-info-edit-colour-light: #202124;
-    --desktop-info-edit-colour-dark: #e0e0e0;
-    --desktop-info-edit-border: #aaaaaa;
-    --desktop-info-edit-focus: #800080;
-    --desktop-info-save-colour-light: #800080;
-    --desktop-info-save-colour-dark: #c586c0;
-    --desktop-info-disabled-colour: #888888;
-    --desktop-info-icon-opacity: 0.8;
+    --desktop-info-edit-padding: 1px 0 2px;
+    --desktop-info-save-padding: 2px 0;
+    /* Text */
+    --desktop-info-text-size: 12px;
+    --desktop-info-font-family: "Segoe UI", -apple-system, sans-serif;
     --desktop-info-label-font-size: 10px;
     --desktop-info-label-line-height: 1.45;
     --desktop-info-value-line-height: 1.45;
     --desktop-info-body-line-height: 1.5;
     --desktop-info-tag-font-weight: 700;
     --desktop-info-tag-letter-spacing: -0.5px;
-    --desktop-info-edit-padding: 1px 0 2px;
-    --desktop-info-save-margin-top: 7px;
-    --desktop-info-save-padding: 2px 0;
-    --desktop-info-position: fixed;
+    /* Colours and look (light) */
+    --desktop-info-border: none;
+    --desktop-info-background-light: transparent;
+    --desktop-info-shadow-light: none;
+    --desktop-info-label-colour-light: #777777;
+    --desktop-info-value-colour-light: #202124;
+    --desktop-info-icon-colour-light: #5f6368;
+    --desktop-info-tag-colour-light: #9c1180;
+    --desktop-info-edit-colour-light: #202124;
+    --desktop-info-edit-border: #aaaaaa;
+    --desktop-info-edit-focus: #800080;
+    --desktop-info-save-colour-light: #800080;
+    --desktop-info-disabled-colour: #888888;
+    --desktop-info-icon-opacity: 0.8;
+    /* Colours (dark mode) */
+    --desktop-info-background-dark: transparent;
+    --desktop-info-shadow-dark: none;
+    --desktop-info-label-colour-dark: #aaaaaa;
+    --desktop-info-value-colour-dark: #e0e0e0;
+    --desktop-info-icon-colour-dark: #000000;
+    --desktop-info-tag-colour-dark: #c586c0;
+    --desktop-info-edit-colour-dark: #e0e0e0;
+    --desktop-info-save-colour-dark: #c586c0;
+}
+@media (max-width: 480px) {
+    :root {
+        /* Position */
+        --mobile-info-position: relative;
+        --mobile-info-left: auto;
+        --mobile-info-top: auto;
+        --mobile-info-save-margin-top: 7px;
+        /* Size and spacing */
+        --mobile-info-width: min(150px, calc(100vw - var(--mobile-dock-left) - var(--mobile-dock-right)));
+        --mobile-info-max-width: 150px;
+        --mobile-info-height: min(18dvh, 230px);
+        --mobile-info-padding: 4px;
+        --mobile-info-row-gap: 5px;
+        --mobile-info-label-width: 62px;
+        --mobile-info-edit-padding: 1px 0 2px;
+        --mobile-info-save-padding: 2px 0;
+        /* Text */
+        --mobile-info-font-size: 8px;
+        --mobile-info-label-line-height: 1.45;
+        --mobile-info-value-line-height: 1.45;
+        --mobile-info-body-line-height: 1.5;
+        --mobile-info-tag-letter-spacing: -0.5px;
+        --mobile-info-label-font-size: 8px;
+        --mobile-info-font-family: "Segoe UI", -apple-system, sans-serif;
+        --mobile-info-tag-font-weight: 700;
+        /* Colours and look (light) */
+        --mobile-info-border: none;
+        --mobile-info-background-light: transparent;
+        --mobile-info-shadow-light: none;
+        --mobile-info-label-colour-light: #777777;
+        --mobile-info-value-colour-light: #202124;
+        --mobile-info-icon-colour-light: #5f6368;
+        --mobile-info-tag-colour-light: #9c1180;
+        --mobile-info-edit-colour-light: #202124;
+        --mobile-info-edit-border: #aaaaaa;
+        --mobile-info-edit-focus: #800080;
+        --mobile-info-save-colour-light: #800080;
+        --mobile-info-disabled-colour: #888888;
+        --mobile-info-icon-opacity: 0.8;
+        /* Colours (dark mode) */
+        --mobile-info-background-dark: transparent;
+        --mobile-info-shadow-dark: none;
+        --mobile-info-label-colour-dark: #aaaaaa;
+        --mobile-info-value-colour-dark: #e0e0e0;
+        --mobile-info-icon-colour-dark: #000000;
+        --mobile-info-tag-colour-dark: #c586c0;
+        --mobile-info-edit-colour-dark: #e0e0e0;
+        --mobile-info-save-colour-dark: #c586c0;
+    }
+}
 
-    /* ---- TOOLBAR (magnifier, dark mode, expand) ---- */
+/* =====================================================================
+   TOOLBAR (magnifier, dark mode, expand)
+   ===================================================================== */
+:root {
+    /* Position */
     --desktop-toolbar-right: 24px;
     --desktop-toolbar-bottom: 16px;
+    /* Size and spacing */
     --desktop-toolbar-width: 76px;
     --desktop-toolbar-height: 28px;
     --desktop-toolbar-icon-size: 17px;
     --desktop-toolbar-gap: 8px;
     --desktop-toolbar-padding-y: 4px;
-    --desktop-toolbar-background: transparent;
-    --desktop-toolbar-border: none;
-    --desktop-toolbar-background-dark: transparent;
-    --desktop-toolbar-text-light: #000000;
-    --desktop-toolbar-text-dark: #ffffff;
-    --desktop-toolbar-hover-light: #000000;
-    --desktop-toolbar-hover-dark: #88ccff;
     --desktop-toolbar-link-width: 20px;
     --desktop-toolbar-link-height: 20px;
     --desktop-toolbar-link-gap: 4px;
-    --desktop-toolbar-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --desktop-toolbar-font-size: 10px;
-    --desktop-toolbar-font-weight: 400;
-    --desktop-darkmode-control-width: 20px;
-    --desktop-darkmode-control-height: 20px;
     --desktop-magnifier-toolbar-icon-size: 17px;
     --desktop-expand-control-width: 20px;
     --desktop-expand-control-height: 20px;
+    /* Text */
+    --desktop-toolbar-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --desktop-toolbar-font-size: 10px;
+    --desktop-toolbar-font-weight: 400;
     --desktop-expand-icon-font-size: 17px;
     --desktop-expand-icon-line-height: 20px;
-
-    /* ---- MAGNIFIER LENS ---- */
-    --desktop-magnifier-size: 200px;
-    --desktop-magnifier-corner-size: 20px;
-    --desktop-magnifier-corner-right: 0px;
-    --desktop-magnifier-corner-bottom: 0px;
-    --desktop-magnifier-background-light: transparent;
-    --desktop-magnifier-background-dark: #000000;
+    /* Colours and look (light) */
+    --desktop-toolbar-background: transparent;
+    --desktop-toolbar-border: none;
+    --desktop-toolbar-text-light: #000000;
+    --desktop-toolbar-hover-light: #000000;
+    /* Colours (dark mode) */
+    --desktop-toolbar-background-dark: transparent;
+    --desktop-toolbar-text-dark: #ffffff;
+    --desktop-toolbar-hover-dark: #88ccff;
+    --desktop-darkmode-control-width: 20px;
+    --desktop-darkmode-control-height: 20px;
 }
-
-/* =====================================================================
-   00B. MOBILE CONTROL PANEL
-   ===================================================================== */
 @media (max-width: 480px) {
     :root {
-        /* ---- PAGE / GLOBAL ---- */
-        --mobile-page-font-size: clamp(7px, 2vw, 9px);
-        --mobile-page-line-height: 1;
-
-        --mobile-page-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --mobile-page-text-light: #202122;
-        --mobile-page-text-dark: #ffffff;
-        --mobile-page-background-light: #ffffff;
-        --mobile-page-background-dark: #000000;
-
-        /* ---- WELCOME / INTRO TEXT ---- */
-        --mobile-intro-width: 80%;
-        --mobile-intro-top: 0px;
-        --mobile-intro-font-size: 9.6px;
-        --mobile-intro-title-size: 14px;
-        --mobile-intro-letter-size: 22px;
-        --mobile-intro-title-gap: 6px;
-        --mobile-intro-line-height: 1.5;
-        --mobile-intro-title-line-height: 1.2;
-
-        --mobile-intro-text-light: #202122;
-        --mobile-intro-text-dark: #e0e0e0;
-        --mobile-intro-title-font: monospace, monospace;
-        --mobile-intro-title-weight: 700;
-        --mobile-intro-title-colour-light: #202122;
-        --mobile-intro-title-colour-dark: #ffffff;
-        --mobile-intro-letter-light-gradient: linear-gradient(180deg, #00FF00, #007D09);
-        --mobile-intro-letter-dark-gradient: linear-gradient(180deg, #66FF66, #00A307);
-
-        /* ---- MAIN IMAGE AREA ---- */
-        --mobile-main-sidebar-reserve: clamp(100px, 25vw, 160px);
-        --mobile-main-padding-top: clamp(110px, 16vh, 170px);
-        --mobile-image-max-height: min(60vh, calc(100dvh - var(--mobile-main-padding-top) - var(--mobile-info-height) - var(--mobile-toolbar-height) - 30px));
-        --mobile-expand-padding-top: 10px;
-        --mobile-image-max-height-expanded: calc(100dvh - var(--mobile-dock-total) - var(--mobile-expand-padding-top) - 10px);
-        --mobile-image-max-height-tree-hidden: 72vh;
-        --mobile-image-max-width-tree-hidden: 92vw;
-        --mobile-image-object-fit: contain;
-        --mobile-image-pointer-events: none;
-
-        --mobile-main-background-light: transparent;
-        --mobile-main-background-dark: #000000;
-
-        /* ---- RETURN HOME ICON ---- */
-        --mobile-return-home-left: 0px;
-        --mobile-return-home-top: 18px;
-        --mobile-return-home-icon-size: 80px;
-
-        --mobile-return-home-opacity: 1;
-        --mobile-return-home-background: transparent;
-
-        /* ---- SORT BY ---- */
-        --mobile-sortby-left: 3px;
-        --mobile-sortby-top: 126px;
-        --mobile-sortby-font-size: 12px;
-        --mobile-sortby-border-radius: 0px;
-        --mobile-sortby-width: auto;
-        --mobile-sortby-height: 18px;
-        --mobile-sortby-padding: 0 0px;
-        --mobile-sortby-line-height: 1.4;
-        --mobile-sortby-gap: 3px;
-
-        --mobile-sortby-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --mobile-sortby-font-weight: 400;
-        --mobile-sortby-colour-light: #202122;
-        --mobile-sortby-colour-dark: #e0e0e0;
-        --mobile-sortby-hover-colour-light: #000000;
-        --mobile-sortby-hover-colour-dark: #ffffff;
-        --mobile-sortby-border: 0;
-        --mobile-sortby-background: transparent;
-        --mobile-sortby-hover-background: transparent;
-
-        /* ---- SHOW / HIDE ---- */
-        --mobile-showhide-left: 3px;
-        --mobile-showhide-top: 110px;
-        --mobile-showhide-font-size: 12px;
-        --mobile-showhide-border-radius: 0px;
-        --mobile-showhide-width: auto;
-        --mobile-showhide-height: auto;
-        --mobile-showhide-min-height: 18px;
-        --mobile-showhide-padding: 0 0px;
-        --mobile-showhide-line-height: 1.4;
-
-        --mobile-showhide-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --mobile-showhide-font-weight: 400;
-        --mobile-showhide-colour-light: #202122;
-        --mobile-showhide-colour-dark: #e0e0e0;
-        --mobile-showhide-hidden-colour: green;
-        --mobile-showhide-hover-colour-light: #000000;
-        --mobile-showhide-hover-colour-dark: #ffffff;
-        --mobile-showhide-border: none;
-        --mobile-showhide-background: transparent;
-        --mobile-showhide-hover-background: transparent;
-
-        /* ---- LINK TREE ---- */
-        --mobile-sidebar-left: 0px;
-        --mobile-sidebar-top: 146px;
-        --mobile-sidebar-bottom-reserve: 10px;
-        --mobile-sidebar-width: clamp(100px, 25vw, 160px);
-        --mobile-sidebar-min-width: 80px;
-        --mobile-sidebar-max-width: 180px;
-        --mobile-tree-padding-top: 0px;
-        --mobile-tree-padding-bottom: 0px;
-        --mobile-tree-border-radius: 0px;
-        --mobile-tree-scrollbar-width: 3px;
-        --mobile-file-font-size: clamp(5px, 1.6vw, 7px);
-        --mobile-file-word-spacing: 4px;
-        --mobile-file-line-height: 1.2;
-        --mobile-tree-hover-radius: 2px;
-
-        --mobile-tree-backdrop-blur: 0px;
-        --mobile-tree-light-background: transparent;
-        --mobile-tree-dark-background: transparent;
-        --mobile-tree-link-light: rgb(0, 0, 238);
-        --mobile-tree-link-dark: #99ccff;
-        --mobile-tree-link-hover-light: rgb(0, 0, 238);
-        --mobile-tree-link-hover-dark: #ffffff;
-        --mobile-tree-hover-background-light: rgba(0, 0, 238, 0.1);
-        --mobile-tree-hover-background-dark: rgba(153, 204, 255, 0.15);
-        --mobile-tree-active-light: #00AA00;
-        --mobile-tree-active-dark: #00AA00;
-        --mobile-tree-scroll-thumb-light: #c8ccd1;
-        --mobile-tree-scroll-thumb-hover-light: #a2a9b1;
-        --mobile-tree-scroll-thumb-dark: #444444;
-        --mobile-tree-scroll-thumb-hover-dark: #555555;
-        --mobile-tree-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --mobile-tree-font-weight: 400;
-        --mobile-tree-border: none;
-
-        /* ---- FLOATING INFORMATION WINDOW ---- */
-        --mobile-info-position: relative;
-        --mobile-info-left: auto;
-        --mobile-info-top: auto;
-        --mobile-info-width: min(150px, calc(100vw - var(--mobile-dock-left) - var(--mobile-dock-right)));
-        --mobile-info-max-width: 150px;
-        --mobile-info-height: min(34dvh, 230px);
-        --mobile-info-padding: 4px;
-        --mobile-info-font-size: 8px;
-        --mobile-info-row-gap: 5px;
-        --mobile-info-label-width: 62px;
-        --mobile-info-label-line-height: 1.45;
-        --mobile-info-value-line-height: 1.45;
-        --mobile-info-body-line-height: 1.5;
-        --mobile-info-tag-letter-spacing: -0.5px;
-        --mobile-info-edit-padding: 1px 0 2px;
-        --mobile-info-save-margin-top: 7px;
-        --mobile-info-save-padding: 2px 0;
-        --mobile-info-label-font-size: 8px;
-
-        --mobile-info-border: none;
-        --mobile-info-background-light: transparent;
-        --mobile-info-background-dark: transparent;
-        --mobile-info-shadow-light: none;
-        --mobile-info-shadow-dark: none;
-        --mobile-info-font-family: "Segoe UI", -apple-system, sans-serif;
-        --mobile-info-label-colour-light: #777777;
-        --mobile-info-label-colour-dark: #aaaaaa;
-        --mobile-info-value-colour-light: #202124;
-        --mobile-info-value-colour-dark: #e0e0e0;
-        --mobile-info-icon-colour-light: #5f6368;
-        --mobile-info-icon-colour-dark: #000000;
-        --mobile-info-tag-colour-light: #9c1180;
-        --mobile-info-tag-colour-dark: #c586c0;
-        --mobile-info-edit-colour-light: #202124;
-        --mobile-info-edit-colour-dark: #e0e0e0;
-        --mobile-info-edit-border: #aaaaaa;
-        --mobile-info-edit-focus: #800080;
-        --mobile-info-save-colour-light: #800080;
-        --mobile-info-save-colour-dark: #c586c0;
-        --mobile-info-disabled-colour: #888888;
-        --mobile-info-icon-opacity: 0.8;
-        --mobile-info-tag-font-weight: 700;
-
-        /* ---- TOOLBAR (magnifier, dark mode, expand) ---- */
+        /* Size and spacing */
         --mobile-toolbar-height: 28px;
         --mobile-toolbar-gap: 16px;
         --mobile-toolbar-padding: 4px 7px;
@@ -399,48 +509,81 @@
         --mobile-toolbar-link-width: 20px;
         --mobile-toolbar-link-height: 20px;
         --mobile-toolbar-link-gap: 4px;
-        --mobile-toolbar-font-size: 10px;
-        --mobile-darkmode-control-width: 20px;
-        --mobile-darkmode-control-height: 20px;
         --mobile-magnifier-toolbar-icon-size: 14px;
         --mobile-expand-control-width: 20px;
         --mobile-expand-control-height: 20px;
+        /* Text */
+        --mobile-toolbar-font-size: 10px;
         --mobile-expand-icon-font-size: 17px;
         --mobile-expand-icon-line-height: 20px;
-
-        --mobile-toolbar-background: transparent;
-        --mobile-toolbar-backdrop-blur: 0px;
-        --mobile-toolbar-background-dark: transparent;
-        --mobile-toolbar-link-border: none;
-        --mobile-toolbar-text-light: #000000;
-        --mobile-toolbar-text-dark: #ffffff;
-        --mobile-toolbar-hover-light: #000000;
-        --mobile-toolbar-hover-dark: #88ccff;
         --mobile-toolbar-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         --mobile-toolbar-font-weight: 400;
+        /* Colours and look (light) */
+        --mobile-toolbar-background: transparent;
+        --mobile-toolbar-backdrop-blur: 0px;
+        --mobile-toolbar-link-border: none;
+        --mobile-toolbar-text-light: #000000;
+        --mobile-toolbar-hover-light: #000000;
         --mobile-toolbar-border: 1px solid rgba(0, 0, 0, 0.05);
+        /* Colours (dark mode) */
+        --mobile-darkmode-control-width: 20px;
+        --mobile-darkmode-control-height: 20px;
+        --mobile-toolbar-background-dark: transparent;
+        --mobile-toolbar-text-dark: #ffffff;
+        --mobile-toolbar-hover-dark: #88ccff;
+    }
+}
 
-        /* ---- MAGNIFIER LENS ---- */
-        --mobile-magnifier-size: 200px;
-        --mobile-magnifier-corner-size: 20px;
+/* =====================================================================
+   MAGNIFIER LENS
+   ===================================================================== */
+:root {
+    /* Position */
+    --desktop-magnifier-corner-right: 0px;
+    --desktop-magnifier-corner-bottom: 0px;
+    /* Size and spacing */
+    --desktop-magnifier-size: 200px;
+    --desktop-magnifier-corner-size: 20px;
+    /* Colours and look (light) */
+    --desktop-magnifier-background-light: transparent;
+    /* Colours (dark mode) */
+    --desktop-magnifier-background-dark: #000000;
+}
+@media (max-width: 480px) {
+    :root {
+        /* Position */
         --mobile-magnifier-corner-right: 0px;
         --mobile-magnifier-corner-bottom: 0px;
-
+        /* Size and spacing */
+        --mobile-magnifier-size: 200px;
+        --mobile-magnifier-corner-size: 20px;
+        /* Colours and look (light) */
         --mobile-magnifier-background-light: transparent;
+        /* Colours (dark mode) */
         --mobile-magnifier-background-dark: #000000;
+    }
+}
 
-        /* ---- MOBILE CONTROLS DOCK (toolbar + info window stack) ---- */
-        --mobile-dock-total: calc(var(--mobile-info-height) + var(--mobile-toolbar-height) + var(--mobile-dock-bottom) + var(--mobile-dock-separation));
+/* =====================================================================
+   MOBILE DOCK (toolbar + information window stack)
+   ===================================================================== */
+@media (max-width: 480px) {
+    :root {
+        /* Position */
+        --mobile-dock-total: calc(var(--mobile-info-height) + var(--mobile-toolbar-height) + var(--mobile-dock-clearance) + var(--mobile-dock-separation));
         --mobile-dock-left: 10px;
         --mobile-dock-right: 10px;
-        --mobile-dock-bottom: 10px;
+        --mobile-dock-bottom: 38dvh;
+        --mobile-dock-clearance: 10px;
         --mobile-dock-separation: 14px;
+        /* Size and spacing */
         --mobile-dock-gap: 10px;
-
+        /* Colours and look (light) */
         --mobile-dock-background: transparent;
         --mobile-dock-opacity: 1;
     }
 }
+
 
 /* =====================================================================
    01. GLOBAL RESET AND FIXED VIEWPORT
@@ -1280,7 +1423,7 @@ body.dark-mode #magnifierLens {
         z-index: 9998 !important;
     }
     body.image-open #sidebar {
-        max-height: calc(100dvh - var(--mobile-sidebar-top) - var(--mobile-dock-total)) !important;
+        max-height: calc(100dvh - var(--mobile-sidebar-top) - var(--mobile-sidebar-bottom-reserve-image-open)) !important;
     }
     #sidebar .tree-content {
         flex: 0 1 auto !important;
@@ -1405,7 +1548,7 @@ body.dark-mode #magnifierLens {
         position: absolute !important;
         top: 0 !important;
         right: 0 !important;
-        bottom: var(--mobile-dock-total) !important;
+        bottom: var(--mobile-image-bottom-reserve) !important;
         left: var(--mobile-main-sidebar-reserve) !important;
         display: flex !important;
         flex-direction: column !important;
@@ -1429,7 +1572,7 @@ body.dark-mode #magnifierLens {
         flex: 1 1 auto !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: center !important;
+        justify-content: var(--mobile-image-vertical-align) !important;
         width: 100% !important;
         height: 100% !important;
         min-height: 0 !important;
